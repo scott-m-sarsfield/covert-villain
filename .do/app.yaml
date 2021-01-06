@@ -1,8 +1,0 @@
-name: covert-mussolini
-services:
-  - environment_slug: node-js
-    github:
-      branch: main
-      deploy_on_push: true
-      repo: scott-m-sarsfield/covert-mussolini
-    name: covert-mussolini
