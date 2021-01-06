@@ -1,0 +1,23 @@
+{
+  "name": "covert-mussolini",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scott-m-sarsfield/covert-mussolini.git"
+  },
+  "author": "Scott Sarsfield <scott.m.sarsfield@gmail.com>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/scott-m-sarsfield/covert-mussolini/issues"
+  },
+  "homepage": "https://github.com/scott-m-sarsfield/covert-mussolini#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
