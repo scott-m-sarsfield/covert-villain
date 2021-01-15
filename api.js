@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const { Game } = require('./models');
 const get = require('lodash/get');
 const concat = require('lodash/concat');
@@ -6,11 +7,19 @@ const compact = require('lodash/compact');
 const uniq = require('lodash/uniq');
 const map = require('lodash/map');
 const lowerCase = require('lodash/lowerCase');
+const {v1: uuidv1} = require('uuid');
 
-const initialGame = {
+const JWT_SECRET = 'not-in-prod';
+
+function getJwt({roomCode, roomId, name}){
+  return jwt.sign({roomCode, roomId, name}, JWT_SECRET);
+}
+
+const initialGame = () => ({
+  uuid: uuidv1(),
   value: 0,
   players: []
-};
+});
 
 async function getGame(code){
   const [game] = await Game.findOrCreate({
@@ -19,7 +28,7 @@ async function getGame(code){
     },
     defaults: {
       code,
-      data: initialGame
+      data: initialGame()
     }
   });
 
@@ -39,7 +48,7 @@ function createRouter(io){
   router.post('/games/:code/reset', async (req, res)=> {
     const {code} = req.params;
     const game = await getGame(code);
-    game.data = {...initialGame};
+    game.data = {...initialGame()};
     await game.save();
 
     res.send(game);
@@ -56,7 +65,10 @@ function createRouter(io){
     }
     await game.save();
 
-    res.send(game);
+    res.send({
+      token: getJwt({roomCode: code, name, roomId: game.data.uuid}),
+      game
+    });
     sendRefreshSignal(code);
   })
 
