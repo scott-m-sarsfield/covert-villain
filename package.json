@@ -10,7 +10,6 @@
     "build:frontend": "cd frontend && yarn run build",
     "build": "yarn run build:frontend",
     "db:migrate": "npx sequelize-cli db:migrate",
-    "prestart": "yarn run db:migrate",
     "start": "node index.js"
   },
   "repository": {

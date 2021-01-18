@@ -18,6 +18,7 @@ module.exports = {
     "password": process.env.PROD_DB_PASSWORD,
     "database": process.env.PROD_DB_DATABASE,
     "host": process.env.PROD_DB_HOSTNAME,
+    "port": process.env.PROD_DB_PORT,
     "dialect": "postgres"
   }
 }
