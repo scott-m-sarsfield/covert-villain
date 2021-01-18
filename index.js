@@ -7,7 +7,7 @@ const apiRouter = require('./api');
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
   cors: {
-    origin: "*"
+    origin: process.env.NODE_ENVIRONMENT === 'development' ? "*" : true
   },
 });
 
@@ -19,8 +19,8 @@ io.on('connection', (socket) => {
   });
 });
 
-app.use(express.static('frontend/public'));
-app.use(cors({ origin: '*' }))
+app.use(express.static('frontend/build'));
+app.use(cors({ origin: process.env.NODE_ENVIRONMENT === 'development' ? "*" : true }))
 
 app.use('/api', apiRouter(io));
 

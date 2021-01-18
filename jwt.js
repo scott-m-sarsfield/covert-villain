@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = 'not-in-prod';
+const JWT_SECRET = process.env.JWT_SECRET || 'not-in-prod';
 
 function getJwt(content){
   return jwt.sign(content, JWT_SECRET);

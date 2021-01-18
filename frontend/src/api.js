@@ -1,7 +1,6 @@
 import 'isomorphic-fetch';
 import Auth from './auth';
-
-const SERVER_API_BASE = process.env.SERVER_API_BASE || '//localhost:3001/api/games';
+import {API_URL} from './config';
 
 Auth.load();
 
@@ -27,11 +26,11 @@ async function fetchJSON(url, {method = 'GET', data} = {}){
 }
 
 function get(url){
-  return fetchJSON(`${SERVER_API_BASE}${url}`);
+  return fetchJSON(`${API_URL}${url}`);
 }
 
 function post(url, data){
-  return fetchJSON(`${SERVER_API_BASE}${url}`, {method: 'POST', data});
+  return fetchJSON(`${API_URL}${url}`, {method: 'POST', data});
 }
 
 const Api = {
