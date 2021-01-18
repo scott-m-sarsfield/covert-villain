@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx nodemon index.js",
+    "build": "cd frontend && yarn run build",
     "start": "node index.js"
   },
   "repository": {
@@ -18,6 +20,14 @@
   },
   "homepage": "https://github.com/scott-m-sarsfield/covert-mussolini#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5",
+    "socket.io": "^3.0.5",
+    "uuid": "^8.3.2"
   }
 }
