@@ -3,6 +3,7 @@ const { Game } = require('./models');
 const concat = require('lodash/concat');
 const find = require('lodash/find');
 const findIndex = require('lodash/findIndex');
+const every = require('lodash/every');
 const {v1: uuidv1} = require('uuid');
 const {getJwt, authenticateJwt, authenticateOptionalJwt} = require('./jwt');
 
@@ -15,11 +16,79 @@ const phases = {
   PRESS_THE_BUTTON: 'press_the_button'
 };
 
+const LobbyPhase = {
+  init(game){
+    return {
+      ...game,
+      phase: {
+        name: phases.LOBBY,
+        data: null
+      }
+    }
+  },
+  empty(){
+    return initialGame();
+  },
+  canJoin(game){
+    return game.phase.name === phases.LOBBY;
+  }
+};
+
+const PressTheButtonPhase = {
+  init(game){
+    const buttonPressed = {};
+    game.players.forEach(({uuid}) => {
+      buttonPressed[uuid] = false
+    });
+
+    return {
+      ...game,
+      phase: {
+        name: phases.PRESS_THE_BUTTON,
+        data: buttonPressed
+      }
+    };
+  },
+  press(game, playerUuid){
+    return {
+      ...game,
+      phase: {
+        ...game.phase,
+        data: {
+          ...game.phase.data,
+          [playerUuid]: true
+        }
+      }
+    }
+  },
+  isComplete(game){
+    return every(game.phase.data)
+  }
+}
+
+const Notification = {
+  clear(game) {
+    return {
+      ...game,
+      notifications: []
+    }
+  },
+  add(game, text){
+    return {
+      ...game,
+      notifications: concat(game.notifications, [text])
+    };
+  }
+}
+
 const initialGame = () => ({
-  phase: phases.LOBBY,
-  uuid: uuidv1(),
-  value: 0,
-  players: []
+  phase: {
+    name: phases.LOBBY,
+    data: {}
+  },
+  notifications: [],
+  players: [],
+  uuid: uuidv1()
 });
 
 async function getGame(code){
@@ -88,21 +157,25 @@ function createRouter(io){
     }
 
     if(!existingPlayer) {
-      uuid = uuidv1();
-      game.data = {
-        ...game.data,
-        players: concat(
-          game.data.players,
-          [
-            {
-              name,
-              uuid
-            }
-          ]
-        )
+      if (LobbyPhase.canJoin(game.data)) {
+        uuid = uuidv1();
+        game.data = {
+          ...game.data,
+          players: concat(
+            game.data.players,
+            [
+              {
+                name,
+                uuid
+              }
+            ]
+          )
+        }
+        await game.save();
+        sendRefreshSignal(code);
+      }else{
+        res.status(403).send('cannot join game in progress');
       }
-      await game.save();
-      sendRefreshSignal(code);
     }
 
     const user = {
@@ -123,7 +196,7 @@ function createRouter(io){
     const game = await getGame(req.params.code);
 
     res.send(serializeGame(game, req.user));
-  })
+  });
 
   router.post('/games/:code/leave', authenticateJwt, authenticateRoom, async (req,res) => {
     const {uuid} = req.user;
@@ -143,19 +216,48 @@ function createRouter(io){
     }
   })
 
-  router.post('/games/:code/identify', authenticateJwt, async(req, res) => {
-    res.send(req.user);
-  })
-
-  router.post('/games/:code/reset', authenticateJwt, authenticateRoom, async (req, res)=> {
+  router.post('/games/:code/start', authenticateJwt, authenticateRoom, async (req, res) => {
     const {roomCode} = req;
-
     const game = await getGame(roomCode);
-    game.data = {...initialGame()};
+
+    if(game.data.players[0].uuid !== req.user.uuid){
+      res.status(403).send('you must be the host to start the game');
+      return;
+    }
+    game.data = Notification.clear(game.data);
+    game.data = PressTheButtonPhase.init(game.data);
+
+    await game.save();
+    sendRefreshSignal(roomCode);
+    res.send({});
+  });
+
+  router.post('/games/:code/press-button', authenticateJwt, authenticateRoom, async (req, res) => {
+    const {roomCode, user: {uuid}} = req;
+    const game = await getGame(roomCode);
+
+    game.data = PressTheButtonPhase.press(game.data, uuid);
+
+    if(PressTheButtonPhase.isComplete(game.data)){
+      game.data = LobbyPhase.init(game.data);
+      game.data = Notification.add(game.data, 'Thanks.  That was a test.');
+    }
+
+    await game.save();
+    sendRefreshSignal(roomCode);
+    res.send({});
+  });
+
+  router.post('/games/:code/reset', async (req, res)=> {
+    const {code} = req.params;
+
+    const game = await getGame(code);
+    game.data = LobbyPhase.empty(game.data);
     await game.save();
 
     res.send(serializeGame(game, req.user));
-    sendRefreshSignal(roomCode);
+
+    io.to(code).emit('room-reset');
   })
 
   return router;

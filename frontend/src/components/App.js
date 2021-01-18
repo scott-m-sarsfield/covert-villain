@@ -1,10 +1,12 @@
 import React  from 'react';
 import {useSelector} from 'react-redux';
-import JoinGameScreen from './join_game_screen';
-import LobbyScreen from './lobby_screen';
+import JoinGamePage from './pages/join_game_page';
+import LobbyPage from './pages/lobby_page';
 import styled from 'styled-components';
 import useGameSession from './use_game_session';
 import useConsoleUtility from './debug_window';
+import PressTheButtonPage from './pages/press_the_button_page';
+import NotificationPage from './pages/notification_page';
 
 const Body = styled.div`
   background: beige;
@@ -62,11 +64,37 @@ const Heading = ({hasSettings}) => (
   </Wrapper>
 );
 
+function GameScreens({game, notificationCursor}){
+  const {phase: {name}, notifications} = game;
+
+  if(notificationCursor < notifications.length){
+    return (
+      <NotificationPage />
+    )
+  }
+
+  if(name === 'lobby'){
+    return (
+      <LobbyPage />
+    )
+  }
+
+  if(name === 'press_the_button'){
+    return (
+      <PressTheButtonPage />
+    )
+  }
+
+  return (
+    <div>404 - Unknown Phase</div>
+  )
+}
+
 
 function App() {
   useGameSession();
   useConsoleUtility();
-  const {joining, data: game} = useSelector((state) => state.game);
+  const {joining, data: game, notificationCursor} = useSelector((state) => state.game);
 
   const state = useSelector(state => state);
   console.log(state);
@@ -79,12 +107,12 @@ function App() {
       }
       {
         !game && !joining && (
-          <JoinGameScreen />
+          <JoinGamePage />
         )
       }
       {
         game && !joining && (
-          <LobbyScreen game={game} />
+          <GameScreens game={game} notificationCursor={notificationCursor}/>
         )
       }
     </Body>

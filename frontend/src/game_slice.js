@@ -1,38 +1,42 @@
 import {createSlice} from '@reduxjs/toolkit';
-import Api from '../api';
+import get from 'lodash/get';
+import Api from './api';
 
 const gamesSlice = createSlice({
   name: 'game',
   initialState: {
-    name: null,
-    code: null,
+    user: null,
     data: null,
-    joining: false
+    joining: false,
+    notificationCursor: 0
   },
   reducers: {
     joinInitiated(state){
       state.joining = true;
     },
     joinSuccessful(state, action){
-      const {code, name, game} = action.payload;
+      const {user, game} = action.payload;
       state.joining = false;
-      state.code = code;
-      state.name = name;
+      state.user = user;
       state.data = game;
     },
     setGameData(state, action){
       state.data = action.payload
+      if(action.payload.notifications.length === 0){
+        state.notificationCursor = 0;
+      }
     },
     forgetGame(state){
-      state.name = null;
-      state.code = null;
+      state.user = null;
       state.data = null;
     },
     loadScenario(state, action){
-      const {name, code, data} = action.payload;
-      state.name = name || state.name;
-      state.code = code || state.code;
+      const {user, data} = action.payload;
+      state.user = user || state.user;
       state.data = data || state.data;
+    },
+    readNotification(state){
+      state.notificationCursor++;
     }
   }
 })
@@ -42,13 +46,14 @@ const {
   joinSuccessful,
   setGameData,
   forgetGame,
-  loadScenario
+  loadScenario,
+  readNotification
 } = gamesSlice.actions;
 
 const joinGame = ({code, name} = {}) => async (dispatch) => {
   dispatch(joinInitiated())
-  const {game, user: {name: playerName, roomCode}} = await Api.joinGame(code, name);
-  dispatch(joinSuccessful({name: playerName, code: roomCode, game}));
+  const {game, user} = await Api.joinGame(code, name);
+  dispatch(joinSuccessful({user, game}));
 }
 
 const refreshGame = (code) => async (dispatch) => {
@@ -57,23 +62,40 @@ const refreshGame = (code) => async (dispatch) => {
 };
 
 const resetGame = () => async (dispatch, getState) => {
-  const {game:{code}} = getState();
+  const state = getState();
+  const code = get(state, 'game.user.roomCode');
   const game = await Api.resetGame(code);
   dispatch(setGameData(game));
 }
 
 const leaveGame = () => async(dispatch, getState) => {
-  const {game: {code}} = getState();
+  const state = getState();
+  const code = get(state, 'game.user.roomCode');
   Api.leaveGame(code);
   dispatch(forgetGame());
 }
+
+function callApiWithCode(api){
+  return () => async(dispatch, getState) => {
+    const state = getState();
+    const code = get(state, 'game.user.roomCode');
+    api(code);
+  }
+}
+
+const startGame = callApiWithCode((code) => Api.startGame(code));
+const pressButton = callApiWithCode((code) => Api.pressButton(code));
 
 export {
   joinGame,
   refreshGame,
   resetGame,
   loadScenario,
-  leaveGame
+  leaveGame,
+  startGame,
+  pressButton,
+  forgetGame,
+  readNotification
 }
 
 export default gamesSlice.reducer

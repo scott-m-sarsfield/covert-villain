@@ -2,9 +2,10 @@ import React from 'react';
 import get from 'lodash/get';
 import map from 'lodash/map';
 import styled from 'styled-components';
-import SubmitButton from './shared/submit_button';
-import {useDispatch} from 'react-redux';
-import {leaveGame} from './game_slice';
+import SubmitButton from '../shared/submit_button';
+import {useDispatch, useSelector} from 'react-redux';
+import {leaveGame, startGame} from '../../game_slice';
+import Button from '../shared/button';
 
 
 const GameCode = styled.h3`
@@ -81,45 +82,31 @@ const numberLabels = [
 const Layout = styled.div`
   min-height: calc(100vh - 50px);
   position: relative;
-  padding-bottom: 30px;
+  padding: 30px 15px;
   box-sizing: border-box;
+  
+  ${Button} {
+    margin-top: 30px;
+  }
   
   ${({withSubmit}) => withSubmit && `
     padding-bottom: 80px;
   `}
 `;
 
-const Button = styled.button`
-  width: 100%;
-  padding: 10px 0;
-  border: solid 1px #979797;
-  background: #d8d8d8;
-  border-radius: 4px;
-  font-size: 21px;
-  line-height: 30px;
-  letter-spacing: 2px;
-`;
-
-
-const Content = styled.div`
-  padding: 30px 15px;
-  
-  ${Button} {
-    margin-top: 30px;
-  }
-`;
-
-const LobbyScreen = ({game}) => {
+const LobbyPage = () => {
+  const {user, data: game} = useSelector(state => state.game);
   const code = get(game, 'code', '');
   const players = get(game, 'players', []);
+  const isHost = user.uuid === get(game, 'players[0].uuid');
 
   const dispatch = useDispatch();
 
   const onLeave = () => dispatch(leaveGame());
+  const onStart = () => dispatch(startGame());
 
   return (
-    <Layout withSubmit>
-      <Content>
+    <Layout withSubmit={isHost}>
         <GameCode>{code}</GameCode>
         <PlayerList>
           {
@@ -131,10 +118,13 @@ const LobbyScreen = ({game}) => {
           }
         </PlayerList>
         <Button onClick={onLeave}>Leave</Button>
-      </Content>
-      <SubmitButton onClick={() => {}}>Start</SubmitButton>
+      {
+        isHost && (
+          <SubmitButton onClick={onStart}>Start</SubmitButton>
+        )
+      }
     </Layout>
   );
 }
 
-export default LobbyScreen;
+export default LobbyPage;

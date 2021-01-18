@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {useDispatch} from 'react-redux';
-import {joinGame} from './game_slice';
+import {joinGame} from '../../game_slice';
 import styled from 'styled-components';
-import SubmitButton from './shared/submit_button';
+import SubmitButton from '../shared/submit_button';
 
 const Content = styled.div`
   padding: 60px 30px 0;
@@ -32,7 +32,7 @@ const JoinInputRow = ({label, value, onChange}) => (
   </div>
 );
 
-const JoinGameScreen = () => {
+const JoinGamePage = () => {
   const dispatch = useDispatch();
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
@@ -75,4 +75,4 @@ const JoinGameScreen = () => {
   )
 }
 
-export default JoinGameScreen;
+export default JoinGamePage;

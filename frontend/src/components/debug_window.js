@@ -1,6 +1,6 @@
 import React, {useEffect}  from 'react';
 import { useDispatch} from 'react-redux';
-import {leaveGame, loadScenario, resetGame} from './game_slice';
+import {leaveGame, loadScenario, resetGame} from '../game_slice';
 
 const useConsoleUtility = () => {
   const dispatch = useDispatch();

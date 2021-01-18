@@ -55,6 +55,14 @@ const Api = {
     await post(`/${code}/leave`);
 
     Auth.clear();
+  },
+
+  startGame(code){
+    return post(`/${code}/start`);
+  },
+
+  pressButton(code){
+    return post(`/${code}/press-button`);
   }
 }
 
