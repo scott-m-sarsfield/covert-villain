@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon index.js",
-    "build": "cd frontend && yarn run build",
+    "prebuild:frontend": "cd frontend && yarn",
+    "build:frontend": "cd frontend && yarn run build",
+    "build:migrations": "npx sequelize-cli db:migrate",
+    "build": "yarn build:frontend && yarn build:migrations",
     "start": "node index.js"
   },
   "repository": {
