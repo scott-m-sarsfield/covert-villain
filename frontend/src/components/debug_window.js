@@ -1,45 +1,57 @@
-import React  from 'react';
-import styled from 'styled-components';
+import React, {useEffect}  from 'react';
 import { useDispatch} from 'react-redux';
-import {exitGame, resetGame} from './game_slice';
+import {leaveGame, loadScenario, resetGame} from './game_slice';
 
-const DebugPanelContainer = styled.div`
-  background: #ccc;
-  border: solid 1px black;
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 200px;
-`;
-
-const DebugPanelHeading = styled.h5`
-  text-align: center;
-  margin: 15px;
-`;
-
-const DebugButton = styled.button`
-  width: 100%;
-  min-height: 30px;
-`
-
-const DebugWindow = () => {
+const useConsoleUtility = () => {
   const dispatch = useDispatch();
 
-  const onReset = async () => {
-    dispatch(resetGame());
-  }
+  useEffect(() => {
+    function runDebugAction(action, params) {
+      switch(action){
+        case 'reset':
+          dispatch(resetGame());
+          break;
+        case 'exit':
+        case 'leave':
+          dispatch(leaveGame());
+          break;
+        case 'load-full-lobby':
+          dispatch(
+            loadScenario({
+              name: 'Alpha',
+              code: 'ABXGYP',
+              data: {
+                data: {
+                  code: 'ABXGYP',
+                  players: [
+                    'Alpha',
+                    'Bravo',
+                    'Charlie',
+                    'Delta',
+                    'Echo',
+                    'Foxtrot',
+                    'Golf',
+                    'Hotel',
+                    'India',
+                    'Juliet'
+                  ]
+                }
+              }
+            })
+          );
+          break;
+        default:
+          console.log(`Action '${action}' not registered.`);
+          break;
+      }
+    }
 
-  const onExit = async () => {
-    dispatch(exitGame());
-  }
+    global.runAction = runDebugAction;
 
-  return (
-    <DebugPanelContainer>
-      <DebugPanelHeading>Debug Window</DebugPanelHeading>
-      <DebugButton onClick={onReset}>Reset</DebugButton>
-      <DebugButton onClick={onExit}>Exit</DebugButton>
-    </DebugPanelContainer>
-  );
+    return () => {
+      global.runAction = null;
+    };
+  }, [])
 }
 
-export default DebugWindow;
+export default useConsoleUtility;

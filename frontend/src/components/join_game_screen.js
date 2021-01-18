@@ -2,63 +2,34 @@ import React, { useState } from 'react';
 import {useDispatch} from 'react-redux';
 import {joinGame} from './game_slice';
 import styled from 'styled-components';
+import SubmitButton from './shared/submit_button';
 
-const Modalish = styled.div`
-  position: absolute;
-  width: 400px;
-  background: #555;
-  color: white;
-  border: solid 1px black;
-  border-radius: 5px;
-  top: 30px;
-  left: 0;
-  right: 0;
-  margin: auto;
-  padding: 15px;
-`;
-
-const JoinHeading = styled.h2`
-  text-transform: uppercase;
-  text-align: center;
-`;
-
-
-const JoinButton = styled.button`
-  background: yellow;
-  border: solid 1px;
-  border-radius: 4px;
-  padding: 8px 48px;
-  font-size: 16px;
-  text-transform: uppercase;
-  display: block;
-  margin: 0 auto;
-`;
-
-const InputRow = styled.div`
-  display: flex;
-  justify-content: space-around;
-`;
+const Content = styled.div`
+  padding: 60px 30px 0;
+`
 
 const InputRowLabel = styled.span`
   display: block;
-  margin-right: 15px;
   font-size: 16px;
-  line-height: 32px;
-  text-align: right;
+  line-height: 24px;
+  margin: 0 15px 5px 0;
 `;
 
 const JoinInput = styled.input`
-  width: 70%;
   font-size: 16px;
-  padding: 8px;
-  margin-bottom: 18px;
+  padding: 3px 8px;
+  margin-bottom: 30px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #979797;
 `;
 
 const JoinInputRow = ({label, value, onChange}) => (
-  <InputRow>
+  <div>
     <InputRowLabel>{label}</InputRowLabel>
-    <JoinInput type="text" value={value} onChange={onChange}/>
-  </InputRow>
+    <JoinInput type="text" value={value} placeholder={label} onChange={onChange}/>
+  </div>
 );
 
 const JoinGameScreen = () => {
@@ -85,23 +56,22 @@ const JoinGameScreen = () => {
   }
 
   return (
-    <Modalish>
-      <JoinHeading>Census</JoinHeading>
+    <div>
+      <Content>
+        <JoinInputRow {...{
+          label: 'Code',
+          value: code,
+          onChange: onChangeCode
+        }} />
 
-      <JoinInputRow {...{
-        label: 'code',
-        value: code,
-        onChange: onChangeCode
-      }} />
-
-      <JoinInputRow {...{
-        label: 'name',
-        value: name,
-        onChange: onChangeName
-      }} />
-
-      <JoinButton onClick={onJoin}>Join</JoinButton>
-    </Modalish>
+        <JoinInputRow {...{
+          label: 'Name',
+          value: name,
+          onChange: onChangeName
+        }} />
+      </Content>
+      <SubmitButton onClick={onJoin} disabled={!code || !name}>Join</SubmitButton>
+    </div>
   )
 }
 

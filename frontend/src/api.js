@@ -1,6 +1,8 @@
 import 'isomorphic-fetch';
 import Auth from './auth';
 
+const SERVER_API_BASE = process.env.SERVER_API_BASE || '//localhost:3001/api/games';
+
 Auth.load();
 
 async function fetchJSON(url, {method = 'GET', data} = {}){
@@ -25,26 +27,34 @@ async function fetchJSON(url, {method = 'GET', data} = {}){
 }
 
 function get(url){
-  return fetchJSON(url);
+  return fetchJSON(`${SERVER_API_BASE}${url}`);
 }
 
 function post(url, data){
-  return fetchJSON(url, {method: 'POST', data});
+  return fetchJSON(`${SERVER_API_BASE}${url}`, {method: 'POST', data});
 }
 
 const Api = {
   getGame(code){
-    return get(`//localhost:3001/api/games/${code}`);
+    return get(`/${code}`);
   },
+
   async joinGame(code, name){
-    const {game, token} = await post(`//localhost:3001/api/games/${code}/join`, {name});
+    const {game, user, token} = await post(`/join`, {code, name});
 
     Auth.set(token);
 
-    return game;
+    return {game, user};
   },
+
   resetGame(code){
-    return post(`//localhost:3001/api/games/${code}/reset`)
+    return post(`/${code}/reset`)
+  },
+
+  async leaveGame(code){
+    await post(`/${code}/leave`);
+
+    Auth.clear();
   }
 }
 

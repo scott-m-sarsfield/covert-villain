@@ -1,23 +1,18 @@
 import React, { useEffect } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useSocket, useSocketEvent} from './socket_listener';
-import useLocalStorage from './use_local_storage';
 import { joinGame, refreshGame} from './game_slice';
+import Auth from '../auth';
 
 const useGameSession = () => {
-  const [{name: localName, code: localCode}, setLocalNameAndCode] = useLocalStorage('name-and-room', {});
-
-  const {name, code} = useSelector(state => state.game);
+  const {code} = useSelector(state => state.game);
   const dispatch = useDispatch();
   const socket = useSocket();
 
   useEffect(() => {
-    if(localCode && localName){
+    if(Auth.get()){
       dispatch(
-        joinGame({
-          code: localCode,
-          name: localName
-        })
+        joinGame()
       );
     }
   }, [])
@@ -32,14 +27,7 @@ const useGameSession = () => {
     if(code){
       dispatch(refreshGame(code));
     }
-  })
-
-  useEffect(() => {
-    setLocalNameAndCode({
-      name,
-      code
-    });
-  }, [name, code]);
+  });
 }
 
 export default useGameSession;
