@@ -23,6 +23,12 @@ const useGameSession = () => {
     }
   }, [code])
 
+  useSocketEvent('connect', () => {
+    if(code){
+      socket.emit('join-game', code);
+    }
+  })
+
   useSocketEvent('refresh', () => {
     if(code){
       dispatch(refreshGame(code));

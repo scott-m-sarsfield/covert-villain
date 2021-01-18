@@ -63,22 +63,7 @@ function createRouter(io){
 
   const router = express.Router();
   router.use(express.json());
-  router.use(express.urlencoded({ extended: true }))
-
-  router.post('/games/:code/identify', authenticateJwt, async(req, res) => {
-    res.send(req.user);
-  })
-
-  router.post('/games/:code/reset', authenticateJwt, authenticateRoom, async (req, res)=> {
-    const {roomCode} = req;
-
-    const game = await getGame(roomCode);
-    game.data = {...initialGame()};
-    await game.save();
-
-    res.send(serializeGame(game, req.user));
-    sendRefreshSignal(roomCode);
-  })
+  router.use(express.urlencoded({ extended: true }));
 
   router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
     let { name, code, uuid } = req.body;
@@ -134,6 +119,12 @@ function createRouter(io){
     });
   })
 
+  router.get('/games/:code', authenticateJwt, async (req,res) => {
+    const game = await getGame(req.params.code);
+
+    res.send(serializeGame(game, req.user));
+  })
+
   router.post('/games/:code/leave', authenticateJwt, authenticateRoom, async (req,res) => {
     const {uuid} = req.user;
     const {roomCode} = req;
@@ -152,10 +143,19 @@ function createRouter(io){
     }
   })
 
-  router.get('/games/:code', authenticateJwt, async (req,res) => {
-    const game = await getGame(req.params.code);
+  router.post('/games/:code/identify', authenticateJwt, async(req, res) => {
+    res.send(req.user);
+  })
+
+  router.post('/games/:code/reset', authenticateJwt, authenticateRoom, async (req, res)=> {
+    const {roomCode} = req;
+
+    const game = await getGame(roomCode);
+    game.data = {...initialGame()};
+    await game.save();
 
     res.send(serializeGame(game, req.user));
+    sendRefreshSignal(roomCode);
   })
 
   return router;
