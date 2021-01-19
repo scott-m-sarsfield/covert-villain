@@ -70,7 +70,7 @@ Heading.propTypes = {
 };
 
 function GameScreens({ game, notificationCursor }) {
-  const { phase: { name }, notifications } = game;
+  const { phase, notifications } = game;
 
   if (notificationCursor < notifications.length) {
     return (
@@ -78,13 +78,13 @@ function GameScreens({ game, notificationCursor }) {
     );
   }
 
-  if (name === 'lobby') {
+  if (phase === 'lobby') {
     return (
       <LobbyPage />
     );
   }
 
-  if (name === 'press_the_button') {
+  if (phase === 'press_the_button') {
     return (
       <PressTheButtonPage />
     );

@@ -19,6 +19,7 @@ const gamesSlice = createSlice({
       state.joining = false;
       state.user = user;
       state.data = game;
+      state.notificationCursor = game.notifications.length;
     },
     setGameData(state, action) {
       state.data = action.payload;

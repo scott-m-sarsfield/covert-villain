@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 
 const PressTheButtonPage = () => {
   const dispatch = useDispatch();
-  const { user: { uuid }, data: { players, phase: { data }}} = useSelector((state) => state.game);
+  const { user: { uuid }, data: { players, pressTheButton: data }} = useSelector((state) => state.game);
 
   const pressed = data[uuid];
 

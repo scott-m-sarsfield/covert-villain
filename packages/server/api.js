@@ -1,104 +1,19 @@
 const express = require('express');
-const concat = require('lodash/concat');
 const find = require('lodash/find');
-const findIndex = require('lodash/findIndex');
-const every = require('lodash/every');
 const { v1: uuidv1 } = require('uuid');
-const { Game } = require('./models');
+const { Game: SequelizeGame } = require('./models');
 const { getJwt, authenticateJwt, authenticateOptionalJwt } = require('./jwt');
-
-function splice(arr, start, nRemove, ...items) {
-  return concat(arr.slice(0, start), Array.from(items), arr.slice(start + nRemove));
-}
-
-const phases = {
-  LOBBY: 'lobby',
-  PRESS_THE_BUTTON: 'press_the_button'
-};
-
-const LobbyPhase = {
-  init(game) {
-    return {
-      ...game,
-      phase: {
-        name: phases.LOBBY,
-        data: null
-      }
-    };
-  },
-  empty() {
-    return initialGame();
-  },
-  canJoin(game) {
-    return game.phase.name === phases.LOBBY;
-  }
-};
-
-const PressTheButtonPhase = {
-  init(game) {
-    const buttonPressed = {};
-    game.players.forEach(({ uuid }) => {
-      buttonPressed[uuid] = false;
-    });
-
-    return {
-      ...game,
-      phase: {
-        name: phases.PRESS_THE_BUTTON,
-        data: buttonPressed
-      }
-    };
-  },
-  press(game, playerUuid) {
-    return {
-      ...game,
-      phase: {
-        ...game.phase,
-        data: {
-          ...game.phase.data,
-          [playerUuid]: true
-        }
-      }
-    };
-  },
-  isComplete(game) {
-    return every(game.phase.data);
-  }
-};
-
-const Notification = {
-  clear(game) {
-    return {
-      ...game,
-      notifications: []
-    };
-  },
-  add(game, text) {
-    return {
-      ...game,
-      notifications: concat(game.notifications, [text])
-    };
-  }
-};
-
-const initialGame = () => ({
-  phase: {
-    name: phases.LOBBY,
-    data: {}
-  },
-  notifications: [],
-  players: [],
-  uuid: uuidv1()
-});
+const Actions = require('./game_actions');
+const { phases } = require('./constants');
 
 async function getGame(code) {
-  const [game] = await Game.findOrCreate({
+  const [game] = await SequelizeGame.findOrCreate({
     where: {
       code
     },
     defaults: {
       code,
-      data: initialGame()
+      data: Actions.setupGame()
     }
   });
 
@@ -153,20 +68,9 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
     }
 
     if (!existingPlayer) {
-      if (LobbyPhase.canJoin(game.data)) {
+      if (game.data.phase === phases.LOBBY) {
         uuid = uuidv1();
-        game.data = {
-          ...game.data,
-          players: concat(
-            game.data.players,
-            [
-              {
-                name,
-                uuid
-              }
-            ]
-          )
-        };
+        game.data = Actions.joinGame(game, { name, uuid });
         await game.save();
         res.sendRoomEvent(code, 'refresh');
       } else {
@@ -198,61 +102,61 @@ router.get('/games/:code', authenticateJwt, async (req, res) => {
   res.send(serializeGame(game, req.user));
 });
 
-router.post('/games/:code/leave', authenticateJwt, authenticateRoom, async (req, res) => {
-  const { uuid } = req.user;
-  const { roomCode } = req;
+async function withGame(req, res, fn) {
+  try {
+    const { roomCode, user } = req;
+    const game = await getGame(roomCode);
 
-  const game = await getGame(roomCode);
-  const { data: { players }} = game;
-  const index = findIndex(players, { uuid });
-  if (index >= 0) {
-    game.data = {
-      ...game.data,
-      players: splice(players, index, 1)
-    };
-    await game.save();
-    res.send(serializeGame(game, req.user));
-    res.sendRoomEvent(roomCode, 'refresh');
+    const gameData = fn(game.data, user);
+
+    if (gameData.error) {
+      res.status(400).send(gameData);
+    }
+
+    if (gameData !== game.data) {
+      game.data = gameData;
+      await game.save();
+      res.sendRoomEvent(roomCode, 'refresh');
+    }
+    res.send({ status: 'ok' });
+  } catch (err) {
+    console.log(err); /* eslint-disable-line no-console */
+    res.status(500).send(err);
   }
+}
+
+router.post('/games/:code/leave', authenticateJwt, authenticateRoom, async (req, res) => {
+  await withGame(req, res, (game, user) => {
+    const { uuid } = user;
+    return Actions.leaveGame(game, uuid);
+  });
 });
 
 router.post('/games/:code/start', authenticateJwt, authenticateRoom, async (req, res) => {
-  const { roomCode } = req;
-  const game = await getGame(roomCode);
+  await withGame(req, res, (game, user) => {
+    if (game.players[0].uuid !== user.uuid) {
+      return {
+        error: 'you must be the host to start the game'
+      };
+    }
 
-  if (game.data.players[0].uuid !== req.user.uuid) {
-    res.status(403).send('you must be the host to start the game');
-    return;
-  }
-  game.data = Notification.clear(game.data);
-  game.data = PressTheButtonPhase.init(game.data);
-
-  await game.save();
-  res.sendRoomEvent(roomCode, 'refresh');
-  res.send({});
+    return Actions.startGame(game);
+  });
 });
 
 router.post('/games/:code/press-button', authenticateJwt, authenticateRoom, async (req, res) => {
-  const { roomCode, user: { uuid }} = req;
-  const game = await getGame(roomCode);
+  await withGame(req, res, (game, user) => {
+    const { uuid } = user;
 
-  game.data = PressTheButtonPhase.press(game.data, uuid);
-
-  if (PressTheButtonPhase.isComplete(game.data)) {
-    game.data = LobbyPhase.init(game.data);
-    game.data = Notification.add(game.data, 'Thanks.  That was a test.');
-  }
-
-  await game.save();
-  res.sendRoomEvent(roomCode, 'refresh');
-  res.send({});
+    return Actions.pressTheButton(game, uuid);
+  });
 });
 
 router.post('/games/:code/reset', async (req, res) => {
   const { code } = req.params;
 
   const game = await getGame(code);
-  game.data = LobbyPhase.empty(game.data);
+  game.data = Actions.setupGame();
   await game.save();
 
   res.send(serializeGame(game, req.user));
