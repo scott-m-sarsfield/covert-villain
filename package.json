@@ -2,15 +2,14 @@
   "name": "covert-mussolini",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "packages/server/index.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon index.js",
-    "prebuild:frontend": "cd frontend && yarn",
-    "build:frontend": "cd frontend && yarn run build",
+    "build:frontend": "cd packages/frontend && yarn run build",
     "build": "yarn run build:frontend",
-    "db:migrate": "npx sequelize-cli db:migrate",
-    "start": "node index.js"
+    "db:migrate": "cd packages/server && yarn run db:migrate",
+    "start": "node packages/server/index.js"
   },
   "repository": {
     "type": "git",
@@ -22,15 +21,7 @@
     "url": "https://github.com/scott-m-sarsfield/covert-mussolini/issues"
   },
   "homepage": "https://github.com/scott-m-sarsfield/covert-mussolini#readme",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.20",
-    "pg": "^8.5.1",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.5",
-    "socket.io": "^3.0.5",
-    "uuid": "^8.3.2"
-  }
+  "workspaces": [
+    "packages/*"
+  ]
 }
