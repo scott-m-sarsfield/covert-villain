@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const app = express()
 const port = process.env.PORT || 3001;
 const apiRouter = require('./api');
@@ -19,7 +20,7 @@ io.on('connection', (socket) => {
   });
 });
 
-app.use(express.static('frontend/build'));
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.use(cors({ origin: process.env.NODE_ENV === 'development' ? "*" : true }))
 
 app.use('/api', apiRouter(io));

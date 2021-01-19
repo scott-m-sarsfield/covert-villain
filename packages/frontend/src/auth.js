@@ -1,23 +1,23 @@
 let authorizationToken;
 
 const Auth = {
-  set(token){
+  set(token) {
     authorizationToken = token;
     localStorage.setItem('authtoken', token);
   },
-  get(){
+  get() {
     return authorizationToken;
   },
-  clear(){
+  clear() {
     authorizationToken = null;
     localStorage.removeItem('authtoken');
   },
-  load(){
+  load() {
     const localToken = localStorage.getItem('authtoken');
-    if(localToken){
+    if (localToken) {
       authorizationToken = localToken;
     }
   }
-}
+};
 
 export default Auth;

@@ -1,13 +1,13 @@
-import React, {useEffect}  from 'react';
-import { useDispatch} from 'react-redux';
-import {leaveGame, loadScenario, resetGame} from '../game_slice';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { leaveGame, loadScenario, resetGame } from '../game_slice';
 
 const useConsoleUtility = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    function runDebugAction(action, params) {
-      switch(action){
+    function runDebugAction(action) {
+      switch (action) {
         case 'reset':
           dispatch(resetGame());
           break;
@@ -41,6 +41,7 @@ const useConsoleUtility = () => {
           );
           break;
         default:
+          /* eslint-disable-next-line no-console */
           console.log(`Action '${action}' not registered.`);
           break;
       }
@@ -51,7 +52,7 @@ const useConsoleUtility = () => {
     return () => {
       global.runAction = null;
     };
-  }, [])
-}
+  }, []);
+};
 
 export default useConsoleUtility;

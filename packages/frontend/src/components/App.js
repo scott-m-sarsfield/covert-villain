@@ -1,8 +1,9 @@
-import React  from 'react';
-import {useSelector} from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import types from 'prop-types';
 import JoinGamePage from './pages/join_game_page';
 import LobbyPage from './pages/lobby_page';
-import styled from 'styled-components';
 import useGameSession from './use_game_session';
 import useConsoleUtility from './debug_window';
 import PressTheButtonPage from './pages/press_the_button_page';
@@ -51,7 +52,7 @@ const SettingsButton = styled.button`
   }
 `;
 
-const Heading = ({hasSettings}) => (
+const Heading = ({ hasSettings }) => (
   <Wrapper>
     <Header>Covert Mussolini</Header>
     {
@@ -64,40 +65,50 @@ const Heading = ({hasSettings}) => (
   </Wrapper>
 );
 
-function GameScreens({game, notificationCursor}){
-  const {phase: {name}, notifications} = game;
+Heading.propTypes = {
+  hasSettings: types.bool
+};
 
-  if(notificationCursor < notifications.length){
+function GameScreens({ game, notificationCursor }) {
+  const { phase: { name }, notifications } = game;
+
+  if (notificationCursor < notifications.length) {
     return (
       <NotificationPage />
-    )
+    );
   }
 
-  if(name === 'lobby'){
+  if (name === 'lobby') {
     return (
       <LobbyPage />
-    )
+    );
   }
 
-  if(name === 'press_the_button'){
+  if (name === 'press_the_button') {
     return (
       <PressTheButtonPage />
-    )
+    );
   }
 
   return (
     <div>404 - Unknown Phase</div>
-  )
+  );
 }
 
+GameScreens.propTypes = {
+  game: types.shape({
+    phase: types.shape({
+      name: types.string
+    }).isRequired,
+    notifications: types.array.isRequired
+  }).isRequired,
+  notificationCursor: types.number
+};
 
 function App() {
   useGameSession();
   useConsoleUtility();
-  const {joining, data: game, notificationCursor} = useSelector((state) => state.game);
-
-  const state = useSelector(state => state);
-  console.log(state);
+  const { joining, data: game, notificationCursor } = useSelector((state) => state.game);
 
   return (
     <Body>

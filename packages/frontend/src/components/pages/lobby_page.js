@@ -2,11 +2,11 @@ import React from 'react';
 import get from 'lodash/get';
 import map from 'lodash/map';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import types from 'prop-types';
 import SubmitButton from '../shared/submit_button';
-import {useDispatch, useSelector} from 'react-redux';
-import {leaveGame, startGame} from '../../game_slice';
+import { leaveGame, startGame } from '../../game_slice';
 import Button from '../shared/button';
-
 
 const GameCode = styled.h3`
   font-size: 21px;
@@ -58,13 +58,19 @@ const PlayerRole = styled.div`
   line-height: 17px;
 `;
 
-const Player = ({name, index, role}) => (
+const Player = ({ name, index, role }) => (
   <PlayerWrapper>
     <PlayerNumber>{numberLabels[index]}</PlayerNumber>
     <PlayerName>{name}</PlayerName>
     {role && <PlayerRole>{`(${role})`}</PlayerRole>}
   </PlayerWrapper>
-)
+);
+
+Player.propTypes = {
+  name: types.string,
+  index: types.number,
+  role: types.string
+};
 
 const numberLabels = [
   'one',
@@ -89,13 +95,13 @@ const Layout = styled.div`
     margin-top: 30px;
   }
   
-  ${({withSubmit}) => withSubmit && `
+  ${({ withSubmit }) => withSubmit && `
     padding-bottom: 80px;
   `}
 `;
 
 const LobbyPage = () => {
-  const {user, data: game} = useSelector(state => state.game);
+  const { user, data: game } = useSelector((state) => state.game);
   const code = get(game, 'code', '');
   const players = get(game, 'players', []);
   const isHost = user.uuid === get(game, 'players[0].uuid');
@@ -107,17 +113,17 @@ const LobbyPage = () => {
 
   return (
     <Layout withSubmit={isHost}>
-        <GameCode>{code}</GameCode>
-        <PlayerList>
-          {
-            map(players, ({name}, i) => {
-              return (
-                <Player key={i} index={i} name={name} role={i === 0 ? 'host' : ''}/>
-              )
-            })
-          }
-        </PlayerList>
-        <Button onClick={onLeave}>Leave</Button>
+      <GameCode>{code}</GameCode>
+      <PlayerList>
+        {
+          map(players, ({ name }, i) => {
+            return (
+              <Player key={i} index={i} name={name} role={i === 0 ? 'host' : ''}/>
+            );
+          })
+        }
+      </PlayerList>
+      <Button onClick={onLeave}>Leave</Button>
       {
         isHost && (
           <SubmitButton onClick={onStart}>Start</SubmitButton>
@@ -125,6 +131,6 @@ const LobbyPage = () => {
       }
     </Layout>
   );
-}
+};
 
 export default LobbyPage;

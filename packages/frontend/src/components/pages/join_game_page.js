@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import {useDispatch} from 'react-redux';
-import {joinGame} from '../../game_slice';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import types from 'prop-types';
+import { joinGame } from '../../game_slice';
 import SubmitButton from '../shared/submit_button';
 
 const Content = styled.div`
   padding: 60px 30px 0;
-`
+`;
 
 const InputRowLabel = styled.span`
   display: block;
@@ -25,12 +26,18 @@ const JoinInput = styled.input`
   border: 1px solid #979797;
 `;
 
-const JoinInputRow = ({label, value, onChange}) => (
+const JoinInputRow = ({ label, value, onChange }) => (
   <div>
     <InputRowLabel>{label}</InputRowLabel>
     <JoinInput type="text" value={value} placeholder={label} onChange={onChange}/>
   </div>
 );
+
+JoinInputRow.propTypes = {
+  label: types.string,
+  value: types.string,
+  onChange: types.func.isRequired
+};
 
 const JoinGamePage = () => {
   const dispatch = useDispatch();
@@ -49,11 +56,11 @@ const JoinGamePage = () => {
     const value = e.currentTarget.value;
 
     setName(value);
-  }
+  };
 
   const onJoin = () => {
-    dispatch(joinGame({code, name}));
-  }
+    dispatch(joinGame({ code, name }));
+  };
 
   return (
     <div>
@@ -72,7 +79,7 @@ const JoinGamePage = () => {
       </Content>
       <SubmitButton onClick={onJoin} disabled={!code || !name}>Join</SubmitButton>
     </div>
-  )
-}
+  );
+};
 
 export default JoinGamePage;

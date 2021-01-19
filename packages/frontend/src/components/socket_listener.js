@@ -1,19 +1,21 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import io from 'socket.io-client';
-import {API_BASE} from '../config';
+import { API_BASE } from '../config';
 
 const socket = io(API_BASE);
 
+/* eslint-disable no-console */
 socket.on('connect', () => {
   console.log('connected!');
 });
 socket.on('disconnect', () => {
   console.log('disconnected');
-})
+});
+/* eslint-enable no-console */
 
 export const useSocket = () => {
   return socket;
-}
+};
 
 export const useSocketEvent = (event, onEvent) => {
   useEffect(() => {
@@ -23,4 +25,4 @@ export const useSocketEvent = (event, onEvent) => {
       socket.off(event, onEvent);
     };
   }, [event, onEvent]);
-}
+};

@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import filter from 'lodash/filter';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../shared/button';
-import {useDispatch, useSelector} from 'react-redux';
-import {pressButton} from '../../game_slice';
+import { pressButton } from '../../game_slice';
 import Instructions from '../shared/instructions';
 
 const Wrapper = styled.div`
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 
 const PressTheButtonPage = () => {
   const dispatch = useDispatch();
-  const {user: {uuid}, data: {players, phase: {data}}} = useSelector(state => state.game);
+  const { user: { uuid }, data: { players, phase: { data }}} = useSelector((state) => state.game);
 
   const pressed = data[uuid];
 
@@ -33,7 +33,7 @@ const PressTheButtonPage = () => {
               Still waiting on:
               <ul>
                 {
-                  filter(players, ({uuid}) => !data[uuid]).map(({name}, i) => (
+                  filter(players, ({ uuid }) => !data[uuid]).map(({ name }, i) => (
                     <li key={i}>{name}</li>
                   ))
                 }
@@ -49,6 +49,6 @@ const PressTheButtonPage = () => {
       }
     </Wrapper>
   );
-}
+};
 
 export default PressTheButtonPage;

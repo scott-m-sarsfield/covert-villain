@@ -1,39 +1,37 @@
-import React, { useEffect } from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import get from 'lodash/get';
-import {useSocket, useSocketEvent} from './socket_listener';
-import {forgetGame, joinGame, refreshGame} from '../game_slice';
+import { useSocket, useSocketEvent } from './socket_listener';
+import { forgetGame, joinGame, refreshGame } from '../game_slice';
 import Auth from '../auth';
 
 const useGameSession = () => {
-  const code = useSelector(state => get(state, 'game.user.roomCode'));
+  const code = useSelector((state) => get(state, 'game.user.roomCode'));
   const dispatch = useDispatch();
   const socket = useSocket();
 
   useEffect(() => {
-    if(Auth.get()){
+    if (Auth.get()) {
       dispatch(
         joinGame()
       );
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if(code){
-      console.log('joining game', code);
+    if (code) {
       socket.emit('join-game', code);
     }
-  }, [code])
+  }, [code]);
 
   useSocketEvent('connect', () => {
-    if(code){
-      console.log('joining game', code);
+    if (code) {
       socket.emit('join-game', code);
     }
-  })
+  });
 
   useSocketEvent('refresh', () => {
-    if(code){
+    if (code) {
       dispatch(refreshGame(code));
     }
   });
@@ -41,7 +39,7 @@ const useGameSession = () => {
   useSocketEvent('room-reset', () => {
     Auth.clear();
     dispatch(forgetGame());
-  })
-}
+  });
+};
 
 export default useGameSession;
