@@ -126,7 +126,7 @@ const LobbyPage = () => {
       <Button onClick={onLeave}>Leave</Button>
       {
         isHost && (
-          <SubmitButton onClick={onStart}>Start</SubmitButton>
+          <SubmitButton onClick={onStart} disabled={players.length < 5}>Start</SubmitButton>
         )
       }
     </Layout>

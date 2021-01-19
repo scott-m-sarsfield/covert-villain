@@ -97,9 +97,7 @@ function GameScreens({ game, notificationCursor }) {
 
 GameScreens.propTypes = {
   game: types.shape({
-    phase: types.shape({
-      name: types.string
-    }).isRequired,
+    phase: types.string.isRequired,
     notifications: types.array.isRequired
   }).isRequired,
   notificationCursor: types.number
