@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'not-in-prod';
 
-function getJwt(content){
+function getJwt(content) {
   return jwt.sign(content, JWT_SECRET);
 }
 
@@ -23,7 +23,7 @@ const authenticateOptionalJwt = (req, res, next) => {
   } else {
     next();
   }
-}
+};
 
 const authenticateJwt = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -48,4 +48,4 @@ module.exports = {
   getJwt,
   authenticateJwt,
   authenticateOptionalJwt
-}
+};
