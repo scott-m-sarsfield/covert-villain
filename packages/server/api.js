@@ -70,7 +70,7 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
     if (!existingPlayer) {
       if (game.data.phase === phases.LOBBY) {
         uuid = uuidv1();
-        game.data = Actions.joinGame(game, { name, uuid });
+        game.data = Actions.joinGame(game.data, { name, uuid });
         await game.save();
         res.sendRoomEvent(code, 'refresh');
       } else {
@@ -111,6 +111,7 @@ async function withGame(req, res, fn) {
 
     if (gameData.error) {
       res.status(400).send(gameData);
+      return;
     }
 
     if (gameData !== game.data) {
@@ -137,6 +138,11 @@ router.post('/games/:code/start', authenticateJwt, authenticateRoom, async (req,
     if (game.players[0].uuid !== user.uuid) {
       return {
         error: 'you must be the host to start the game'
+      };
+    }
+    if (game.players.length < 5 || game.players.length > 10) {
+      return {
+        error: 'must have between 5 and 10 players'
       };
     }
 

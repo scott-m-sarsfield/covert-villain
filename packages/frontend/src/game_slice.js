@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import get from 'lodash/get';
+import forEach from 'lodash/forEach';
 import Api from './api';
 
 const gamesSlice = createSlice({
@@ -32,9 +33,9 @@ const gamesSlice = createSlice({
       state.data = null;
     },
     loadScenario(state, action) {
-      const { user, data } = action.payload;
-      state.user = user || state.user;
-      state.data = data || state.data;
+      forEach(action.payload, (value, key) => {
+        state[key] = value;
+      });
     },
     readNotification(state) {
       state.notificationCursor++;

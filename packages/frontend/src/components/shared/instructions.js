@@ -7,4 +7,11 @@ const Instructions = styled.h3`
   text-align: center;
 `;
 
+export const Details = styled.h4`
+  padding: 0;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+`;
+
 export default Instructions;
