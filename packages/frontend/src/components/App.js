@@ -8,6 +8,7 @@ import useGameSession from './use_game_session';
 import useConsoleUtility from './debug_window';
 import PressTheButtonPage from './pages/press_the_button_page';
 import NotificationPage from './pages/notification_page';
+import PresidentChoosesChancellorPage from './pages/president_chooses_chancellor_page';
 
 const Body = styled.div`
   background: beige;
@@ -87,6 +88,12 @@ function GameScreens({ game, notificationCursor }) {
   if (phase === 'press_the_button') {
     return (
       <PressTheButtonPage />
+    );
+  }
+
+  if (phase === 'president_chooses_chancellor') {
+    return (
+      <PresidentChoosesChancellorPage />
     );
   }
 
