@@ -204,6 +204,25 @@ router.post('/games/:code/discard-policy', authenticateJwt, authenticateRoom, as
   });
 });
 
+router.post('/games/:code/enact-policy', authenticateJwt, authenticateRoom, async (req, res) => {
+  await withGame(req, res, (game, user) => {
+    if (user.uuid !== game.chancellor) {
+      return {
+        error: 'must be the chancellor to enact policy'
+      };
+    }
+    const { card } = req.body;
+
+    if (!game.cards.hand.includes(card)) {
+      return {
+        error: 'cannot enact policy not in hand'
+      };
+    }
+
+    return Actions.enactPolicy(game, card);
+  });
+});
+
 router.post('/games/:code/press-button', authenticateJwt, authenticateRoom, async (req, res) => {
   await withGame(req, res, (game, user) => {
     const { uuid } = user;

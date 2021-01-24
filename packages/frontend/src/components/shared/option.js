@@ -96,7 +96,7 @@ const Option = ({ label, selected, value, onSelect, variant }) => {
 Option.propTypes = {
   label: types.string,
   selected: types.bool,
-  value: types.string,
+  value: types.any,
   onSelect: types.func.isRequired,
   variant: types.string
 };

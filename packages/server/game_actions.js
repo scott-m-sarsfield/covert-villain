@@ -253,7 +253,7 @@ const Actions = {
       phase: phases.CHANCELLOR_CHOOSES_POLICY,
       cards: {
         ...game.cards,
-        hand: filter(game.cards.filter, (handCard) => handCard !== card),
+        hand: filter(game.cards.hand, (handCard) => handCard !== card),
         discard: [...game.cards.discard, card]
       }
     };
