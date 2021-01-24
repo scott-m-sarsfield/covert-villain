@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
-import { Layout, Message, PartyAwareName, Prompt, WrappedScoreHud } from './president_chooses_chancellor_page';
 import { vote } from '../../game_slice';
+import { Layout, Message, PartyAwareName, Prompt, WrappedScoreHud } from '../shared/atoms';
 
 const ElectionPage = () => {
   const { user, data: game } = useSelector((state) => state.game);

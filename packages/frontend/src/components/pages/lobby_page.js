@@ -8,7 +8,7 @@ import SubmitButton from '../shared/submit_button';
 import { leaveGame, startGame } from '../../game_slice';
 import Button from '../shared/button';
 import { colors } from './score_hud';
-import { PartyAwareName } from './president_chooses_chancellor_page';
+import { PartyAwareName } from '../shared/atoms';
 
 const GameCode = styled.h3`
   font-size: 21px;

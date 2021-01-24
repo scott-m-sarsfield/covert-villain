@@ -4,7 +4,7 @@ const includes = require('lodash/includes');
 const pick = require('lodash/pick');
 const compact = require('lodash/compact');
 const map = require('lodash/map');
-const { roles, parties } = require('./constants');
+const { roles, parties, phases } = require('./constants');
 
 function canSeeRole(currentPlayer, player, playerCount) {
   if (currentPlayer.uuid === player.uuid) {
@@ -25,6 +25,20 @@ function canSeeParty(currentPlayer, player, playerCount) {
   return canSeeRole(currentPlayer, player, playerCount) || includes(player.investigatedBy, currentPlayer.uuid);
 }
 
+function canSeeHand(currentPlayer, game) {
+  const { phase, president, chancellor } = game;
+
+  if (phase === phases.PRESIDENT_CHOOSES_POLICIES && currentPlayer.uuid === president) {
+    return true;
+  }
+
+  if (phase === phases.CHANCELLOR_CHOOSES_POLICY && currentPlayer.uuid === chancellor) {
+    return true;
+  }
+
+  return false;
+}
+
 /* eslint-disable-next-line no-unused-vars */
 function serializeGame(game, { uuid }) {
   const { code, data } = game;
@@ -39,7 +53,7 @@ function serializeGame(game, { uuid }) {
         compact([
           'fascist',
           'liberal',
-          'hand'
+          canSeeHand(currentPlayer, data) && 'hand'
         ])
       ),
       players: map(data.players, (player) => pick(

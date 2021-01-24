@@ -185,6 +185,25 @@ router.post('/games/:code/vote', authenticateJwt, authenticateRoom, async (req, 
   });
 });
 
+router.post('/games/:code/discard-policy', authenticateJwt, authenticateRoom, async (req, res) => {
+  await withGame(req, res, (game, user) => {
+    if (user.uuid !== game.president) {
+      return {
+        error: 'must be the president to discard policy'
+      };
+    }
+    const { card } = req.body;
+
+    if (!game.cards.hand.includes(card)) {
+      return {
+        error: 'cannot discard card not in hand'
+      };
+    }
+
+    return Actions.discardPolicy(game, card);
+  });
+});
+
 router.post('/games/:code/press-button', authenticateJwt, authenticateRoom, async (req, res) => {
   await withGame(req, res, (game, user) => {
     const { uuid } = user;
