@@ -63,6 +63,10 @@ const Api = {
     return post(`/${code}/choose-chancellor`, { uuid });
   },
 
+  vote(code, approved) {
+    return post(`/${code}/vote`, { approved });
+  },
+
   pressButton(code) {
     return post(`/${code}/press-button`);
   }

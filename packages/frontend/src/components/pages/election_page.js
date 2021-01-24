@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { Layout, Message, PartyAwareName, Prompt, WrappedScoreHud } from './president_chooses_chancellor_page';
+import { vote } from '../../game_slice';
 
 const ElectionPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
-  // const dispatch = useDispatch();
-  const [vote, setVote] = useState(null);
+  const dispatch = useDispatch();
+  const [approved, setApproved] = useState(null);
 
   const voted = get(game, ['votes', user.uuid, 'voted']);
 
   const onSubmit = () => {
-    // dispatch(chooseChancellor(chancellorUuid));
+    dispatch(vote(approved));
   };
 
   return (
@@ -32,18 +33,18 @@ const ElectionPage = () => {
             <Option {...{
               label: 'Yes',
               value: true,
-              selected: vote === true,
-              onSelect: setVote
+              selected: approved === true,
+              onSelect: setApproved
             }} />
             <Option {...{
               label: 'No',
               value: false,
-              selected: vote === false,
-              onSelect: setVote
+              selected: approved === false,
+              onSelect: setApproved
             }} />
             <SubmitButton
               onClick={onSubmit}
-              disabled={vote === null}
+              disabled={approved === null}
             >
               Vote
             </SubmitButton>
