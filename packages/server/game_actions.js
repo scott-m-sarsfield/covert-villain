@@ -172,9 +172,10 @@ const Actions = {
           notifications: [
             ...game.notifications,
             {
-              type: notifications.SUCCESSFUL_ELECTION,
+              type: notifications.ELECTION_RESULTS,
               data: {
-                votes: game.votes
+                votes: game.votes,
+                success: true
               }
             }
           ]
@@ -192,9 +193,11 @@ const Actions = {
           notifications: [
             ...game.notifications,
             {
-              type: notifications.COUNTRY_IN_CHAOS,
+              type: notifications.ELECTION_RESULTS,
               data: {
-                votes: game.votes
+                votes: game.votes,
+                failed: true,
+                chaos: true
               }
             }
           ]
@@ -208,9 +211,10 @@ const Actions = {
         notifications: [
           ...game.notifications,
           {
-            type: notifications.FAILED_ELECTION,
+            type: notifications.ELECTION_RESULTS,
             data: {
-              votes: game.votes
+              votes: game.votes,
+              failed: true
             }
           }
         ]
