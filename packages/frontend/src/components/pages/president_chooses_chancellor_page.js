@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import types from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import get from 'lodash/get';
 import find from 'lodash/find';
@@ -9,6 +9,7 @@ import SubmitButton from '../shared/submit_button';
 import Instructions, { Details } from '../shared/instructions';
 import Option from '../shared/option';
 import ScoreHud, { colors } from './score_hud';
+import { chooseChancellor } from '../../game_slice';
 
 const WrappedScoreHud = styled(ScoreHud)``;
 
@@ -70,11 +71,16 @@ const Prompt = styled(Instructions)`
 
 const PresidentChoosesChancellorPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
+  const dispatch = useDispatch();
   const [chancellorUuid, setChancellorUuid] = useState(null);
 
   const isPresident = user.uuid === game.president;
 
   const chancellorOptions = filter(game.players, ({ uuid }) => uuid !== user.uuid);
+
+  const onSubmit = () => {
+    dispatch(chooseChancellor(chancellorUuid));
+  };
 
   return (
     <Layout withSubmit={isPresident}>
@@ -96,7 +102,12 @@ const PresidentChoosesChancellorPage = () => {
                 }}/>
               ))
             }
-            <SubmitButton disabled={!chancellorUuid}>Submit</SubmitButton>
+            <SubmitButton
+              onClick={onSubmit}
+              disabled={!chancellorUuid}
+            >
+              Submit
+            </SubmitButton>
           </React.Fragment>
         )
       }

@@ -123,6 +123,24 @@ const Actions = {
     };
   },
 
+  chooseChancellor(game, uuid) {
+    const votes = {};
+
+    game.players.forEach(({ uuid }) => {
+      votes[uuid] = {
+        voted: false,
+        approved: false
+      };
+    });
+
+    return {
+      ...game,
+      phase: phases.ELECTION,
+      chancellor: uuid,
+      votes
+    };
+  },
+
   setupPressTheButton(game) {
     const buttonPressed = {};
     game.players.forEach(({ uuid }) => {

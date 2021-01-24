@@ -78,15 +78,16 @@ const leaveGame = () => (dispatch, getState) => {
 };
 
 function callApiWithCode(api) {
-  return () => (dispatch, getState) => {
+  return (...args) => (dispatch, getState) => {
     const state = getState();
     const code = get(state, 'game.user.roomCode');
-    api(code);
+    api(code, ...args);
   };
 }
 
 const startGame = callApiWithCode((code) => Api.startGame(code));
 const pressButton = callApiWithCode((code) => Api.pressButton(code));
+const chooseChancellor = callApiWithCode((code, uuid) => Api.chooseChancellor(code, uuid));
 
 export {
   joinGame,
@@ -97,7 +98,8 @@ export {
   startGame,
   pressButton,
   forgetGame,
-  readNotification
+  readNotification,
+  chooseChancellor
 };
 
 export default gamesSlice.reducer;

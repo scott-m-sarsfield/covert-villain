@@ -59,6 +59,10 @@ const Api = {
     return post(`/${code}/start`);
   },
 
+  chooseChancellor(code, uuid) {
+    return post(`/${code}/choose-chancellor`, { uuid });
+  },
+
   pressButton(code) {
     return post(`/${code}/press-button`);
   }
