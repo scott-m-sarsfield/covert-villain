@@ -5,9 +5,13 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ['**/stories/**/*.js'],
+      files: [
+        '**/stories/**/*.js',
+        '**/*.stories.js'
+      ],
       rules: {
-        'react/prop-types': 'off'
+        'react/prop-types': 'off',
+        'import/no-anonymous-default-export': 'off'
       }
     }
   ]

@@ -1,6 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import styled from 'styled-components';
+import { colors } from '../pages/score_hud';
 
 const OptionCheckbox = styled.div`
   position: relative;
@@ -28,14 +29,37 @@ Check.propTypes = {
   className: types.string
 };
 
-const OptionWrapper = styled.button`
+const optionColors = {
+  fascist: {
+    colors: {
+      border: colors.fascistBorder,
+      background: colors.fascist
+    }
+  },
+  liberal: {
+    colors: {
+      border: colors.liberalBorder,
+      background: colors.liberal
+    }
+  },
+  default: {
+    colors: {
+      border: colors.grey,
+      background: colors.lightGrey
+    }
+  }
+};
+
+const OptionWrapper = styled.button.attrs((props) => {
+  return optionColors[props.variant] || optionColors.default;
+})`
   appearance: none;
   outline: none;
   width: 100%;
-  border: solid 1px #979797;
+  border: solid 1px ${(props) => props.colors.border};
   border-radius: 4px;
   
-  background: #d8d8d8;
+  background: ${(props) => props.colors.background};
   display: flex;
   padding: 14px;
   font-size: 21px;
@@ -48,6 +72,7 @@ const OptionWrapper = styled.button`
   
   ${OptionCheckbox} {
     margin-right: 20px;
+    border-color: ${(props) => props.colors.border}
   }
 `;
 
@@ -57,9 +82,9 @@ const StyledCheck = styled(Check)`
   left: 0;
 `;
 
-const Option = ({ label, selected, value, onSelect }) => {
+const Option = ({ label, selected, value, onSelect, variant }) => {
   return (
-    <OptionWrapper onClick={() => onSelect(value)}>
+    <OptionWrapper {...{ variant, onClick: () => onSelect(value) }}>
       <OptionCheckbox>
         {selected && (<StyledCheck />)}
       </OptionCheckbox>
@@ -72,7 +97,8 @@ Option.propTypes = {
   label: types.string,
   selected: types.bool,
   value: types.string,
-  onSelect: types.func.isRequired
+  onSelect: types.func.isRequired,
+  variant: types.string
 };
 
 export default Option;

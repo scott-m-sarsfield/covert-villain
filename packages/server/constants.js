@@ -16,6 +16,10 @@ module.exports = {
     COUNTRY_IN_CHAOS: 'country_in_chaos',
     EXECUTION: 'execution'
   },
+  parties: {
+    LIBERAL: 'liberal',
+    FASCIST: 'fascist'
+  },
   roles: {
     LIBERAL: 'liberal',
     FASCIST: 'fascist',
