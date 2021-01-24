@@ -5,6 +5,7 @@ const { Game: SequelizeGame } = require('./models');
 const { getJwt, authenticateJwt, authenticateOptionalJwt } = require('./jwt');
 const Actions = require('./game_actions');
 const { phases } = require('./constants');
+const serializeGame = require('./serialize_game');
 
 async function getGame(code) {
   const [game] = await SequelizeGame.findOrCreate({
@@ -18,15 +19,6 @@ async function getGame(code) {
   });
 
   return game;
-}
-
-/* eslint-disable-next-line no-unused-vars */
-function serializeGame(game, player) {
-  const { code, data } = game;
-  return {
-    code,
-    ...data
-  };
 }
 
 function authenticateRoom(req, res, next) {
