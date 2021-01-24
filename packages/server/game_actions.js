@@ -3,6 +3,7 @@ const findIndex = require('lodash/findIndex');
 const every = require('lodash/every');
 const shuffle = require('lodash/shuffle');
 const range = require('lodash/range');
+const reduce = require('lodash/reduce');
 const { v1: uuidv1 } = require('uuid');
 const { phases, notifications, roles } = require('./constants');
 const { splice } = require('./util');
@@ -141,39 +142,55 @@ const Actions = {
     };
   },
 
-  setupPressTheButton(game) {
-    const buttonPressed = {};
-    game.players.forEach(({ uuid }) => {
-      buttonPressed[uuid] = false;
-    });
-
-    return {
-      ...game,
-      phase: phases.PRESS_THE_BUTTON,
-      pressTheButton: buttonPressed
-    };
-  },
-
-  pressTheButton(game, uuid) {
+  vote(game, { uuid, approved }) {
     game = {
       ...game,
-      pressTheButton: {
-        ...game.pressTheButton,
-        [uuid]: true
+      votes: {
+        ...game.votes,
+        [uuid]: {
+          voted: true,
+          approved: !!approved
+        }
       }
     };
 
-    if (every(game.pressTheButton)) {
-      game = this.setupLobby(game);
-      game = this.addNotification(game, 'Thanks.  That was a test.');
+    if (every(game.votes, ({ voted }) => voted)) {
+      const netApproval = reduce(game.votes, (netApproval, { approved }) => {
+        if (approved) {
+          return netApproval + 1;
+        }
+        return netApproval - 1;
+      }, 0);
+
+      if (netApproval > 0) {
+        game = this.addNotification(game, {
+          type: 'ELECTION_SUCCESSFUL',
+          data: { votes: game.votes }
+        });
+
+        return {
+          ...game,
+          phase: phases.PRESIDENT_CHOOSES_POLICIES,
+          cards: {
+            ...game.cards,
+            hand: game.cards.deck.slice(0, 3),
+            deck: game.cards.deck.slice(3)
+          }
+        };
+      }
+      return {
+        ...game,
+        phase: 'TBD'
+      };
     }
+
     return game;
   },
 
-  addNotification(game, text) {
+  addNotification(game, notification) {
     return {
       ...game,
-      notifications: concat(game.notifications, [text])
+      notifications: concat(game.notifications, [notification])
     };
   }
 };

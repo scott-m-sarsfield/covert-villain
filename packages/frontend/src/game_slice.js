@@ -88,6 +88,7 @@ function callApiWithCode(api) {
 const startGame = callApiWithCode((code) => Api.startGame(code));
 const pressButton = callApiWithCode((code) => Api.pressButton(code));
 const chooseChancellor = callApiWithCode((code, uuid) => Api.chooseChancellor(code, uuid));
+const vote = callApiWithCode((code, approved) => Api.vote(code, approved));
 
 export {
   joinGame,
@@ -99,7 +100,8 @@ export {
   pressButton,
   forgetGame,
   readNotification,
-  chooseChancellor
+  chooseChancellor,
+  vote
 };
 
 export default gamesSlice.reducer;

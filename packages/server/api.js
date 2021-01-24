@@ -1,5 +1,6 @@
 const express = require('express');
 const find = require('lodash/find');
+const get = require('lodash/get');
 const { v1: uuidv1 } = require('uuid');
 const { Game: SequelizeGame } = require('./models');
 const { getJwt, authenticateJwt, authenticateOptionalJwt } = require('./jwt');
@@ -94,6 +95,12 @@ router.get('/games/:code', authenticateJwt, async (req, res) => {
   res.send(serializeGame(game, req.user));
 });
 
+router.get('/games/:code/debug', async (req, res) => {
+  const { code, data } = await getGame(req.params.code);
+
+  res.send({ code, ...data });
+});
+
 async function withGame(req, res, fn) {
   try {
     const { roomCode, user } = req;
@@ -160,6 +167,21 @@ router.post('/games/:code/choose-chancellor', authenticateJwt, authenticateRoom,
     }
 
     return Actions.chooseChancellor(game, chancellorUuid);
+  });
+});
+
+router.post('/games/:code/vote', authenticateJwt, authenticateRoom, async (req, res) => {
+  await withGame(req, res, (game, user) => {
+    const voted = get(game, ['votes', user.uuid, 'voted']);
+    if (voted) {
+      return {
+        error: 'already voted'
+      };
+    }
+
+    const approved = req.body.approved;
+
+    return Actions.vote(game, { uuid: user.uuid, approved });
   });
 });
 
