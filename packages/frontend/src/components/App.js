@@ -12,6 +12,7 @@ import PresidentChoosesChancellorPage from './pages/president_chooses_chancellor
 import ElectionPage from './pages/election_page';
 import PresidentChoosesPoliciesPage from './pages/president_chooses_policies_page';
 import ChancellorChoosesPolicyPage from './pages/chancellor_chooses_policy_page';
+import GameOverPage from './pages/game_over_page';
 
 const Body = styled.div`
   background: beige;
@@ -115,6 +116,12 @@ function GameScreens({ game, notificationCursor }) {
   if (phase === 'chancellor_chooses_policy') {
     return (
       <ChancellorChoosesPolicyPage />
+    );
+  }
+
+  if (phase === 'game_over') {
+    return (
+      <GameOverPage />
     );
   }
 

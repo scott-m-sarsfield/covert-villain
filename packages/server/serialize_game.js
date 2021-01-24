@@ -6,7 +6,10 @@ const compact = require('lodash/compact');
 const map = require('lodash/map');
 const { roles, parties, phases } = require('./constants');
 
-function canSeeRole(currentPlayer, player, playerCount) {
+function canSeeRole(currentPlayer, player, playerCount, phase) {
+  if (phase === phases.GAME_OVER) {
+    return true;
+  }
   if (currentPlayer.uuid === player.uuid) {
     return true;
   }
@@ -21,8 +24,8 @@ function canSeeRole(currentPlayer, player, playerCount) {
   return false;
 }
 
-function canSeeParty(currentPlayer, player, playerCount) {
-  return canSeeRole(currentPlayer, player, playerCount) || includes(player.investigatedBy, currentPlayer.uuid);
+function canSeeParty(currentPlayer, player, playerCount, phase) {
+  return canSeeRole(currentPlayer, player, playerCount, phase) || includes(player.investigatedBy, currentPlayer.uuid);
 }
 
 function canSeeHand(currentPlayer, game) {
@@ -61,8 +64,8 @@ function serializeGame(game, { uuid }) {
         compact([
           'name',
           'uuid',
-          canSeeParty(currentPlayer, player, data.players.length) && 'party',
-          canSeeRole(currentPlayer, player, data.players.length) && 'role'
+          canSeeParty(currentPlayer, player, data.players.length, data.phase) && 'party',
+          canSeeRole(currentPlayer, player, data.players.length, data.phase) && 'role'
         ])
       ))
     }

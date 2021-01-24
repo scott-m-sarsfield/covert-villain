@@ -2,7 +2,7 @@ import React from 'react';
 import types from 'prop-types';
 import { useSelector } from 'react-redux';
 import Instructions, { Details } from '../shared/instructions';
-import { PlayerTable } from './lobby_page';
+import { PlayerTable } from '../shared/player_table';
 
 const ElectionResultsNotificationContent = ({ data }) => { // data prop
   const { data: game } = useSelector((state) => state.game);
