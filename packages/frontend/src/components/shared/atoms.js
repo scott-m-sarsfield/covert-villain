@@ -6,6 +6,7 @@ import types from 'prop-types';
 import React from 'react';
 import ScoreHud, { colors } from '../pages/score_hud';
 import Instructions, { Details } from './instructions';
+import Button from './button';
 
 export const PartyText = styled.span.attrs((props) => {
   switch (props.party) {
@@ -51,6 +52,10 @@ export const Layout = styled.div`
   ${({ withSubmit }) => withSubmit && css`
     padding-bottom: 80px;
   `}
+  
+  ${Button} {
+    margin-top: 30px;
+  }
   
   ${WrappedScoreHud} {
     margin: -20px -10px;

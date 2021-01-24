@@ -306,6 +306,13 @@ const Actions = {
           liberal: [...game.cards.liberal, card]
         }
       };
+
+      if (game.cards.liberal.length >= 5) {
+        return {
+          ...game,
+          phase: phases.GAME_OVER
+        };
+      }
     }
 
     return this.rotateToNextPresident(game);
