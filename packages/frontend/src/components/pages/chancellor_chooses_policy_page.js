@@ -50,7 +50,7 @@ const ChancellorChoosesPolicyPage = () => {
       {
         !isChancellor && (
           <Message>
-            Chancellor <PartyAwareName uuid={game.president} /> is choosing two policies.
+            Chancellor <PartyAwareName uuid={game.president} /> is choosing a policy.
           </Message>
         )
       }

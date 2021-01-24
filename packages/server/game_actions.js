@@ -237,6 +237,16 @@ const Actions = {
   },
 
   drawPolicies(game, n) {
+    if (game.cards.deck.length < n) {
+      game = {
+        ...game,
+        cards: {
+          ...game.cards,
+          deck: shuffle([...game.cards.deck, ...game.cards.discard]),
+          discard: []
+        }
+      };
+    }
     return {
       ...game,
       cards: {
@@ -268,7 +278,16 @@ const Actions = {
         ...game.cards,
         hand: [],
         discard: [...game.cards.discard, ...discardedCards]
-      }
+      },
+      notifications: [
+        ...game.notifications,
+        {
+          type: notifications.POLICY_ENACTED,
+          data: {
+            card
+          }
+        }
+      ]
     };
 
     if (card < 11) {

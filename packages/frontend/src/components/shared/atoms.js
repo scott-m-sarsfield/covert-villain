@@ -7,7 +7,7 @@ import React from 'react';
 import ScoreHud, { colors } from '../pages/score_hud';
 import Instructions, { Details } from './instructions';
 
-const Name = styled.span.attrs((props) => {
+export const PartyText = styled.span.attrs((props) => {
   switch (props.party) {
     case 'fascist':
       return {
@@ -32,7 +32,7 @@ export const PartyAwareName = ({ uuid }) => {
     { uuid }
   ));
   return (
-    <Name party={party}>{name}</Name>
+    <PartyText party={party}>{name}</PartyText>
   );
 };
 
