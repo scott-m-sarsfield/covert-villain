@@ -4,6 +4,7 @@ const every = require('lodash/every');
 const shuffle = require('lodash/shuffle');
 const range = require('lodash/range');
 const reduce = require('lodash/reduce');
+const filter = require('lodash/filter');
 const { v1: uuidv1 } = require('uuid');
 const { phases, notifications, roles } = require('./constants');
 const { splice } = require('./util');
@@ -20,6 +21,7 @@ const initialGame = () => ({
     fascist: [],
     liberal: []
   },
+  presidentIndex: 0,
   president: null,
   chancellor: null,
   votes: {},
@@ -163,35 +165,115 @@ const Actions = {
       }, 0);
 
       if (netApproval > 0) {
-        game = this.addNotification(game, {
-          type: 'ELECTION_SUCCESSFUL',
-          data: { votes: game.votes }
-        });
-
+        game = this.drawPolicies(game, 3);
         return {
           ...game,
           phase: phases.PRESIDENT_CHOOSES_POLICIES,
-          cards: {
-            ...game.cards,
-            hand: game.cards.deck.slice(0, 3),
-            deck: game.cards.deck.slice(3)
-          }
+          notifications: [
+            ...game.notifications,
+            {
+              type: notifications.SUCCESSFUL_ELECTION,
+              data: {
+                votes: game.votes
+              }
+            }
+          ]
         };
       }
-      return {
+
+      game = {
         ...game,
-        phase: 'TBD'
+        chaos: game.chaos + 1
       };
+
+      if (game.chaos >= 3) {
+        game = {
+          ...game,
+          notifications: [
+            ...game.notifications,
+            {
+              type: notifications.COUNTRY_IN_CHAOS,
+              data: {
+                votes: game.votes
+              }
+            }
+          ]
+        };
+        game = this.drawPolicies(game, 1);
+        return this.enactPolicy(game, game.cards.hand[0]);
+      }
+
+      game = {
+        ...game,
+        notifications: [
+          ...game.notifications,
+          {
+            type: notifications.FAILED_ELECTION,
+            data: {
+              votes: game.votes
+            }
+          }
+        ]
+      };
+
+      return this.rotateToNextPresident(game);
     }
 
     return game;
   },
 
-  addNotification(game, notification) {
+  rotateToNextPresident(game) {
+    const presidentIndex = (game.presidentIndex + 1) % game.players.length;
     return {
       ...game,
-      notifications: concat(game.notifications, [notification])
+      phase: phases.PRESIDENT_CHOOSES_CHANCELLOR,
+      presidentIndex,
+      president: game.players[presidentIndex].uuid
     };
+  },
+
+  drawPolicies(game, n) {
+    return {
+      ...game,
+      cards: {
+        ...game.cards,
+        hand: game.cards.deck.slice(0, n),
+        deck: game.cards.deck.slice(n)
+      }
+    };
+  },
+
+  enactPolicy(game, card) {
+    const discardedCards = filter(game.cards.hand, (handCard) => handCard !== card);
+    game = {
+      ...game,
+      chaos: 0,
+      cards: {
+        ...game.cards,
+        hand: [],
+        discard: [...game.cards.discard, ...discardedCards]
+      }
+    };
+
+    if (card < 11) {
+      game = {
+        ...game,
+        cards: {
+          ...game.cards,
+          fascist: [...game.cards.fascist, card]
+        }
+      };
+    } else {
+      game = {
+        ...game,
+        cards: {
+          ...game.cards,
+          liberal: [...game.cards.liberal, card]
+        }
+      };
+    }
+
+    return this.rotateToNextPresident(game);
   }
 };
 

@@ -13,6 +13,8 @@ module.exports = {
   notifications: {
     PARTY_ASSIGNMENT: 'party_assignment',
     POLICY_ENACTED: 'policy_enacted',
+    SUCCESSFUL_ELECTION: 'successful_election',
+    FAILED_ELECTION: 'failed_election',
     COUNTRY_IN_CHAOS: 'country_in_chaos',
     EXECUTION: 'execution'
   },

@@ -200,7 +200,9 @@ router.post('/games/:code/reset', async (req, res) => {
   game.data = Actions.setupGame();
   await game.save();
 
-  res.send(serializeGame(game, req.user));
+  const { data } = game;
+
+  res.send({ code, ...data });
 
   res.sendRoomEvent(code, 'room-reset');
 });
