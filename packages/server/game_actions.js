@@ -247,6 +247,18 @@ const Actions = {
     };
   },
 
+  discardPolicy(game, card) {
+    return {
+      ...game,
+      phase: phases.CHANCELLOR_CHOOSES_POLICY,
+      cards: {
+        ...game.cards,
+        hand: filter(game.cards.filter, (handCard) => handCard !== card),
+        discard: [...game.cards.discard, card]
+      }
+    };
+  },
+
   enactPolicy(game, card) {
     const discardedCards = filter(game.cards.hand, (handCard) => handCard !== card);
     game = {

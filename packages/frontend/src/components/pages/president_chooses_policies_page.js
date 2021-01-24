@@ -3,20 +3,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import filter from 'lodash/filter';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
-import { chooseChancellor } from '../../game_slice';
+import { discardPolicy } from '../../game_slice';
 import { Layout, Message, PartyAwareName, Prompt, WrappedScoreHud } from '../shared/atoms';
 
-const PresidentChoosesChancellorPage = () => {
+const PresidentChoosesPoliciesPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
   const dispatch = useDispatch();
-  const [chancellorUuid, setChancellorUuid] = useState(null);
+  const [selected, setSelected] = useState({});
+
+  const cards = game.cards.hand || [];
 
   const isPresident = user.uuid === game.president;
 
-  const chancellorOptions = filter(game.players, ({ uuid }) => uuid !== user.uuid);
+  const cardsToDiscard = filter(cards, (card) => !selected[card]);
 
   const onSubmit = () => {
-    dispatch(chooseChancellor(chancellorUuid));
+    dispatch(discardPolicy(cardsToDiscard[0]));
   };
 
   return (
@@ -26,22 +28,22 @@ const PresidentChoosesChancellorPage = () => {
         isPresident && (
           <React.Fragment>
             <Prompt>
-              Choose a Chancellor:
+              Choose 2 Policies
             </Prompt>
             {
-              chancellorOptions.map(({ name, uuid, party }) => (
-                <Option key={uuid} {...{
-                  label: name,
-                  value: uuid,
-                  selected: chancellorUuid === uuid,
-                  onSelect: setChancellorUuid,
-                  variant: party
+              cards.map((card) => (
+                <Option key={card} {...{
+                  label: card < 11 ? 'Fascist' : 'Liberal',
+                  value: card,
+                  selected: selected[card],
+                  onSelect: (card) => setSelected({ ...selected, [card]: !selected[card] }),
+                  variant: card < 11 ? 'fascist' : 'liberal'
                 }}/>
               ))
             }
             <SubmitButton
               onClick={onSubmit}
-              disabled={!chancellorUuid}
+              disabled={cardsToDiscard.length !== 1}
             >
               Submit
             </SubmitButton>
@@ -51,7 +53,7 @@ const PresidentChoosesChancellorPage = () => {
       {
         !isPresident && (
           <Message>
-            Presidential Candidate <PartyAwareName uuid={game.president} /> is choosing a Chancellor...
+            President <PartyAwareName uuid={game.president} /> is choosing two policies.
           </Message>
         )
       }
@@ -59,4 +61,4 @@ const PresidentChoosesChancellorPage = () => {
   );
 };
 
-export default PresidentChoosesChancellorPage;
+export default PresidentChoosesPoliciesPage;

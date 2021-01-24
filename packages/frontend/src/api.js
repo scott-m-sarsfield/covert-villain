@@ -67,6 +67,10 @@ const Api = {
     return post(`/${code}/vote`, { approved });
   },
 
+  discardPolicy(code, card) {
+    return post(`/${code}/discard-policy`, { card });
+  },
+
   pressButton(code) {
     return post(`/${code}/press-button`);
   }
