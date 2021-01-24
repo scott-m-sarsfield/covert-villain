@@ -31,6 +31,14 @@ function serializeGame(game, { uuid }) {
     code,
     ...{
       ...data,
+      cards: pick(
+        data.cards,
+        compact([
+          'fascist',
+          'liberal',
+          'hand'
+        ])
+      ),
       players: map(data.players, (player) => pick(
         player,
         compact([

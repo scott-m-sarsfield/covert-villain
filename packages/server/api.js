@@ -142,6 +142,27 @@ router.post('/games/:code/start', authenticateJwt, authenticateRoom, async (req,
   });
 });
 
+router.post('/games/:code/choose-chancellor', authenticateJwt, authenticateRoom, async (req, res) => {
+  await withGame(req, res, (game, user) => {
+    if (user.uuid !== game.president) {
+      return {
+        error: 'must be the president to choose chancellor'
+      };
+    }
+    const chancellorUuid = req.body.uuid;
+
+    const chancellor = find(game.players, { uuid: chancellorUuid });
+
+    if (!chancellor) {
+      return {
+        error: 'must choose an active player to be chancellor'
+      };
+    }
+
+    return Actions.chooseChancellor(game, chancellorUuid);
+  });
+});
+
 router.post('/games/:code/press-button', authenticateJwt, authenticateRoom, async (req, res) => {
   await withGame(req, res, (game, user) => {
     const { uuid } = user;
