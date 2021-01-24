@@ -7,6 +7,9 @@ const map = require('lodash/map');
 const { roles, parties } = require('./constants');
 
 function canSeeRole(currentPlayer, player, playerCount) {
+  if (currentPlayer.uuid === player.uuid) {
+    return true;
+  }
   if (currentPlayer.party === parties.FASCIST) {
     if (currentPlayer.role !== roles.MUSSOLINI) {
       return true;

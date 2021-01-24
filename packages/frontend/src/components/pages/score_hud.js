@@ -119,14 +119,14 @@ const Left = styled.div`
 
 function getCounts(game) {
   return {
-    fascistCount: get(game, 'cards.fascist.length', 0),
-    liberalCount: get(game, 'cards.liberal.length', 0),
+    fascistCount: get(game, 'cards.fascist', []).length,
+    liberalCount: get(game, 'cards.liberal', []).length,
     chaosLevel: get(game, 'chaos', 0)
   };
 }
 
 const ScoreHud = ({ className }) => {
-  const { fascistCount, liberalCount, chaosLevel } = useSelector((state) => getCounts(state.game));
+  const { fascistCount, liberalCount, chaosLevel } = useSelector((state) => getCounts(state.game.data));
   return (
     <Wrapper className={className}>
       <Left>
