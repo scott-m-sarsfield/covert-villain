@@ -9,6 +9,7 @@ import useConsoleUtility from './debug_window';
 import PressTheButtonPage from './pages/press_the_button_page';
 import NotificationPage from './pages/notification_page';
 import PresidentChoosesChancellorPage from './pages/president_chooses_chancellor_page';
+import ElectionPage from './pages/election_page';
 
 const Body = styled.div`
   background: beige;
@@ -94,6 +95,12 @@ function GameScreens({ game, notificationCursor }) {
   if (phase === 'president_chooses_chancellor') {
     return (
       <PresidentChoosesChancellorPage />
+    );
+  }
+
+  if (phase === 'election') {
+    return (
+      <ElectionPage />
     );
   }
 

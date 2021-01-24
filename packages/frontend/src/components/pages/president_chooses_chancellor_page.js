@@ -11,9 +11,9 @@ import Option from '../shared/option';
 import ScoreHud, { colors } from './score_hud';
 import { chooseChancellor } from '../../game_slice';
 
-const WrappedScoreHud = styled(ScoreHud)``;
+export const WrappedScoreHud = styled(ScoreHud)``;
 
-const Layout = styled.div`
+export const Layout = styled.div`
   min-height: calc(100vh - 50px);
   position: relative;
   padding: 30px 15px;
@@ -28,7 +28,7 @@ const Layout = styled.div`
   }
 `;
 
-const Message = styled(Details)`
+export const Message = styled(Details)`
   margin-top: 60px;
 `;
 
@@ -51,7 +51,7 @@ const Name = styled.span.attrs((props) => {
   color: ${(props) => props.color};
 `;
 
-const PartyAwareName = ({ uuid }) => {
+export const PartyAwareName = ({ uuid }) => {
   const { name, party } = useSelector((state) => find(
     get(state, 'game.data.players'),
     { uuid }
@@ -65,7 +65,7 @@ PartyAwareName.propTypes = {
   uuid: types.string.isRequired
 };
 
-const Prompt = styled(Instructions)`
+export const Prompt = styled(Instructions)`
   margin: 45px 0 30px;
 `;
 
