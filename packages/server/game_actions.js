@@ -5,6 +5,7 @@ const shuffle = require('lodash/shuffle');
 const range = require('lodash/range');
 const reduce = require('lodash/reduce');
 const filter = require('lodash/filter');
+const find = require('lodash/find');
 const { v1: uuidv1 } = require('uuid');
 const { phases, notifications, roles } = require('./constants');
 const { splice } = require('./util');
@@ -170,7 +171,7 @@ const Actions = {
 
       if (netApproval > 0) {
         game = this.drawPolicies(game, 3);
-        return {
+        game = {
           ...game,
           president: game.presidentNominee,
           chancellor: game.chancellorNominee,
@@ -186,6 +187,15 @@ const Actions = {
             }
           ]
         };
+
+        if (game.cards.fascist.length >= 3 && game.chancellor === find(game.players, { role: roles.MUSSOLINI }).uuid) {
+          return {
+            ...game,
+            phase: phases.GAME_OVER
+          };
+        }
+
+        return game;
       }
 
       game = {
