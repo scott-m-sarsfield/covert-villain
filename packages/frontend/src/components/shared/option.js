@@ -1,6 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { colors } from '../pages/score_hud';
 
 const OptionCheckbox = styled.div`
@@ -65,6 +65,7 @@ const OptionWrapper = styled.button.attrs((props) => {
   font-size: 21px;
   line-height: 30px;
   letter-spacing: 2px;
+  color: inherit;
   
   &:not(:last-child){
     margin-bottom: 30px;
@@ -74,6 +75,10 @@ const OptionWrapper = styled.button.attrs((props) => {
     margin-right: 20px;
     border-color: ${(props) => props.colors.border}
   }
+  
+  ${(props) => props.disabled && css`
+    opacity: 0.7;
+   `}
 `;
 
 const StyledCheck = styled(Check)`
@@ -82,9 +87,9 @@ const StyledCheck = styled(Check)`
   left: 0;
 `;
 
-const Option = ({ label, selected, value, onSelect, variant }) => {
+const Option = ({ label, selected, value, onSelect, variant, disabled }) => {
   return (
-    <OptionWrapper {...{ variant, onClick: () => onSelect(value) }}>
+    <OptionWrapper {...{ variant, onClick: () => onSelect(value), disabled }}>
       <OptionCheckbox>
         {selected && (<StyledCheck />)}
       </OptionCheckbox>
@@ -98,7 +103,8 @@ Option.propTypes = {
   selected: types.bool,
   value: types.any,
   onSelect: types.func.isRequired,
-  variant: types.string
+  variant: types.string,
+  disabled: types.bool
 };
 
 export default Option;

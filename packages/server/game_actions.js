@@ -7,7 +7,7 @@ const reduce = require('lodash/reduce');
 const filter = require('lodash/filter');
 const find = require('lodash/find');
 const { v1: uuidv1 } = require('uuid');
-const { phases, notifications, roles } = require('./constants');
+const { phases, notifications, roles, presidentialPowers } = require('./constants');
 const { splice } = require('./util');
 
 const initialGame = () => ({
@@ -20,7 +20,8 @@ const initialGame = () => ({
     hand: [],
     discard: [],
     fascist: [],
-    liberal: []
+    liberal: [],
+    peek: []
   },
   presidentIndex: 0,
   president: null,
@@ -100,6 +101,17 @@ const Actions = {
       10: [LIBERAL, LIBERAL, LIBERAL, LIBERAL, LIBERAL, LIBERAL, FASCIST, FASCIST, FASCIST, MUSSOLINI]
     };
 
+    const { POLICY_PEEK, EXECUTION, INVESTIGATE_LOYALTY, SPECIAL_ELECTION } = presidentialPowers;
+
+    const fascistBoards = {
+      5: [null, null, POLICY_PEEK, EXECUTION, EXECUTION, null],
+      6: [null, null, POLICY_PEEK, EXECUTION, EXECUTION, null],
+      7: [null, INVESTIGATE_LOYALTY, SPECIAL_ELECTION, EXECUTION, EXECUTION, null],
+      8: [null, INVESTIGATE_LOYALTY, SPECIAL_ELECTION, EXECUTION, EXECUTION, null],
+      9: [INVESTIGATE_LOYALTY, INVESTIGATE_LOYALTY, SPECIAL_ELECTION, EXECUTION, EXECUTION, null],
+      10: [INVESTIGATE_LOYALTY, INVESTIGATE_LOYALTY, SPECIAL_ELECTION, EXECUTION, EXECUTION, null]
+    };
+
     const gameAssignments = shuffle(assignments[game.players.length]);
 
     const players = game.players.map((player, index) => ({
@@ -113,6 +125,7 @@ const Actions = {
     game = {
       ...game,
       players,
+      fascistBoard: fascistBoards[game.players.length],
       cards: {
         deck: shuffle(range(1, 17)),
         hand: [],
@@ -125,7 +138,12 @@ const Actions = {
           type: notifications.PARTY_ASSIGNMENT
         }
       ],
-      presidentIndex: -1
+      presidentIndex: -1,
+      president: null,
+      chancellor: null,
+      chancellorNominee: null,
+      chancellorOptions: [],
+      votes: {}
     };
 
     return this.rotateToNextPresidentNominee(game);
@@ -170,12 +188,10 @@ const Actions = {
       }, 0);
 
       if (netApproval > 0) {
-        game = this.drawPolicies(game, 3);
         game = {
           ...game,
           president: game.presidentNominee,
           chancellor: game.chancellorNominee,
-          phase: phases.PRESIDENT_CHOOSES_POLICIES,
           notifications: [
             ...game.notifications,
             {
@@ -195,7 +211,12 @@ const Actions = {
           };
         }
 
-        return game;
+        game = this.drawPolicies(game, 3);
+
+        return {
+          ...game,
+          phase: phases.PRESIDENT_CHOOSES_POLICIES
+        };
       }
 
       game = {
@@ -339,6 +360,37 @@ const Actions = {
           fascist: [...game.cards.fascist, card]
         }
       };
+
+      if (game.cards.fascist.length >= 6) {
+        return {
+          ...game,
+          phase: phases.GAME_OVER
+        };
+      }
+
+      const presidentialPower = game.fascistBoard[game.cards.fascist.length - 1];
+
+      if (presidentialPower) {
+        if (presidentialPower === presidentialPowers.POLICY_PEEK) {
+          game = this.drawPolicies(game, 3); // to ensure at least 3 cards in deck
+          return {
+            ...game,
+            cards: {
+              ...game.cards,
+              deck: [...game.cards.hand, ...game.cards.deck],
+              hand: [],
+              peek: game.cards.hand
+            },
+            phase: phases.SPECIAL_ACTION_POLICY_PEEK
+          };
+        }
+        if (presidentialPower === presidentialPowers.EXECUTION) {
+          return {
+            ...game,
+            phase: phases.SPECIAL_ACTION_EXECUTION
+          };
+        }
+      }
     } else {
       game = {
         ...game,
@@ -356,6 +408,17 @@ const Actions = {
       }
     }
 
+    return this.rotateToNextPresidentNominee(game);
+  },
+
+  endPolicyPeek(game) {
+    game = {
+      ...game,
+      cards: {
+        ...game.cards,
+        peek: []
+      }
+    };
     return this.rotateToNextPresidentNominee(game);
   }
 };

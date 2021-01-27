@@ -91,6 +91,7 @@ const chooseChancellor = callApiWithCode((code, uuid) => Api.chooseChancellor(co
 const vote = callApiWithCode((code, approved) => Api.vote(code, approved));
 const discardPolicy = callApiWithCode((code, card) => Api.discardPolicy(code, card));
 const enactPolicy = callApiWithCode((code, card) => Api.enactPolicy(code, card));
+const endPolicyPeek = callApiWithCode((code) => Api.endPolicyPeek(code));
 
 export {
   joinGame,
@@ -105,7 +106,8 @@ export {
   chooseChancellor,
   vote,
   discardPolicy,
-  enactPolicy
+  enactPolicy,
+  endPolicyPeek
 };
 
 export default gamesSlice.reducer;

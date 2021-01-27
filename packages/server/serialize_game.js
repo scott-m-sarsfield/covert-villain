@@ -42,6 +42,16 @@ function canSeeHand(currentPlayer, game) {
   return false;
 }
 
+function canPeek(currentPlayer, game) {
+  const { phase, president } = game;
+
+  if (phase === phases.SPECIAL_ACTION_POLICY_PEEK && currentPlayer.uuid === president) {
+    return true;
+  }
+
+  return false;
+}
+
 /* eslint-disable-next-line no-unused-vars */
 function serializeGame(game, { uuid }) {
   const { code, data } = game;
@@ -56,7 +66,8 @@ function serializeGame(game, { uuid }) {
         compact([
           'fascist',
           'liberal',
-          canSeeHand(currentPlayer, data) && 'hand'
+          canSeeHand(currentPlayer, data) && 'hand',
+          canPeek(currentPlayer, data) && 'peek'
         ])
       ),
       players: map(data.players, (player) => pick(

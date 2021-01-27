@@ -75,6 +75,10 @@ const Api = {
     return post(`/${code}/enact-policy`, { card });
   },
 
+  endPolicyPeek(code) {
+    return post(`/${code}/end-policy-peek`);
+  },
+
   pressButton(code) {
     return post(`/${code}/press-button`);
   }

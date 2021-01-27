@@ -1,56 +1,55 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import noop from 'lodash/noop';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
-import { enactPolicy } from '../../game_slice';
+import { endPolicyPeek } from '../../game_slice';
 import { Layout, Message, PartyAwareName, Prompt, WrappedScoreHud } from '../shared/atoms';
 
-const ChancellorChoosesPolicyPage = () => {
+const SpecialActionPolicyPeekPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
   const dispatch = useDispatch();
-  const [selected, setSelected] = useState(null);
 
-  const cards = game.cards.hand || [];
+  const cards = game.cards.peek;
 
-  const isChancellor = user.uuid === game.chancellor;
+  const isPresident = user.uuid === game.president;
 
   const onSubmit = () => {
-    dispatch(enactPolicy(selected));
+    dispatch(endPolicyPeek());
   };
 
   return (
-    <Layout withSubmit={isChancellor}>
+    <Layout withSubmit={isPresident}>
       <WrappedScoreHud/>
       {
-        isChancellor && (
+        isPresident && (
           <React.Fragment>
             <Prompt>
-              Choose Policy
+              Top 3 Policies
             </Prompt>
             {
               cards.map((card) => (
                 <Option key={card} {...{
                   label: card < 11 ? 'Fascist' : 'Liberal',
                   value: card,
-                  selected: selected === card,
-                  onSelect: setSelected,
-                  variant: card < 11 ? 'fascist' : 'liberal'
+                  variant: card < 11 ? 'fascist' : 'liberal',
+                  disabled: true,
+                  onSelect: noop
                 }}/>
               ))
             }
             <SubmitButton
               onClick={onSubmit}
-              disabled={!selected}
             >
-              Submit
+              OK
             </SubmitButton>
           </React.Fragment>
         )
       }
       {
-        !isChancellor && (
+        !isPresident && (
           <Message>
-            Chancellor <PartyAwareName uuid={game.chancellor} /> is choosing a policy.
+            President <PartyAwareName uuid={game.president} /> is peeking at the top 3 policies in the deck.
           </Message>
         )
       }
@@ -58,4 +57,4 @@ const ChancellorChoosesPolicyPage = () => {
   );
 };
 
-export default ChancellorChoosesPolicyPage;
+export default SpecialActionPolicyPeekPage;
