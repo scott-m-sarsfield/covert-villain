@@ -24,7 +24,7 @@ const gamesSlice = createSlice({
     },
     setGameData(state, action) {
       state.data = action.payload;
-      if (action.payload.notifications.length === 0) {
+      if (action.payload.notifications.length < state.notificationCursor) {
         state.notificationCursor = 0;
       }
     },

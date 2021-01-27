@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import filter from 'lodash/filter';
+import find from 'lodash/find';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { chooseChancellor } from '../../game_slice';
@@ -11,19 +11,19 @@ const PresidentChoosesChancellorPage = () => {
   const dispatch = useDispatch();
   const [chancellorUuid, setChancellorUuid] = useState(null);
 
-  const isPresident = user.uuid === game.president;
+  const isPresidentNominee = user.uuid === game.presidentNominee;
 
-  const chancellorOptions = filter(game.players, ({ uuid }) => uuid !== user.uuid);
+  const chancellorOptions = game.chancellorOptions.map((uuid) => find(game.players, { uuid }));
 
   const onSubmit = () => {
     dispatch(chooseChancellor(chancellorUuid));
   };
 
   return (
-    <Layout withSubmit={isPresident}>
+    <Layout withSubmit={isPresidentNominee}>
       <WrappedScoreHud/>
       {
-        isPresident && (
+        isPresidentNominee && (
           <React.Fragment>
             <Prompt>
               Choose a Chancellor:
@@ -49,9 +49,9 @@ const PresidentChoosesChancellorPage = () => {
         )
       }
       {
-        !isPresident && (
+        !isPresidentNominee && (
           <Message>
-            Presidential Candidate <PartyAwareName uuid={game.president} /> is choosing a Chancellor...
+            Presidential Candidate <PartyAwareName uuid={game.presidentNominee} /> is choosing a Chancellor...
           </Message>
         )
       }

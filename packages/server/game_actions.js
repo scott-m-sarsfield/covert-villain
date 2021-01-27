@@ -24,6 +24,9 @@ const initialGame = () => ({
   presidentIndex: 0,
   president: null,
   chancellor: null,
+  presidentNominee: null,
+  chancellorOptions: [],
+  chancellorNominee: null,
   votes: {},
   chaos: 0,
   uuid: uuidv1()
@@ -106,9 +109,8 @@ const Actions = {
       alive: true
     }));
 
-    return {
+    game = {
       ...game,
-      phase: phases.PRESIDENT_CHOOSES_CHANCELLOR,
       players,
       cards: {
         deck: shuffle(range(1, 17)),
@@ -122,8 +124,10 @@ const Actions = {
           type: notifications.PARTY_ASSIGNMENT
         }
       ],
-      president: players[0].uuid
+      presidentIndex: -1
     };
+
+    return this.rotateToNextPresidentNominee(game);
   },
 
   chooseChancellor(game, uuid) {
@@ -139,7 +143,7 @@ const Actions = {
     return {
       ...game,
       phase: phases.ELECTION,
-      chancellor: uuid,
+      chancellorNominee: uuid,
       votes
     };
   },
@@ -168,6 +172,8 @@ const Actions = {
         game = this.drawPolicies(game, 3);
         return {
           ...game,
+          president: game.presidentNominee,
+          chancellor: game.chancellorNominee,
           phase: phases.PRESIDENT_CHOOSES_POLICIES,
           notifications: [
             ...game.notifications,
@@ -190,6 +196,8 @@ const Actions = {
       if (game.chaos >= 3) {
         game = {
           ...game,
+          president: null,
+          chancellor: null,
           notifications: [
             ...game.notifications,
             {
@@ -220,19 +228,42 @@ const Actions = {
         ]
       };
 
-      return this.rotateToNextPresident(game);
+      return this.rotateToNextPresidentNominee(game);
     }
 
     return game;
   },
 
-  rotateToNextPresident(game) {
-    const presidentIndex = (game.presidentIndex + 1) % game.players.length;
+  rotateToNextPresidentNominee(game) {
+    let presidentIndex = (game.presidentIndex + 1) % game.players.length;
+    let presidentNominee = game.players[presidentIndex];
+
+    for (let i = 0; i < game.players.length && !presidentNominee.alive; i++) {
+      presidentIndex = (presidentIndex + 1) % game.players.length;
+      presidentNominee = game.players[presidentIndex];
+    }
+
+    const presidentNomineeUuid = presidentNominee.uuid;
+
+    const chancellorOptions = filter(game.players, ({ alive, uuid }) => {
+      if (!alive) {
+        return false;
+      }
+      if (uuid === game.president && filter(game.players, 'alive').length > 5) {
+        return false;
+      }
+      if (uuid === game.chancellor || uuid === presidentNomineeUuid) {
+        return false;
+      }
+      return true;
+    }).map(({ uuid }) => uuid);
+
     return {
       ...game,
       phase: phases.PRESIDENT_CHOOSES_CHANCELLOR,
       presidentIndex,
-      president: game.players[presidentIndex].uuid
+      presidentNominee: presidentNomineeUuid,
+      chancellorOptions
     };
   },
 
@@ -315,7 +346,7 @@ const Actions = {
       }
     }
 
-    return this.rotateToNextPresident(game);
+    return this.rotateToNextPresidentNominee(game);
   }
 };
 

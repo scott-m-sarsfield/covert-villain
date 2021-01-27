@@ -26,9 +26,9 @@ const ElectionPage = () => {
             <Prompt>
               Vote!
               <br />
-              President <PartyAwareName uuid={game.president} />
+              President <PartyAwareName uuid={game.presidentNominee} />
               <br />
-              Chancellor <PartyAwareName uuid={game.chancellor} />
+              Chancellor <PartyAwareName uuid={game.chancellorNominee} />
             </Prompt>
             <Option {...{
               label: 'Yes',

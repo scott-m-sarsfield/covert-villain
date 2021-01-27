@@ -6,7 +6,8 @@ export default ({ title: 'Pages/03 President Chooses Chancellor' });
 
 const PLAYERS_CHOOSES_CHANCELLOR = {
   phase: 'president_chooses_chancellor',
-  president: '1',
+  presidentNominee: '1',
+  chancellorOptions: ['2', '3', '4', '5'],
   cards: {
     hand: [],
     fascist: [],

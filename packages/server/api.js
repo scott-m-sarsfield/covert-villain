@@ -1,6 +1,7 @@
 const express = require('express');
 const find = require('lodash/find');
 const get = require('lodash/get');
+const includes = require('lodash/includes');
 const { v1: uuidv1 } = require('uuid');
 const { Game: SequelizeGame } = require('./models');
 const { getJwt, authenticateJwt, authenticateOptionalJwt } = require('./jwt');
@@ -151,18 +152,23 @@ router.post('/games/:code/start', authenticateJwt, authenticateRoom, async (req,
 
 router.post('/games/:code/choose-chancellor', authenticateJwt, authenticateRoom, async (req, res) => {
   await withGame(req, res, (game, user) => {
-    if (user.uuid !== game.president) {
+    if (game.phase !== phases.PRESIDENT_CHOOSES_CHANCELLOR) {
       return {
-        error: 'must be the president to choose chancellor'
+        error: 'this action cannot be performed during this phase'
+      };
+    }
+    if (user.uuid !== game.presidentNominee) {
+      return {
+        error: 'must be the president nominee to choose chancellor'
       };
     }
     const chancellorUuid = req.body.uuid;
 
-    const chancellor = find(game.players, { uuid: chancellorUuid });
+    const chancellor = includes(game.chancellorOptions, chancellorUuid);
 
     if (!chancellor) {
       return {
-        error: 'must choose an active player to be chancellor'
+        error: 'must choose chancellor from provided options'
       };
     }
 
