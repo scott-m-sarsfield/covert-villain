@@ -229,6 +229,23 @@ router.post('/games/:code/enact-policy', authenticateJwt, authenticateRoom, asyn
   });
 });
 
+router.post('/games/:code/end-policy-peek', authenticateJwt, authenticateRoom, async (req, res) => {
+  await withGame(req, res, (game, user) => {
+    if (game.phase !== phases.SPECIAL_ACTION_POLICY_PEEK) {
+      return {
+        error: 'this action cannot be performed during this phase'
+      };
+    }
+    if (user.uuid !== game.president) {
+      return {
+        error: 'only the president can end policy peek'
+      };
+    }
+
+    return Actions.endPolicyPeek(game);
+  });
+});
+
 router.post('/games/:code/press-button', authenticateJwt, authenticateRoom, async (req, res) => {
   await withGame(req, res, (game, user) => {
     const { uuid } = user;

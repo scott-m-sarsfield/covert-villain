@@ -24,5 +24,11 @@ module.exports = {
     LIBERAL: 'liberal',
     FASCIST: 'fascist',
     MUSSOLINI: 'mussolini'
+  },
+  presidentialPowers: {
+    INVESTIGATE_LOYALTY: 'investigate_loyalty',
+    SPECIAL_ELECTION: 'special_election',
+    POLICY_PEEK: 'policy_peek',
+    EXECUTION: 'execution'
   }
 };
