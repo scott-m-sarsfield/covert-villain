@@ -246,6 +246,38 @@ router.post('/games/:code/end-policy-peek', authenticateJwt, authenticateRoom, a
   });
 });
 
+router.post('/games/:code/execute-player', authenticateJwt, authenticateRoom, async (req, res) => {
+  await withGame(req, res, (game, user) => {
+    if (game.phase !== phases.SPECIAL_ACTION_EXECUTION) {
+      return {
+        error: 'this action cannot be performed during this phase'
+      };
+    }
+    if (user.uuid !== game.president) {
+      return {
+        error: 'only the president can execute a player'
+      };
+    }
+
+    const { uuid } = req.body;
+
+    if (user.uuid === uuid) {
+      return {
+        error: 'president cannot execute themselves'
+      };
+    }
+
+    const playerToExecute = find(game.players, { uuid, alive: true });
+    if (!playerToExecute) {
+      return {
+        error: 'must execute alive players'
+      };
+    }
+
+    return Actions.executePlayer(game, uuid);
+  });
+});
+
 router.post('/games/:code/press-button', authenticateJwt, authenticateRoom, async (req, res) => {
   await withGame(req, res, (game, user) => {
     const { uuid } = user;

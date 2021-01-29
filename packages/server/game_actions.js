@@ -152,11 +152,13 @@ const Actions = {
   chooseChancellor(game, uuid) {
     const votes = {};
 
-    game.players.forEach(({ uuid }) => {
-      votes[uuid] = {
-        voted: false,
-        approved: false
-      };
+    game.players.forEach(({ uuid, alive }) => {
+      if (alive) {
+        votes[uuid] = {
+          voted: false,
+          approved: false
+        };
+      }
     });
 
     return {
@@ -242,7 +244,7 @@ const Actions = {
           ]
         };
         game = this.drawPolicies(game, 1);
-        return this.enactPolicy(game, game.cards.hand[0]);
+        return this.enactPolicy(game, game.cards.hand[0], true);
       }
 
       game = {
@@ -331,7 +333,7 @@ const Actions = {
     };
   },
 
-  enactPolicy(game, card) {
+  enactPolicy(game, card, skipPower = false) {
     const discardedCards = filter(game.cards.hand, (handCard) => handCard !== card);
     game = {
       ...game,
@@ -370,7 +372,7 @@ const Actions = {
 
       const presidentialPower = game.fascistBoard[game.cards.fascist.length - 1];
 
-      if (presidentialPower) {
+      if (presidentialPower && !skipPower) {
         if (presidentialPower === presidentialPowers.POLICY_PEEK) {
           game = this.drawPolicies(game, 3); // to ensure at least 3 cards in deck
           return {
@@ -419,6 +421,38 @@ const Actions = {
         peek: []
       }
     };
+    return this.rotateToNextPresidentNominee(game);
+  },
+
+  executePlayer(game, uuid) {
+    game = {
+      ...game,
+      players: game.players.map((player) => {
+        if (player.uuid === uuid) {
+          return {
+            ...player,
+            alive: false
+          };
+        }
+
+        return player;
+      }),
+      notifications: [
+        ...game.notifications,
+        {
+          type: notifications.EXECUTION,
+          data: { uuid }
+        }
+      ]
+    };
+
+    if (!find(game.players, { role: roles.MUSSOLINI }).alive) {
+      return {
+        ...game,
+        phase: phases.GAME_OVER
+      };
+    }
+
     return this.rotateToNextPresidentNominee(game);
   }
 };

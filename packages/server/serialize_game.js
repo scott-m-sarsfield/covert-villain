@@ -75,6 +75,7 @@ function serializeGame(game, { uuid }) {
         compact([
           'name',
           'uuid',
+          'alive',
           canSeeParty(currentPlayer, player, data.players.length, data.phase) && 'party',
           canSeeRole(currentPlayer, player, data.players.length, data.phase) && 'role'
         ])
