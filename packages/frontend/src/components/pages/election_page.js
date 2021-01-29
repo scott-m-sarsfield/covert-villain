@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
+import find from 'lodash/find';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { vote } from '../../game_slice';
@@ -12,6 +13,7 @@ const ElectionPage = () => {
   const [approved, setApproved] = useState(null);
 
   const voted = get(game, ['votes', user.uuid, 'voted']);
+  const { alive } = find(game.players, { uuid: user.uuid });
 
   const onSubmit = () => {
     dispatch(vote(approved));
@@ -21,7 +23,7 @@ const ElectionPage = () => {
     <Layout withSubmit={!voted}>
       <WrappedScoreHud/>
       {
-        !voted && (
+        alive && !voted ? (
           <React.Fragment>
             <Prompt>
               Vote!
@@ -49,10 +51,7 @@ const ElectionPage = () => {
               Vote
             </SubmitButton>
           </React.Fragment>
-        )
-      }
-      {
-        voted && (
+        ) : (
           <Message>
             Waiting for other votes...
           </Message>

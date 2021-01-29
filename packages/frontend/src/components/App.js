@@ -14,6 +14,7 @@ import PresidentChoosesPoliciesPage from './pages/president_chooses_policies_pag
 import ChancellorChoosesPolicyPage from './pages/chancellor_chooses_policy_page';
 import GameOverPage from './pages/game_over_page';
 import SpecialActionPolicyPeekPage from './pages/special_action_policy_peek_page';
+import PresidentExecutesPlayerPage from './pages/president_executes_player_page';
 
 const Body = styled.div`
   background: beige;
@@ -123,6 +124,12 @@ function GameScreens({ game, notificationCursor }) {
   if (phase === 'special_action_policy_peek') {
     return (
       <SpecialActionPolicyPeekPage />
+    );
+  }
+
+  if (phase === 'special_action_execution') {
+    return (
+      <PresidentExecutesPlayerPage />
     );
   }
 

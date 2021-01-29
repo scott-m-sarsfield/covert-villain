@@ -27,13 +27,20 @@ export const PartyText = styled.span.attrs((props) => {
   color: ${(props) => props.color};
 `;
 
+const PartyName = styled(PartyText)`
+  ${(props) => props.dead && css`
+    text-decoration: double line-through;
+    opacity: 0.5;
+  `}
+`;
+
 export const PartyAwareName = ({ uuid }) => {
-  const { name, party } = useSelector((state) => find(
+  const { name, party, alive } = useSelector((state) => find(
     get(state, 'game.data.players'),
     { uuid }
   ));
   return (
-    <PartyText party={party}>{name}</PartyText>
+    <PartyName party={party} dead={!alive}>{name}</PartyName>
   );
 };
 
