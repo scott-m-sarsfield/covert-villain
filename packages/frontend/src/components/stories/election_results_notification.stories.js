@@ -11,31 +11,36 @@ const SUCCESSFUL_ELECTION_RESULTS_NOTIFICATION = {
       uuid: '1',
       name: 'Alpha',
       role: 'fascist',
-      party: 'fascist'
+      party: 'fascist',
+      alive: true
     },
     {
       uuid: '2',
       name: 'Bravo',
       role: 'liberal',
-      party: 'liberal'
+      party: 'liberal',
+      alive: true
     },
     {
       uuid: '3',
       name: 'Charlie',
       role: 'liberal',
-      party: 'liberal'
+      party: 'liberal',
+      alive: true
     },
     {
       uuid: '4',
       name: 'Delta',
       role: 'mussolini',
-      party: 'fascist'
+      party: 'fascist',
+      alive: true
     },
     {
       uuid: '5',
       name: 'Echo',
       role: 'liberal',
-      party: 'liberal'
+      party: 'liberal',
+      alive: true
     }
   ],
   notifications: [

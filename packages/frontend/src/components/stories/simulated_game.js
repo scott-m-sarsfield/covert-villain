@@ -23,6 +23,7 @@ function getGameState(fullGameState, uuid) {
     players: fullGameState.players.map((player) => pick(player, compact([
       'uuid',
       'name',
+      'alive',
       player.uuid === uuid && 'party',
       player.uuid === uuid && 'role'
     ])))

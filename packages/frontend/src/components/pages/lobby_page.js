@@ -36,7 +36,8 @@ const LobbyPage = () => {
   const code = get(game, 'code', '');
   const players = get(game, 'players', []).map((player, i) => ({
     ...player,
-    role: i === 0 ? 'host' : ''
+    role: i === 0 ? 'host' : '',
+    alive: true
   }));
   const isHost = user.uuid === get(game, 'players[0].uuid');
 

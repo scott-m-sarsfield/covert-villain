@@ -2,17 +2,11 @@ import React from 'react';
 import SimulatedGame from './simulated_game';
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default ({ title: 'Pages/03 President Chooses Chancellor' });
+export default ({ title: 'Pages/10E Execution Notification' });
 
-const PLAYERS_CHOOSES_CHANCELLOR = {
+const POLICY_ENACTED_NOTIFICATION = {
   phase: 'president_chooses_chancellor',
-  presidentNominee: '1',
-  chancellorOptions: ['2', '3', '4', '5'],
-  cards: {
-    hand: [],
-    fascist: [],
-    liberal: []
-  },
+  president: '4',
   players: [
     {
       uuid: '1',
@@ -52,31 +46,26 @@ const PLAYERS_CHOOSES_CHANCELLOR = {
   ],
   notifications: [
     {
-      type: 'party_assignment'
+      type: 'execution',
+      data: {
+        uuid: '2'
+      }
     }
   ]
 };
 
-export const fascist = () => (
+export const fascistExecution = () => (
   <SimulatedGame {...{
     uuid: '1',
-    gameState: PLAYERS_CHOOSES_CHANCELLOR,
-    notification: false
+    gameState: POLICY_ENACTED_NOTIFICATION,
+    notification: true
   }} />
 );
 
-export const liberal = () => (
+export const liberalExecution = () => (
   <SimulatedGame {...{
-    uuid: '2',
-    gameState: PLAYERS_CHOOSES_CHANCELLOR,
-    notification: false
-  }} />
-);
-
-export const mussolini = () => (
-  <SimulatedGame {...{
-    uuid: '4',
-    gameState: PLAYERS_CHOOSES_CHANCELLOR,
-    notification: false
+    uuid: '5',
+    gameState: POLICY_ENACTED_NOTIFICATION,
+    notification: true
   }} />
 );

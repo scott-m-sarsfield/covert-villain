@@ -63,7 +63,8 @@ const Actions = {
         [
           {
             name,
-            uuid
+            uuid,
+            alive: true
           }
         ]
       )
