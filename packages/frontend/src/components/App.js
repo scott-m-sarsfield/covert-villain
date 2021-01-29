@@ -148,16 +148,17 @@ GameScreens.propTypes = {
 function App() {
   useGameSession();
   useConsoleUtility();
-  const { joining, data: game, notificationCursor } = useSelector((state) => state.game);
+  const {
+    joining,
+    data: game,
+    notificationCursor
+  } = useSelector((state) => state.game);
 
   return (
     <Body>
       <Heading />
       {
-        joining && 'Loading...'
-      }
-      {
-        !game && !joining && (
+        !game && (
           <JoinGamePage />
         )
       }

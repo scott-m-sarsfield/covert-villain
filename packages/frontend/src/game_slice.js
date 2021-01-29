@@ -9,7 +9,8 @@ const gamesSlice = createSlice({
     user: null,
     data: null,
     joining: false,
-    notificationCursor: 0
+    notificationCursor: 0,
+    executingAction: false
   },
   reducers: {
     joinInitiated(state) {
@@ -21,6 +22,18 @@ const gamesSlice = createSlice({
       state.user = user;
       state.data = game;
       state.notificationCursor = game.notifications.length;
+    },
+    joinFailed(state) {
+      state.joining = false;
+    },
+    actionInitiated(state) {
+      state.executingAction = true;
+    },
+    actionSuccessful(state) {
+      state.executingAction = false;
+    },
+    actionFailed(state) {
+      state.executingAction = false;
     },
     setGameData(state, action) {
       state.data = action.payload;
@@ -46,6 +59,10 @@ const gamesSlice = createSlice({
 const {
   joinInitiated,
   joinSuccessful,
+  joinFailed,
+  actionInitiated,
+  actionSuccessful,
+  actionFailed,
   setGameData,
   forgetGame,
   loadScenario,
@@ -54,8 +71,12 @@ const {
 
 const joinGame = ({ code, name } = {}) => async (dispatch) => {
   dispatch(joinInitiated());
-  const { game, user } = await Api.joinGame(code, name);
-  dispatch(joinSuccessful({ user, game }));
+  try {
+    const { game, user } = await Api.joinGame(code, name);
+    dispatch(joinSuccessful({ user, game }));
+  } catch (err) {
+    dispatch(joinFailed());
+  }
 };
 
 const refreshGame = (code) => async (dispatch) => {
@@ -78,10 +99,16 @@ const leaveGame = () => (dispatch, getState) => {
 };
 
 function callApiWithCode(api) {
-  return (...args) => (dispatch, getState) => {
+  return (...args) => async (dispatch, getState) => {
     const state = getState();
     const code = get(state, 'game.user.roomCode');
-    api(code, ...args);
+    try {
+      dispatch(actionInitiated());
+      await api(code, ...args);
+      dispatch(actionSuccessful());
+    } catch (err) {
+      dispatch(actionFailed());
+    }
   };
 }
 
