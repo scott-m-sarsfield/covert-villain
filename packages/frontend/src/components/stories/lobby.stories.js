@@ -9,23 +9,28 @@ const LOBBY = {
   players: [
     {
       uuid: '1',
-      name: 'Alpha'
+      name: 'Alpha',
+      alive: true
     },
     {
       uuid: '2',
-      name: 'Bravo'
+      name: 'Bravo',
+      alive: true
     },
     {
       uuid: '3',
-      name: 'Charlie'
+      name: 'Charlie',
+      alive: true
     },
     {
       uuid: '4',
-      name: 'Delta'
+      name: 'Delta',
+      alive: true
     },
     {
       uuid: '5',
-      name: 'Echo'
+      name: 'Echo',
+      alive: true
     }
   ],
   notifications: [

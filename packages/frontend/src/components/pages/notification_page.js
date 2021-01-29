@@ -7,6 +7,7 @@ import Instructions from '../shared/instructions';
 import PartyAssignmentNotificationContent from './party_assignment_notification_content';
 import ElectionResultsNotificationContent from './election_results_notification_content';
 import PolicyEnactedNotificationContent from './policy_enacted_notification_content';
+import ExecutionNotificationContent from './execution_notification_content';
 
 const Wrapper = styled.div`
   padding: 0 30px 70px 30px;
@@ -36,6 +37,10 @@ const NotificationPage = () => {
 
   if (type === 'policy_enacted') {
     content = <PolicyEnactedNotificationContent data={data} />;
+  }
+
+  if (type === 'execution') {
+    content = <ExecutionNotificationContent data={data} />;
   }
 
   return (

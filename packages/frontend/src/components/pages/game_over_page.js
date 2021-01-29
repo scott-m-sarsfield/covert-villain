@@ -17,6 +17,7 @@ const GameOverPage = () => {
   const mussolini = find(players, { role: 'mussolini' });
 
   const liberalPoliciesEnacted = game.cards.liberal.length >= 5;
+  const mussoliniKilled = !find(game.players, { role: 'mussolini' }).alive;
   const fascistPoliciesEnacted = game.cards.fascist.length >= 6;
   const mussoliniElected = game.cards.fascist.length >= 3 && game.chancellor === mussolini.uuid;
 
@@ -30,7 +31,9 @@ const GameOverPage = () => {
       <WrappedScoreHud />
       <Instructions>
         {
-          liberalPoliciesEnacted && <PartyText party="liberal">Liberals</PartyText>
+          (liberalPoliciesEnacted || mussoliniKilled) && (
+            <PartyText party="liberal">Liberals</PartyText>
+          )
         }
         {
           (fascistPoliciesEnacted || mussoliniElected) && (
@@ -43,6 +46,9 @@ const GameOverPage = () => {
       <Details>
         {
           liberalPoliciesEnacted && <span>5 liberal policies enacted</span>
+        }
+        {
+          mussoliniKilled && <span>Mussolini killed</span>
         }
         {
           fascistPoliciesEnacted && <span>6 fascist policies enacted</span>
