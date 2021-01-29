@@ -6,7 +6,6 @@ import JoinGamePage from './pages/join_game_page';
 import LobbyPage from './pages/lobby_page';
 import useGameSession from './use_game_session';
 import useConsoleUtility from './debug_window';
-import PressTheButtonPage from './pages/press_the_button_page';
 import NotificationPage from './pages/notification_page';
 import PresidentChoosesChancellorPage from './pages/president_chooses_chancellor_page';
 import ElectionPage from './pages/election_page';
@@ -88,12 +87,6 @@ function GameScreens({ game, notificationCursor }) {
   if (phase === 'lobby') {
     return (
       <LobbyPage />
-    );
-  }
-
-  if (phase === 'press_the_button') {
-    return (
-      <PressTheButtonPage />
     );
   }
 
