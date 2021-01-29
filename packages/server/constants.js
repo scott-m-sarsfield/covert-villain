@@ -1,7 +1,6 @@
 module.exports = {
   phases: {
     LOBBY: 'lobby',
-    PRESS_THE_BUTTON: 'press_the_button', // fake phase - delete
     PRESIDENT_CHOOSES_CHANCELLOR: 'president_chooses_chancellor',
     ELECTION: 'election',
     PRESIDENT_CHOOSES_POLICIES: 'president_chooses_policies',

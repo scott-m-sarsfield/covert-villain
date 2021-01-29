@@ -81,10 +81,6 @@ const Api = {
 
   executePlayer(code, uuid) {
     return post(`/${code}/execute-player`, { uuid });
-  },
-
-  pressButton(code) {
-    return post(`/${code}/press-button`);
   }
 };
 

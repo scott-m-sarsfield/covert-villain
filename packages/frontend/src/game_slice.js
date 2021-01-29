@@ -86,7 +86,6 @@ function callApiWithCode(api) {
 }
 
 const startGame = callApiWithCode((code) => Api.startGame(code));
-const pressButton = callApiWithCode((code) => Api.pressButton(code));
 const chooseChancellor = callApiWithCode((code, uuid) => Api.chooseChancellor(code, uuid));
 const vote = callApiWithCode((code, approved) => Api.vote(code, approved));
 const discardPolicy = callApiWithCode((code, card) => Api.discardPolicy(code, card));
@@ -101,7 +100,6 @@ export {
   loadScenario,
   leaveGame,
   startGame,
-  pressButton,
   forgetGame,
   readNotification,
   chooseChancellor,
