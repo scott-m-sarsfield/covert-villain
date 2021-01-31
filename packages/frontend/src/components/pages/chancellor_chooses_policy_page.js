@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { enactPolicy } from '../../game_slice';
-import { Layout, Message, PartyAwareName, Prompt, WrappedScoreHud } from '../shared/atoms';
+import { Message, PartyAwareName, Prompt} from '../shared/atoms';
+import {Layout, WrappedScoreHud} from '../shared/layout';
 
 const ChancellorChoosesPolicyPage = () => {
   const { user, data: game } = useSelector((state) => state.game);

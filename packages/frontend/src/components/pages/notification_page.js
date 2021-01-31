@@ -8,6 +8,7 @@ import PartyAssignmentNotificationContent from './party_assignment_notification_
 import ElectionResultsNotificationContent from './election_results_notification_content';
 import PolicyEnactedNotificationContent from './policy_enacted_notification_content';
 import ExecutionNotificationContent from './execution_notification_content';
+import Heading from '../heading';
 
 const Wrapper = styled.div`
   padding: 0 30px 70px 30px;
@@ -44,10 +45,14 @@ const NotificationPage = () => {
   }
 
   return (
-    <Wrapper>
-      {content}
-      <SubmitButton onClick={onAcknowledge}>Ok</SubmitButton>
-    </Wrapper>
+    <div>
+      <Heading />
+      <Wrapper>
+        {content}
+        <SubmitButton onClick={onAcknowledge}>Ok</SubmitButton>
+      </Wrapper>
+    </div>
+
   );
 };
 
