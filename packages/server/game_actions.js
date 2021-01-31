@@ -6,14 +6,15 @@ const range = require('lodash/range');
 const reduce = require('lodash/reduce');
 const filter = require('lodash/filter');
 const find = require('lodash/find');
+const get = require('lodash/get');
 const { v1: uuidv1 } = require('uuid');
 const { phases, notifications, roles, presidentialPowers } = require('./constants');
 const { splice } = require('./util');
 
 const initialGame = () => ({
   phase: phases.LOBBY,
-  pressTheButton: {},
   notifications: [],
+  host: null,
   players: [],
   cards: {
     deck: [],
@@ -40,7 +41,7 @@ Player {
   name: "",
   party: 'fascist' | 'liberal',
   role: 'mussolini' | 'member',
-  investigatedBy: [],
+  investigatedBy: null,
   alive: true
 }
 
@@ -58,6 +59,7 @@ const Actions = {
   joinGame(game, { name, uuid }) {
     return {
       ...game,
+      host: game.host || uuid,
       players: concat(
         game.players,
         [
@@ -74,20 +76,46 @@ const Actions = {
   leaveGame(game, uuid) {
     const { players } = game;
     const index = findIndex(players, { uuid });
-    if (index >= 0) {
+
+    if (game.host === uuid) {
+      game = {
+        ...game,
+        host: get(filter(game.players, (player) => player.uuid !== uuid), '[0].uuid')
+      };
+    }
+
+    if (game.phase === phases.LOBBY) {
       game = {
         ...game,
         players: splice(players, index, 1)
       };
-    }
-    return game;
-  },
+    } else if (game.phase === phases.GAME_OVER) {
+      game = {
+        ...game,
+        players: splice(players, index, 1, {
+          ...players[index],
+          left: true
+        })
+      };
+    } else {
+      game = {
+        ...game,
+        players: splice(players, index, 1, {
+          ...players[index],
+          alive: false,
+          left: true
+        })
+      };
 
-  setupLobby(game) {
-    return {
-      ...game,
-      phase: phases.LOBBY
-    };
+      if (game.phase !== phases.GAME_OVER && !find(game.players, { role: roles.MUSSOLINI }).alive) {
+        game = {
+          ...game,
+          phase: phases.GAME_OVER
+        };
+      }
+    }
+
+    return game;
   },
 
   startGame(game) {
@@ -113,20 +141,22 @@ const Actions = {
       10: [INVESTIGATE_LOYALTY, INVESTIGATE_LOYALTY, SPECIAL_ELECTION, EXECUTION, EXECUTION, null]
     };
 
-    const gameAssignments = shuffle(assignments[game.players.length]);
+    let players = shuffle(filter(game.players, (player) => !player.left));
 
-    const players = game.players.map((player, index) => ({
+    const gameAssignments = shuffle(assignments[players.length]);
+
+    players = players.map((player, index) => ({
       ...player,
       party: gameAssignments[index] === LIBERAL ? LIBERAL : FASCIST,
       role: gameAssignments[index],
-      investigatedBy: [],
+      investigatedBy: null,
       alive: true
     }));
 
     game = {
       ...game,
       players,
-      fascistBoard: fascistBoards[game.players.length],
+      fascistBoard: fascistBoards[players.length],
       cards: {
         deck: shuffle(range(1, 17)),
         hand: [],
