@@ -1,6 +1,144 @@
 const Actions = require('../game_actions');
 const { phases } = require('../constants');
 
+describe('leaveGame', () => {
+  function generateGame({ phase = phases.LOBBY } = {}) {
+    return {
+      phase,
+      host: '1',
+      players: [
+        {
+          uuid: '1',
+          name: 'Alpha',
+          role: 'mussolini',
+          alive: true,
+          party: 'fascist'
+        },
+        {
+          uuid: '2',
+          name: 'Bravo',
+          role: 'liberal',
+          alive: true,
+          party: 'liberal'
+        },
+        {
+          uuid: '3',
+          name: 'Charlie',
+          role: 'liberal',
+          alive: true,
+          party: 'liberal'
+        },
+        {
+          uuid: '4',
+          name: 'Delta',
+          role: 'fascist',
+          alive: true,
+          party: 'fascist'
+        },
+        {
+          uuid: '5',
+          name: 'Echo',
+          role: 'liberal',
+          alive: true,
+          party: 'liberal'
+        }
+      ]
+    };
+  }
+
+  describe('when player is host', () => {
+    it('assigns the first other player as host', () => {
+      const game = generateGame();
+
+      const updatedGame = Actions.leaveGame(game, '1');
+
+      expect(updatedGame.host).toEqual('2');
+    });
+  });
+
+  describe('when player is not host', () => {
+    it('does not change the host', () => {
+      const game = generateGame();
+
+      const updatedGame = Actions.leaveGame(game, '2');
+
+      expect(updatedGame.host).toEqual('1');
+    });
+  });
+
+  describe('when game is in the lobby phase', () => {
+    it('removes the player outright', () => {
+      const game = generateGame({ phase: phases.LOBBY });
+
+      const updatedGame = Actions.leaveGame(game, '1');
+
+      expect(updatedGame.players).not.toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            uuid: '1'
+          })
+        ])
+      );
+    });
+  });
+
+  describe('when game is on game over phase', () => {
+    it('only marks player as left', () => {
+      const game = generateGame({ phase: phases.GAME_OVER });
+
+      const updatedGame = Actions.leaveGame(game, '1');
+
+      expect(updatedGame.players).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            uuid: '1',
+            alive: true,
+            left: true
+          })
+        ])
+      );
+    });
+  });
+
+  describe('when game is active', () => {
+    it('kills the player', () => {
+      const game = generateGame({ phase: phases.PRESIDENT_CHOOSES_CHANCELLOR });
+
+      const updatedGame = Actions.leaveGame(game, '1');
+
+      expect(updatedGame.players).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            uuid: '1',
+            alive: false,
+            left: true
+          })
+        ])
+      );
+    });
+
+    describe('when leaving player is mussolini', () => {
+      it('ends the game', () => {
+        const game = generateGame({ phase: phases.PRESIDENT_CHOOSES_CHANCELLOR });
+
+        const updatedGame = Actions.leaveGame(game, '1');
+
+        expect(updatedGame.phase).toEqual(phases.GAME_OVER);
+      });
+    });
+
+    describe('when leaving player is not mussolini', () => {
+      it('does not end the game', () => {
+        const game = generateGame({ phase: phases.PRESIDENT_CHOOSES_CHANCELLOR });
+
+        const updatedGame = Actions.leaveGame(game, '2');
+
+        expect(updatedGame.phase).toEqual(phases.PRESIDENT_CHOOSES_CHANCELLOR);
+      });
+    });
+  });
+});
+
 describe('drawPolicies', () => {
   it('draws a number of cards from the deck and puts them in the hand', () => {
     const game = {

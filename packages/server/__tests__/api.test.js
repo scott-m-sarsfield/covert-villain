@@ -32,10 +32,12 @@ describe('/games/join', () => {
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({
         game: expect.objectContaining({
-          players: expect.arrayContaining([{
-            name: 'Alpha',
-            uuid: expect.anything()
-          }])
+          players: expect.arrayContaining([
+            expect.objectContaining({
+              name: 'Alpha',
+              uuid: expect.anything()
+            })
+          ])
         }),
         user: expect.objectContaining({
           name: 'Alpha',
