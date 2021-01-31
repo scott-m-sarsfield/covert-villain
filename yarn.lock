@@ -1759,7 +1759,7 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@scott-m-sarsfield/eslint-config@^0.1.0":
+"@scott-m-sarsfield/eslint-config@^0.1.0", "@scott-m-sarsfield/eslint-config@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@scott-m-sarsfield/eslint-config/-/eslint-config-0.1.1.tgz#742924696e7019d739374be57905485b3da1389d"
   integrity sha512-eFL/fqgsCrxJ7ukCLhBkTtZK38Vjp2m89ydDcMbym+Q4m81bz9goJQYGdnDSa/SbPV5gpxmlCoC8n4tzly5yGQ==
