@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import types from 'prop-types';
 import JoinGamePage from './pages/join_game_page';
@@ -15,6 +15,7 @@ import GameOverPage from './pages/game_over_page';
 import SpecialActionPolicyPeekPage from './pages/special_action_policy_peek_page';
 import PresidentExecutesPlayerPage from './pages/president_executes_player_page';
 import PresidentApprovesVetoPage from './pages/president_approves_veto_page';
+import { dismissError } from '../game_slice';
 
 const Body = styled.div`
   background: beige;
@@ -104,17 +105,65 @@ GameScreens.propTypes = {
   notificationCursor: types.number
 };
 
+const ErrorPopup = styled.div`
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  bottom: 15px;
+  right: 15px;
+  z-index: 2;
+  background: white;
+  border: solid 2px black;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const ErrorHeading = styled.h3`
+  text-align: center;
+`;
+const ErrorMessage = styled.div`
+  padding: 0 30px;
+  
+  p {
+    margin-top: 60px;
+  }
+`;
+
+const DismissErrorButton = styled.button`
+  appearance: none;
+  border: none;
+  text-transform: uppercase;
+  background: none;
+  font-size: 30px;
+  width: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+`;
+
 function App() {
   useGameSession();
   useConsoleUtility();
+  const dispatch = useDispatch();
   const {
     joining,
     data: game,
-    notificationCursor
+    notificationCursor,
+    errorMessage
   } = useSelector((state) => state.game);
 
   return (
     <Body>
+      {errorMessage && (
+        <ErrorPopup>
+          <ErrorMessage>
+            <ErrorHeading>Error</ErrorHeading>
+            <p>{errorMessage}</p>
+          </ErrorMessage>
+          <DismissErrorButton onClick={() => dispatch(dismissError())}>Ok</DismissErrorButton>
+        </ErrorPopup>
+      )}
       {
         !game && (
           <JoinGamePage />

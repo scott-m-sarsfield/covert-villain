@@ -57,7 +57,9 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
     });
 
     if (existingPlayer && uuid !== existingPlayer.uuid) {
-      res.status(403).send('player already exists with that name');
+      res.status(400).send({
+        error: 'player already exists with that name'
+      });
       return;
     }
 
@@ -68,7 +70,9 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
         await game.save();
         res.sendRoomEvent(code, 'refresh');
       } else {
-        res.status(403).send('cannot join game in progress');
+        res.status(400).send({
+          error: 'cannot join game in progress'
+        });
       }
     }
 
@@ -178,6 +182,12 @@ router.post('/games/:code/choose-chancellor', authenticateJwt, authenticateRoom,
 
 router.post('/games/:code/vote', authenticateJwt, authenticateRoom, async (req, res) => {
   await withGame(req, res, (game, user) => {
+    if (game.phase !== phases.ELECTION) {
+      return {
+        error: 'this action cannot be performed during this phase'
+      };
+    }
+
     const voted = get(game, ['votes', user.uuid, 'voted']);
     if (voted) {
       return {

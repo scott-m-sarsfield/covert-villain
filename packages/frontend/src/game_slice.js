@@ -11,7 +11,8 @@ const gamesSlice = createSlice({
     joining: false,
     notificationCursor: 0,
     executingAction: false,
-    overviewOpen: false
+    overviewOpen: false,
+    errorMessage: null
   },
   reducers: {
     joinInitiated(state) {
@@ -24,8 +25,10 @@ const gamesSlice = createSlice({
       state.data = game;
       state.notificationCursor = game.notifications.length;
     },
-    joinFailed(state) {
+    joinFailed(state, action) {
+      const { error } = action.payload;
       state.joining = false;
+      state.errorMessage = error;
     },
     actionInitiated(state) {
       state.executingAction = true;
@@ -33,8 +36,13 @@ const gamesSlice = createSlice({
     actionSuccessful(state) {
       state.executingAction = false;
     },
-    actionFailed(state) {
+    actionFailed(state, action) {
+      const { error } = action.payload;
       state.executingAction = false;
+      state.errorMessage = error;
+    },
+    dismissError(state) {
+      state.errorMessage = null;
     },
     setGameData(state, action) {
       state.data = action.payload;
@@ -71,7 +79,8 @@ const {
   forgetGame,
   loadScenario,
   readNotification,
-  toggleOverview
+  toggleOverview,
+  dismissError
 } = gamesSlice.actions;
 
 const joinGame = ({ code, name } = {}) => async (dispatch) => {
@@ -80,7 +89,7 @@ const joinGame = ({ code, name } = {}) => async (dispatch) => {
     const { game, user } = await Api.joinGame(code, name);
     dispatch(joinSuccessful({ user, game }));
   } catch (err) {
-    dispatch(joinFailed());
+    dispatch(joinFailed({ error: err.error }));
   }
 };
 
@@ -96,11 +105,15 @@ const resetGame = () => async (dispatch, getState) => {
   dispatch(setGameData(game));
 };
 
-const leaveGame = () => (dispatch, getState) => {
+const leaveGame = () => async (dispatch, getState) => {
   const state = getState();
   const code = get(state, 'game.user.roomCode');
-  Api.leaveGame(code);
-  dispatch(forgetGame());
+  try {
+    await Api.leaveGame(code);
+    dispatch(forgetGame());
+  } catch (err) {
+    dispatch(actionFailed(err.error));
+  }
 };
 
 function callApiWithCode(api) {
@@ -112,7 +125,7 @@ function callApiWithCode(api) {
       await api(code, ...args);
       dispatch(actionSuccessful());
     } catch (err) {
-      dispatch(actionFailed());
+      dispatch(actionFailed(err.error));
     }
   };
 }
@@ -142,7 +155,8 @@ export {
   endPolicyPeek,
   executePlayer,
   toggleOverview,
-  approveVeto
+  approveVeto,
+  dismissError
 };
 
 export default gamesSlice.reducer;

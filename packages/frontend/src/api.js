@@ -21,6 +21,14 @@ async function fetchJSON(url, { method = 'GET', data } = {}) {
     Auth.clear();
   }
 
+  if (response.status >= 400 && response.status < 500) {
+    throw await response.json();
+  }
+
+  if (response.status >= 500) {
+    throw { error: 'Server blew up.  Whoops.' }; /* eslint-disable-line no-throw-literal */
+  }
+
   return response.json();
 }
 
