@@ -3,6 +3,8 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import range from 'lodash/range';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faSkullCrossbones } from '@fortawesome/free-solid-svg-icons';
 import Heading from '../heading';
 import Button from './button';
 import ScoreHud, { colors } from '../pages/score_hud';
@@ -68,6 +70,11 @@ const Card = styled.div.attrs((props) => {
   width: 32px;
   border: 1px solid ${(props) => props.colors.border};
   background: ${(props) => props.colors.background};
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
   border-radius: 1px;
   opacity: 0.3;
   
@@ -103,6 +110,11 @@ const PlayersHeader = styled(Instructions)`
   margin-top: 30px;
 `;
 
+const actionIcons = {
+  policy_peek: faEye,
+  execution: faSkullCrossbones
+};
+
 const OverviewContent = () => {
   const dispatch = useDispatch();
   const game = useSelector((state) => state.game.data);
@@ -111,8 +123,10 @@ const OverviewContent = () => {
       <GameCode>{game.code}</GameCode>
       <CardRow>
         {
-          game.fascistBoard.map((board, i) => (
-            <Card variant="fascist" key={i} active={!!game.cards.fascist[i]} />
+          game.fascistBoard.map((action, i) => (
+            <Card variant="fascist" key={i} active={!!game.cards.fascist[i]}>
+              {action && <FontAwesomeIcon icon={actionIcons[action]} />}
+            </Card>
           ))
         }
       </CardRow>

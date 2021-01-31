@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import get from 'lodash/get';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSkull, faDove, faMeteor } from '@fortawesome/free-solid-svg-icons';
+import { faSkull, faDove, faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
 
 export const colors = {
   black: '#000000',
@@ -108,7 +108,7 @@ LiberalMeter.propTypes = {
 
 const ChaosMeter = ({ count }) => (
   <Meter
-    label={<FontAwesomeIcon icon={faMeteor} />}
+    label={<FontAwesomeIcon icon={faHourglassHalf} />}
     total={3}
     filled={count}
   />
