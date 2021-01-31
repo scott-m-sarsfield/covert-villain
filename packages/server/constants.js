@@ -7,6 +7,7 @@ module.exports = {
     CHANCELLOR_CHOOSES_POLICY: 'chancellor_chooses_policy',
     SPECIAL_ACTION_POLICY_PEEK: 'special_action_policy_peek',
     SPECIAL_ACTION_EXECUTION: 'special_action_execution',
+    PRESIDENT_APPROVES_VETO: 'president_approves_veto',
     GAME_OVER: 'game_over'
   },
   notifications: {

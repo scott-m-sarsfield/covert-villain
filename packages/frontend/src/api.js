@@ -81,6 +81,10 @@ const Api = {
 
   executePlayer(code, uuid) {
     return post(`/${code}/execute-player`, { uuid });
+  },
+
+  approveVeto(code, approved) {
+    return post(`/${code}/approve-veto`, { approved });
   }
 };
 

@@ -219,6 +219,16 @@ router.post('/games/:code/enact-policy', authenticateJwt, authenticateRoom, asyn
     }
     const { card } = req.body;
 
+    if (card === 911) {
+      if (game.cards.fascist.length < 5) {
+        return {
+          error: 'cannot veto before 5 fascist policies are enacted'
+        };
+      }
+
+      return Actions.vetoPolicies(game);
+    }
+
     if (!game.cards.hand.includes(card)) {
       return {
         error: 'cannot enact policy not in hand'
@@ -278,11 +288,25 @@ router.post('/games/:code/execute-player', authenticateJwt, authenticateRoom, as
   });
 });
 
-router.post('/games/:code/press-button', authenticateJwt, authenticateRoom, async (req, res) => {
-  await withGame(req, res, (game, user) => {
-    const { uuid } = user;
+router.post('/games/:code/approve-veto', authenticateJwt, authenticateRoom, async (req, res) => {
+  withGame(req, res, (game, user) => {
+    if (game.phase !== phases.PRESIDENT_APPROVES_VETO) {
+      return {
+        error: 'this action cannot be performed during this phase'
+      };
+    }
+    if (user.uuid !== game.president) {
+      return {
+        error: 'only the president may approve or deny the veto'
+      };
+    }
 
-    return Actions.pressTheButton(game, uuid);
+    const { approved } = req.body;
+
+    if (approved) {
+      return Actions.approveVeto(game);
+    }
+    return Actions.denyVeto(game);
   });
 });
 

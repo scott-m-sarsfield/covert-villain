@@ -65,7 +65,7 @@ const SubmitButtonWrapper = styled.button`
   
   &:disabled {
     opacity: 0.5;
-    ${(props) => props.loading && css`
+    ${(props) => props.processing && css`
       opacity: 1;
     `}
   }
@@ -74,7 +74,7 @@ const SubmitButtonWrapper = styled.button`
 const SubmitButton = ({ children, disabled, ...otherProps }) => {
   const loading = useSelector((state) => state.game.joining || state.game.executingAction);
   return (
-    <SubmitButtonWrapper disabled={disabled || loading} loading={loading} {...otherProps}>
+    <SubmitButtonWrapper disabled={disabled || loading} processing={loading} {...otherProps}>
       {
         loading ? (
           <React.Fragment>
