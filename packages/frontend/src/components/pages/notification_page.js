@@ -9,6 +9,7 @@ import ElectionResultsNotificationContent from './election_results_notification_
 import PolicyEnactedNotificationContent from './policy_enacted_notification_content';
 import ExecutionNotificationContent from './execution_notification_content';
 import Heading from '../heading';
+import VetoNotificationContent from './veto_notification_content';
 
 const Wrapper = styled.div`
   padding: 0 30px 70px 30px;
@@ -42,6 +43,10 @@ const NotificationPage = () => {
 
   if (type === 'execution') {
     content = <ExecutionNotificationContent data={data} />;
+  }
+
+  if (type === 'veto') {
+    content = <VetoNotificationContent />;
   }
 
   return (
