@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import types from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChessRook, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { toggleOverview } from '../game_slice';
 
 const Wrapper = styled.div`
@@ -29,6 +31,7 @@ const SettingsButton = styled.button`
   width: 50px;
   height: 50px;
   transition: 0.2s;
+  font-size: 18px;
   
   &:hover {
     background: rgba(0,0,0, 0.2);
@@ -37,6 +40,7 @@ const SettingsButton = styled.button`
 
 const Heading = ({ hasSettings }) => {
   const dispatch = useDispatch();
+  const overviewOpen = useSelector((state) => state.game.overviewOpen);
 
   return (
     <Wrapper>
@@ -44,7 +48,13 @@ const Heading = ({ hasSettings }) => {
       {
         hasSettings ? (
           <SettingsButton onClick={() => dispatch(toggleOverview())}>
-            X
+            {
+              overviewOpen ? (
+                <FontAwesomeIcon icon={faTimes} />
+              ) : (
+                <FontAwesomeIcon icon={faChessRook} />
+              )
+            }
           </SettingsButton>
         ) : null
       }

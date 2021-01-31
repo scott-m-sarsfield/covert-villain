@@ -4,8 +4,8 @@ import filter from 'lodash/filter';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { executePlayer } from '../../game_slice';
-import { Message, PartyAwareName, Prompt} from '../shared/atoms';
-import {Layout, WrappedScoreHud} from '../shared/layout';
+import { Message, PartyAwareName, Prompt } from '../shared/atoms';
+import { Layout, WrappedScoreHud } from '../shared/layout';
 
 const PresidentExecutesPlayerPage = () => {
   const { user, data: game } = useSelector((state) => state.game);

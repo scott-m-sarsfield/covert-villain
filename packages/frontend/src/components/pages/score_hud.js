@@ -3,6 +3,8 @@ import types from 'prop-types';
 import styled, { css } from 'styled-components';
 import get from 'lodash/get';
 import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSkull, faDove, faMeteor } from '@fortawesome/free-solid-svg-icons';
 
 export const colors = {
   black: '#000000',
@@ -73,7 +75,9 @@ Meter.defaultProps = {
 
 const FascistMeter = ({ count }) => (
   <Meter {...{
-    label: 'F',
+    label: (
+      <FontAwesomeIcon icon={faSkull} />
+    ),
     total: 6,
     filled: count,
     colors: {
@@ -89,7 +93,7 @@ FascistMeter.propTypes = {
 
 const LiberalMeter = ({ count }) => (
   <Meter {...{
-    label: 'L',
+    label: <FontAwesomeIcon icon={faDove} />,
     total: 5,
     filled: count,
     colors: {
@@ -102,7 +106,13 @@ LiberalMeter.propTypes = {
   count: types.number
 };
 
-const ChaosMeter = ({ count }) => (<Meter label="C" total={3} filled={count} />);
+const ChaosMeter = ({ count }) => (
+  <Meter
+    label={<FontAwesomeIcon icon={faMeteor} />}
+    total={3}
+    filled={count}
+  />
+);
 ChaosMeter.propTypes = {
   count: types.number
 };

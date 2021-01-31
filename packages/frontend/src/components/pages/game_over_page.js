@@ -7,8 +7,8 @@ import { leaveGame, startGame } from '../../game_slice';
 import Button from '../shared/button';
 import { PlayerTable } from '../shared/player_table';
 import Instructions, { Details } from '../shared/instructions';
-import { PartyText} from '../shared/atoms';
-import {Layout, WrappedScoreHud} from '../shared/layout';
+import { PartyText } from '../shared/atoms';
+import { Layout, WrappedScoreHud } from '../shared/layout';
 
 const GameOverPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
