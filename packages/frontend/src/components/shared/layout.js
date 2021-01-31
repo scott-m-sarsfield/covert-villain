@@ -156,6 +156,7 @@ const FullWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: auto;
   
   ${WrappedHeading} {
     flex: 0 0 auto;
