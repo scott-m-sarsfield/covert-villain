@@ -39,6 +39,16 @@ const ChancellorChoosesPolicyPage = () => {
                 }}/>
               ))
             }
+            {
+              game.cards.fascist.length >= 5 && (
+                <Option {...{
+                  label: 'Veto',
+                  value: 911,
+                  selected: selected === 911,
+                  onSelect: setSelected
+                }} />
+              )
+            }
             <SubmitButton
               onClick={onSubmit}
               disabled={!selected}

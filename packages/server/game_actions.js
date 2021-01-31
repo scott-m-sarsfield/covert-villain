@@ -224,48 +224,38 @@ const Actions = {
 
       game = {
         ...game,
-        chaos: game.chaos + 1
-      };
-
-      if (game.chaos >= 3) {
-        game = {
-          ...game,
-          president: null,
-          chancellor: null,
-          notifications: [
-            ...game.notifications,
-            {
-              type: notifications.ELECTION_RESULTS,
-              data: {
-                votes: game.votes,
-                failed: true,
-                chaos: true
-              }
-            }
-          ]
-        };
-        game = this.drawPolicies(game, 1);
-        return this.enactPolicy(game, game.cards.hand[0], true);
-      }
-
-      game = {
-        ...game,
+        chaos: game.chaos + 1,
         notifications: [
           ...game.notifications,
           {
             type: notifications.ELECTION_RESULTS,
             data: {
               votes: game.votes,
-              failed: true
+              failed: true,
+              chaos: game.chaos >= 2
             }
           }
         ]
       };
 
-      return this.rotateToNextPresidentNominee(game);
+      return this.checkChaosAndMaybeEnact(game);
     }
 
     return game;
+  },
+
+  checkChaosAndMaybeEnact(game) {
+    if (game.chaos >= 3) {
+      game = {
+        ...game,
+        president: null,
+        chancellor: null
+      };
+      game = this.drawPolicies(game, 1);
+      return this.enactPolicy(game, game.cards.hand[0], true);
+    }
+
+    return this.rotateToNextPresidentNominee(game);
   },
 
   rotateToNextPresidentNominee(game) {
@@ -455,6 +445,34 @@ const Actions = {
     }
 
     return this.rotateToNextPresidentNominee(game);
+  },
+
+  vetoPolicies(game) {
+    return {
+      ...game,
+      phase: phases.PRESIDENT_APPROVES_VETO
+    };
+  },
+
+  denyVeto(game) {
+    return {
+      ...game,
+      phase: phases.CHANCELLOR_CHOOSES_POLICY
+    };
+  },
+
+  approveVeto(game) {
+    game = {
+      ...game,
+      cards: {
+        ...game.cards,
+        discard: [...game.cards.discard, ...game.cards.hand],
+        hand: []
+      },
+      chaos: game.chaos + 1
+    };
+
+    return this.checkChaosAndMaybeEnact(game);
   }
 };
 

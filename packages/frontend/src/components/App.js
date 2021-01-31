@@ -14,6 +14,7 @@ import ChancellorChoosesPolicyPage from './pages/chancellor_chooses_policy_page'
 import GameOverPage from './pages/game_over_page';
 import SpecialActionPolicyPeekPage from './pages/special_action_policy_peek_page';
 import PresidentExecutesPlayerPage from './pages/president_executes_player_page';
+import PresidentApprovesVetoPage from './pages/president_approves_veto_page';
 
 const Body = styled.div`
   background: beige;
@@ -75,6 +76,12 @@ function GameScreens({ game, notificationCursor }) {
   if (phase === 'special_action_execution') {
     return (
       <PresidentExecutesPlayerPage />
+    );
+  }
+
+  if (phase === 'president_approves_veto') {
+    return (
+      <PresidentApprovesVetoPage />
     );
   }
 
