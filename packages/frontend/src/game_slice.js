@@ -10,7 +10,8 @@ const gamesSlice = createSlice({
     data: null,
     joining: false,
     notificationCursor: 0,
-    executingAction: false
+    executingAction: false,
+    overviewOpen: false
   },
   reducers: {
     joinInitiated(state) {
@@ -52,6 +53,9 @@ const gamesSlice = createSlice({
     },
     readNotification(state) {
       state.notificationCursor++;
+    },
+    toggleOverview(state) {
+      state.overviewOpen = !state.overviewOpen;
     }
   }
 });
@@ -66,7 +70,8 @@ const {
   setGameData,
   forgetGame,
   loadScenario,
-  readNotification
+  readNotification,
+  toggleOverview
 } = gamesSlice.actions;
 
 const joinGame = ({ code, name } = {}) => async (dispatch) => {
@@ -134,7 +139,8 @@ export {
   discardPolicy,
   enactPolicy,
   endPolicyPeek,
-  executePlayer
+  executePlayer,
+  toggleOverview
 };
 
 export default gamesSlice.reducer;

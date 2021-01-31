@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import types from 'prop-types';
 import { joinGame } from '../../game_slice';
 import SubmitButton from '../shared/submit_button';
+import Heading from '../heading';
 
 const Content = styled.div`
   padding: 60px 30px 0;
@@ -64,6 +65,7 @@ const JoinGamePage = () => {
 
   return (
     <div>
+      <Heading />
       <Content>
         <JoinInputRow {...{
           label: 'Code',

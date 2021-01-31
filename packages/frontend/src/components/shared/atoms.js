@@ -4,9 +4,8 @@ import find from 'lodash/find';
 import get from 'lodash/get';
 import types from 'prop-types';
 import React from 'react';
-import ScoreHud, { colors } from '../pages/score_hud';
+import { colors } from '../pages/score_hud';
 import Instructions, { Details } from './instructions';
-import Button from './button';
 
 export const PartyText = styled.span.attrs((props) => {
   switch (props.party) {
@@ -47,27 +46,6 @@ export const PartyAwareName = ({ uuid }) => {
 PartyAwareName.propTypes = {
   uuid: types.string.isRequired
 };
-
-export const WrappedScoreHud = styled(ScoreHud)``;
-
-export const Layout = styled.div`
-  min-height: calc(100vh - 50px);
-  position: relative;
-  padding: 30px 15px;
-  box-sizing: border-box;
-  
-  ${({ withSubmit }) => withSubmit && css`
-    padding-bottom: 80px;
-  `}
-  
-  ${Button} {
-    margin-top: 30px;
-  }
-  
-  ${WrappedScoreHud} {
-    margin: -20px -10px;
-  }
-`;
 
 export const Message = styled(Details)`
   margin-top: 60px;

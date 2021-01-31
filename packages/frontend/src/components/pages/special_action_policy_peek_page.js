@@ -4,7 +4,8 @@ import noop from 'lodash/noop';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { endPolicyPeek } from '../../game_slice';
-import { Layout, Message, PartyAwareName, Prompt, WrappedScoreHud } from '../shared/atoms';
+import { Message, PartyAwareName, Prompt} from '../shared/atoms';
+import {Layout, WrappedScoreHud} from '../shared/layout';
 
 const SpecialActionPolicyPeekPage = () => {
   const { user, data: game } = useSelector((state) => state.game);

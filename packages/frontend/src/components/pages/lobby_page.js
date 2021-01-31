@@ -6,6 +6,7 @@ import SubmitButton from '../shared/submit_button';
 import { leaveGame, startGame } from '../../game_slice';
 import Button from '../shared/button';
 import { PlayerTable } from '../shared/player_table';
+import { Layout } from '../shared/layout';
 
 const GameCode = styled.h3`
   font-size: 21px;
@@ -14,21 +15,6 @@ const GameCode = styled.h3`
   margin: 0 0 15px 0;
   padding: 0;
   text-align: center;
-`;
-
-const Layout = styled.div`
-  min-height: calc(100vh - 50px);
-  position: relative;
-  padding: 30px 15px;
-  box-sizing: border-box;
-  
-  ${Button} {
-    margin-top: 30px;
-  }
-  
-  ${({ withSubmit }) => withSubmit && `
-    padding-bottom: 80px;
-  `}
 `;
 
 const LobbyPage = () => {
