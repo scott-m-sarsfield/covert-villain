@@ -11,11 +11,34 @@ import ExecutionNotificationContent from './execution_notification_content';
 import Heading from '../heading';
 import VetoNotificationContent from './veto_notification_content';
 
-const Wrapper = styled.div`
-  padding: 0 30px 70px 30px;
+const WrappedHeading = styled(Heading)``;
+
+const Content = styled.div`
+  padding: 0 30px;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 120px);
+`;
+
+const Wrapper = styled.div`
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  min-height: fill-available;
+  
+  ${WrappedHeading} {
+    flex: 0 0 auto;
+  }
+  
+  ${Content} {
+    flex: 1 0 auto;
+  }
+  
+  ${SubmitButton} {
+    position: relative;
+    flex: 0 0 auto;
+  }
 `;
 
 const NotificationPage = () => {
@@ -50,13 +73,13 @@ const NotificationPage = () => {
   }
 
   return (
-    <div>
-      <Heading />
-      <Wrapper>
+    <Wrapper>
+      <WrappedHeading />
+      <Content>
         {content}
-        <SubmitButton onClick={onAcknowledge}>Ok</SubmitButton>
-      </Wrapper>
-    </div>
+      </Content>
+      <SubmitButton onClick={onAcknowledge}>Ok</SubmitButton>
+    </Wrapper>
 
   );
 };
