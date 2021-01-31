@@ -22,7 +22,18 @@ io.on('connection', (socket) => {
   });
 });
 
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+const setCustomCacheControl = (res) => {
+  res.setHeader('Cache-Control', 'no-cache');
+};
+
+app.use(
+  express.static(
+    path.join(__dirname, '../frontend/build'),
+    {
+      setHeaders: setCustomCacheControl
+    }
+  )
+);
 app.use(cors({ origin: process.env.NODE_ENV === 'development' ? '*' : true }));
 
 app.use('/api',
