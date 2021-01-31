@@ -469,7 +469,13 @@ const Actions = {
         discard: [...game.cards.discard, ...game.cards.hand],
         hand: []
       },
-      chaos: game.chaos + 1
+      chaos: game.chaos + 1,
+      notifications: [
+        ...game.notifications,
+        {
+          type: notifications.VETO
+        }
+      ]
     };
 
     return this.checkChaosAndMaybeEnact(game);

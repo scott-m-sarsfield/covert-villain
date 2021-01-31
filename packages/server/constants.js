@@ -14,7 +14,8 @@ module.exports = {
     PARTY_ASSIGNMENT: 'party_assignment',
     POLICY_ENACTED: 'policy_enacted',
     ELECTION_RESULTS: 'election_results',
-    EXECUTION: 'execution'
+    EXECUTION: 'execution',
+    VETO: 'veto'
   },
   parties: {
     LIBERAL: 'liberal',
