@@ -13,8 +13,7 @@ import Instructions from './instructions';
 import { leaveGame } from '../../game_slice';
 
 export const WrappedScoreHud = styled(ScoreHud)``;
-export const LayoutWrapper = styled.div`
-  min-height: calc(100vh - 50px);
+const LayoutWrapper = styled.div`
   position: relative;
   padding: 30px 15px;
   box-sizing: border-box;
@@ -151,12 +150,28 @@ const OverviewContent = () => {
   );
 };
 
+const WrappedHeading = styled(Heading)``;
+
+const FullWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+  ${WrappedHeading} {
+    flex: 0 0 auto;
+  }
+  
+  ${LayoutWrapper} {
+    flex: 1 0 auto;
+  }
+`;
+
 export const Layout = ({ children, ...otherProps }) => {
   const overviewOpen = useSelector((state) => state.game.overviewOpen);
 
   return (
-    <div>
-      <Heading hasSettings />
+    <FullWrapper>
+      <WrappedHeading hasSettings />
       {
         overviewOpen ? (
           <OverviewContent />
@@ -166,7 +181,7 @@ export const Layout = ({ children, ...otherProps }) => {
           </LayoutWrapper>
         )
       }
-    </div>
+    </FullWrapper>
   );
 };
 

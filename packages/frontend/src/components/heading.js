@@ -38,12 +38,12 @@ const SettingsButton = styled.button`
   }
 `;
 
-const Heading = ({ hasSettings }) => {
+const Heading = ({ hasSettings, className }) => {
   const dispatch = useDispatch();
   const overviewOpen = useSelector((state) => state.game.overviewOpen);
 
   return (
-    <Wrapper>
+    <Wrapper {...{ className }}>
       <Header>Covert Mussolini</Header>
       {
         hasSettings ? (
@@ -63,7 +63,8 @@ const Heading = ({ hasSettings }) => {
 };
 
 Heading.propTypes = {
-  hasSettings: types.bool
+  hasSettings: types.bool,
+  className: types.string
 };
 
 export default Heading;

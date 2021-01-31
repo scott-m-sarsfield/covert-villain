@@ -19,7 +19,9 @@ import { dismissError } from '../game_slice';
 
 const Body = styled.div`
   background: beige;
+  height: 100%;
   min-height: 100vh;
+  min-height: fill-available;
   font-family: 'Potta One', sans-serif;
   letter-spacing: 2px;
   

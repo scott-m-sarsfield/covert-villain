@@ -1,4 +1,4 @@
-module.exports = process.env.NODE_ENV === 'development' ? {
+module.exports = {
   extends: [
     'react-app',
     '@scott-m-sarsfield/eslint-config'
@@ -14,9 +14,5 @@ module.exports = process.env.NODE_ENV === 'development' ? {
         'import/no-anonymous-default-export': 'off'
       }
     }
-  ]
-} : {
-  extends: [
-    'react-app'
   ]
 };
