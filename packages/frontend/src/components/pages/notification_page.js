@@ -10,6 +10,7 @@ import PolicyEnactedNotificationContent from './policy_enacted_notification_cont
 import ExecutionNotificationContent from './execution_notification_content';
 import Heading from '../heading';
 import VetoNotificationContent from './veto_notification_content';
+import InvestigationNotificationContent from './investigation_notification_content';
 
 const WrappedHeading = styled(Heading)``;
 
@@ -70,6 +71,10 @@ const NotificationPage = () => {
 
   if (type === 'veto') {
     content = <VetoNotificationContent />;
+  }
+
+  if (type === 'investigation') {
+    content = <InvestigationNotificationContent data={data} />;
   }
 
   return (
