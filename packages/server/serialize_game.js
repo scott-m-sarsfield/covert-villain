@@ -80,6 +80,11 @@ function serializeGame(game, { uuid }) {
   const { code, data } = game;
 
   const currentPlayer = find(get(data, 'players'), { uuid });
+
+  if (!currentPlayer) {
+    return {};
+  }
+
   return {
     code,
     ...{
