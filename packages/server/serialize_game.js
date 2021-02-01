@@ -4,9 +4,13 @@ const includes = require('lodash/includes');
 const pick = require('lodash/pick');
 const compact = require('lodash/compact');
 const map = require('lodash/map');
+const filter = require('lodash/filter');
 const { roles, parties, phases } = require('./constants');
 
 function canSeeRole(currentPlayer, player, playerCount, phase) {
+  if (currentPlayer.lobby) {
+    return false;
+  }
   if (phase === phases.GAME_OVER) {
     return true;
   }
@@ -25,6 +29,9 @@ function canSeeRole(currentPlayer, player, playerCount, phase) {
 }
 
 function canSeeParty(currentPlayer, player, playerCount, phase) {
+  if (currentPlayer.lobby) {
+    return false;
+  }
   return canSeeRole(currentPlayer, player, playerCount, phase) || includes(player.investigatedBy, currentPlayer.uuid);
 }
 
@@ -52,6 +59,26 @@ function canPeek(currentPlayer, game) {
   return false;
 }
 
+function serializePlayers(players, phase, currentPlayer) {
+  if (phase === phases.LOBBY || currentPlayer.lobby) {
+    players = filter(players, (player) => player.lobby && !player.left);
+  } else {
+    players = filter(players, (player) => player.playing);
+  }
+
+  return map(players, (player) => pick(
+    player,
+    compact([
+      'name',
+      'uuid',
+      'alive',
+      'lobby',
+      canSeeParty(currentPlayer, player, players.length, phase) && 'party',
+      canSeeRole(currentPlayer, player, players.length, phase) && 'role'
+    ])
+  ));
+}
+
 /* eslint-disable-next-line no-unused-vars */
 function serializeGame(game, { uuid }) {
   const { code, data } = game;
@@ -70,16 +97,8 @@ function serializeGame(game, { uuid }) {
           canPeek(currentPlayer, data) && 'peek'
         ])
       ),
-      players: map(data.players, (player) => pick(
-        player,
-        compact([
-          'name',
-          'uuid',
-          'alive',
-          canSeeParty(currentPlayer, player, data.players.length, data.phase) && 'party',
-          canSeeRole(currentPlayer, player, data.players.length, data.phase) && 'role'
-        ])
-      ))
+      players: serializePlayers(data.players, data.phase, currentPlayer),
+      notifications: currentPlayer.lobby ? [] : data.notifications
     }
   };
 }

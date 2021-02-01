@@ -52,8 +52,8 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
 
     const game = await getGame(code);
 
-    const existingPlayer = find(game.data.players, ({ name: existingName }) => {
-      return existingName === name;
+    const existingPlayer = find(game.data.players, ({ name: existingName, left }) => {
+      return existingName === name && !left;
     });
 
     if (existingPlayer && uuid !== existingPlayer.uuid) {
@@ -64,7 +64,7 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
     }
 
     if (!existingPlayer) {
-      if (game.data.phase === phases.LOBBY) {
+      if (includes([phases.LOBBY, phases.GAME_OVER], game.data.phase)) {
         uuid = uuidv1();
         game.data = Actions.joinGame(game.data, { name, uuid });
         await game.save();
@@ -139,7 +139,7 @@ router.post('/games/:code/leave', authenticateJwt, authenticateRoom, async (req,
 
 router.post('/games/:code/start', authenticateJwt, authenticateRoom, async (req, res) => {
   await withGame(req, res, (game, user) => {
-    if (game.players[0].uuid !== user.uuid) {
+    if (game.host !== user.uuid) {
       return {
         error: 'you must be the host to start the game'
       };
@@ -317,6 +317,26 @@ router.post('/games/:code/approve-veto', authenticateJwt, authenticateRoom, asyn
       return Actions.approveVeto(game);
     }
     return Actions.denyVeto(game);
+  });
+});
+
+router.post('/games/:code/go-to-lobby', authenticateJwt, authenticateRoom, async (req, res) => {
+  withGame(req, res, (game, user) => {
+    if (game.phase !== phases.GAME_OVER) {
+      return {
+        error: 'this action cannot be performed during this phase'
+      };
+    }
+
+    const player = find(game.players, { uuid: user.uuid });
+
+    if (!player) {
+      return {
+        error: 'cannot move non-existing player to lobby'
+      };
+    }
+
+    return Actions.goToLobby(game, user.uuid);
   });
 });
 

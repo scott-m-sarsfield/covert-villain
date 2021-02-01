@@ -42,7 +42,9 @@ Player {
   party: 'fascist' | 'liberal',
   role: 'mussolini' | 'member',
   investigatedBy: null,
-  alive: true
+  alive: true,
+  lobby: false,
+  left: false
 }
 
   Vote [uuid => obj] {
@@ -66,7 +68,9 @@ const Actions = {
           {
             name,
             uuid,
-            alive: true
+            alive: true,
+            lobby: true,
+            playing: false
           }
         ]
       )
@@ -80,7 +84,9 @@ const Actions = {
     if (game.host === uuid) {
       game = {
         ...game,
-        host: get(filter(game.players, (player) => player.uuid !== uuid), '[0].uuid')
+        host: get(filter(game.players, (player) => {
+          return player.uuid !== uuid && !player.left;
+        }), '[0].uuid')
       };
     }
 
@@ -141,7 +147,7 @@ const Actions = {
       10: [INVESTIGATE_LOYALTY, INVESTIGATE_LOYALTY, SPECIAL_ELECTION, EXECUTION, EXECUTION, null]
     };
 
-    let players = shuffle(filter(game.players, (player) => !player.left));
+    let players = shuffle(filter(game.players, (player) => !player.left && player.lobby));
 
     const gameAssignments = shuffle(assignments[players.length]);
 
@@ -150,7 +156,9 @@ const Actions = {
       party: gameAssignments[index] === LIBERAL ? LIBERAL : FASCIST,
       role: gameAssignments[index],
       investigatedBy: null,
-      alive: true
+      alive: true,
+      lobby: false,
+      playing: true
     }));
 
     game = {
@@ -509,6 +517,22 @@ const Actions = {
     };
 
     return this.checkChaosAndMaybeEnact(game);
+  },
+
+  goToLobby(game, uuid) {
+    return {
+      ...game,
+      players: game.players.map((player) => {
+        if (player.uuid === uuid) {
+          return {
+            ...player,
+            lobby: true
+          };
+        }
+
+        return player;
+      })
+    };
   }
 };
 

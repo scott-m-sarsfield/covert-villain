@@ -20,12 +20,12 @@ const GameCode = styled.h3`
 const LobbyPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
   const code = get(game, 'code', '');
-  const players = get(game, 'players', []).map((player, i) => ({
+  const players = get(game, 'players', []).map((player) => ({
     ...player,
-    role: i === 0 ? 'host' : '',
+    role: player.uuid === game.host ? 'host' : '',
     alive: true
   }));
-  const isHost = user.uuid === get(game, 'players[0].uuid');
+  const isHost = user.uuid === game.host;
 
   const dispatch = useDispatch();
 
