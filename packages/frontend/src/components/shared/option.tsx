@@ -1,5 +1,4 @@
 import React from 'react';
-import types from 'prop-types';
 import styled, { css } from 'styled-components';
 import { colors } from '../pages/score_hud';
 
@@ -12,7 +11,12 @@ const OptionCheckbox = styled.div`
   width: 30px;
 `;
 
-const Check = ({ className }) => (
+interface CheckProps {
+  /** className passed to the SVG element */
+  className?: string;
+}
+
+const Check: React.FC<CheckProps> = ({ className }) => (
   <svg className={className} width="35px" height="38px" viewBox="0 0 35 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
     <title>checked</title>
     <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="square">
@@ -24,10 +28,6 @@ const Check = ({ className }) => (
     </g>
   </svg>
 );
-
-Check.propTypes = {
-  className: types.string
-};
 
 const optionColors = {
   fascist: {
@@ -78,7 +78,7 @@ const OptionWrapper = styled.button.attrs((props) => {
   
   ${(props) => props.disabled && css`
     opacity: 0.7;
-   `}
+  `}
 `;
 
 const StyledCheck = styled(Check)`
@@ -87,7 +87,16 @@ const StyledCheck = styled(Check)`
   left: 0;
 `;
 
-const Option = ({ label, selected, value, onSelect, variant, disabled }) => {
+interface OptionProps {
+  label?: string;
+  selected?: boolean;
+  value?: any;
+  onSelect?: React.MouseEventHandler;
+  variant?: string;
+  disabled?: boolean;
+}
+
+const Option: React.FC<OptionProps> = ({ label, selected, value, onSelect, variant, disabled }) => {
   return (
     <OptionWrapper {...{ variant, onClick: () => onSelect(value), disabled }}>
       <OptionCheckbox>
@@ -96,15 +105,6 @@ const Option = ({ label, selected, value, onSelect, variant, disabled }) => {
       {label}
     </OptionWrapper>
   );
-};
-
-Option.propTypes = {
-  label: types.string,
-  selected: types.bool,
-  value: types.any,
-  onSelect: types.func.isRequired,
-  variant: types.string,
-  disabled: types.bool
 };
 
 export default Option;
