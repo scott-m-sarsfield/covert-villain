@@ -131,7 +131,7 @@ function callApiWithCode(api) {
       await api(code, ...args);
       dispatch(actionSuccessful());
     } catch (err) {
-      dispatch(actionFailed(err.error));
+      dispatch(actionFailed({ error: err.error }));
     }
   };
 }
@@ -143,6 +143,7 @@ const discardPolicy = callApiWithCode((code, card) => Api.discardPolicy(code, ca
 const enactPolicy = callApiWithCode((code, card) => Api.enactPolicy(code, card));
 const endPolicyPeek = callApiWithCode((code) => Api.endPolicyPeek(code));
 const executePlayer = callApiWithCode((code, uuid) => Api.executePlayer(code, uuid));
+const investigate = callApiWithCode((code, uuid) => Api.investigate(code, uuid));
 const approveVeto = callApiWithCode((code, approved) => Api.approveVeto(code, approved));
 const goToLobby = callApiWithCode((code) => Api.goToLobby(code));
 
@@ -161,6 +162,7 @@ export {
   enactPolicy,
   endPolicyPeek,
   executePlayer,
+  investigate,
   toggleOverview,
   approveVeto,
   dismissError,

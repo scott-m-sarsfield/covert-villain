@@ -15,6 +15,7 @@ import SpecialActionPolicyPeekPage from './pages/special_action_policy_peek_page
 import PresidentExecutesPlayerPage from './pages/president_executes_player_page';
 import PresidentApprovesVetoPage from './pages/president_approves_veto_page';
 import { dismissError } from '../game_slice';
+import PresidentInvestigatesLoyaltyPage from './pages/president_investigates_loyalty_page';
 
 const Body = styled.div`
   background: beige;
@@ -87,6 +88,12 @@ function GameScreens({ game, notificationCursor }) {
     );
   }
 
+  if (phase === 'special_action_investigate_loyalty') {
+    return (
+      <PresidentInvestigatesLoyaltyPage />
+    );
+  }
+
   return (
     <div>404 - Unknown Phase</div>
   );
@@ -147,6 +154,8 @@ function App() {
     notificationCursor,
     errorMessage
   } = useSelector((state) => state.game);
+
+  console.log(errorMessage); /* eslint-disable-line */
 
   return (
     <Body>

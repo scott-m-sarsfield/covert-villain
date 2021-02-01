@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import range from 'lodash/range';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faSkullCrossbones } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faSearch, faSkullCrossbones, faVoteYea } from '@fortawesome/free-solid-svg-icons';
 import Heading from '../heading';
 import Button from './button';
 import ScoreHud, { colors } from '../pages/score_hud';
@@ -111,7 +111,9 @@ const PlayersHeader = styled(Instructions)`
 
 const actionIcons = {
   policy_peek: faEye,
-  execution: faSkullCrossbones
+  execution: faSkullCrossbones,
+  investigate_loyalty: faSearch,
+  special_election: faVoteYea
 };
 
 const OverviewContent = () => {

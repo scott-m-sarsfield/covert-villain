@@ -340,6 +340,32 @@ router.post('/games/:code/go-to-lobby', authenticateJwt, authenticateRoom, async
   });
 });
 
+router.post('/games/:code/investigate', authenticateJwt, authenticateRoom, async (req, res) => {
+  withGame(req, res, (game, user) => {
+    if (game.phase !== phases.SPECIAL_ACTION_INVESTIGATE_LOYALTY) {
+      return {
+        error: 'this action cannot be performed during this phase'
+      };
+    }
+
+    if (user.uuid !== game.president) {
+      return {
+        error: 'only the president can investigate a player\'s party'
+      };
+    }
+
+    const { uuid } = req.body;
+
+    if (!includes(game.investigateOptions, uuid)) {
+      return {
+        error: 'cannot investigate already investigated player or inactive player'
+      };
+    }
+
+    return Actions.investigate(game, uuid);
+  });
+});
+
 router.post('/games/:code/reset', async (req, res) => {
   const { code } = req.params;
 
