@@ -3,13 +3,13 @@ const find = require('lodash/find');
 const get = require('lodash/get');
 const includes = require('lodash/includes');
 const { v1: uuidv1 } = require('uuid');
-const { Game: SequelizeGame } = require('./models');
+const { Game: SequelizeGame, sequelize } = require('./models');
 const { getJwt, authenticateJwt, authenticateOptionalJwt } = require('./jwt');
 const Actions = require('./game_actions');
 const { phases } = require('./constants');
 const serializeGame = require('./serialize_game');
 
-async function getGame(code) {
+async function getGame(code, transaction) {
   const [game] = await SequelizeGame.findOrCreate({
     where: {
       code
@@ -17,6 +17,10 @@ async function getGame(code) {
     defaults: {
       code,
       data: Actions.setupGame()
+    },
+    ...transaction && {
+      transaction,
+      lock: true
     }
   });
 
@@ -50,43 +54,45 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
 
     code = code.toUpperCase();
 
-    const game = await getGame(code);
+    await sequelize.transaction(async (transaction) => {
+      const game = await getGame(code, transaction);
 
-    const existingPlayer = find(game.data.players, ({ name: existingName, left }) => {
-      return existingName === name && !left;
-    });
-
-    if (existingPlayer && uuid !== existingPlayer.uuid) {
-      res.status(400).send({
-        error: 'player already exists with that name'
+      const existingPlayer = find(game.data.players, ({ name: existingName, left }) => {
+        return existingName === name && !left;
       });
-      return;
-    }
 
-    if (!existingPlayer) {
-      if (includes([phases.LOBBY], game.data.phase)) {
-        uuid = uuidv1();
-        game.data = Actions.joinGame(game.data, { name, uuid });
-        await game.save();
-        res.sendRoomEvent(code, 'refresh');
-      } else {
+      if (existingPlayer && uuid !== existingPlayer.uuid) {
         res.status(400).send({
-          error: 'cannot join game in progress'
+          error: 'player already exists with that name'
         });
+        return;
       }
-    }
 
-    const user = {
-      roomCode: code,
-      roomId: game.data.uuid,
-      name,
-      uuid
-    };
+      if (!existingPlayer) {
+        if (includes([phases.LOBBY], game.data.phase)) {
+          uuid = uuidv1();
+          game.data = Actions.joinGame(game.data, { name, uuid });
+          await game.save({ transaction });
+          res.sendRoomEvent(code, 'refresh');
+        } else {
+          res.status(400).send({
+            error: 'cannot join game in progress'
+          });
+        }
+      }
 
-    res.send({
-      token: getJwt(user),
-      user,
-      game: serializeGame(game, user)
+      const user = {
+        roomCode: code,
+        roomId: game.data.uuid,
+        name,
+        uuid
+      };
+
+      res.send({
+        token: getJwt(user),
+        user,
+        game: serializeGame(game, user)
+      });
     });
   } catch (err) {
     console.log(err); /* eslint-disable-line no-console */
@@ -107,24 +113,30 @@ router.get('/games/:code/debug', async (req, res) => {
 });
 
 async function withGame(req, res, fn) {
+  const transaction = await sequelize.transaction();
   try {
     const { roomCode, user } = req;
-    const game = await getGame(roomCode);
+    const game = await getGame(roomCode, transaction);
 
-    const gameData = fn(game.data, user);
+    const gameData = await fn(game.data, user);
 
     if (gameData.error) {
       res.status(400).send(gameData);
+      await transaction.rollback();
       return;
     }
 
     if (gameData !== game.data) {
       game.data = gameData;
-      await game.save();
+      await game.save({ transaction });
+      await transaction.commit();
       res.sendRoomEvent(roomCode, 'refresh');
+    } else {
+      await transaction.rollback();
     }
     res.send({ status: 'ok' });
   } catch (err) {
+    await transaction.rollback();
     console.log(err); /* eslint-disable-line no-console */
     res.status(500).send(err);
   }
@@ -181,7 +193,7 @@ router.post('/games/:code/choose-chancellor', authenticateJwt, authenticateRoom,
 });
 
 router.post('/games/:code/vote', authenticateJwt, authenticateRoom, async (req, res) => {
-  await withGame(req, res, (game, user) => {
+  await withGame(req, res, async (game, user) => {
     if (game.phase !== phases.ELECTION) {
       return {
         error: 'this action cannot be performed during this phase'
