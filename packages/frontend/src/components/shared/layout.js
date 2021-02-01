@@ -171,7 +171,7 @@ export const Layout = ({ children, ...otherProps }) => {
   const overviewOpen = useSelector((state) => state.game.overviewOpen);
   const game = useSelector((state) => state.game.data);
 
-  const canShowOverview = !['lobby', 'game_over'].includes(game.phase);
+  const canShowOverview = game.phase !== 'lobby';
 
   return (
     <FullWrapper>
