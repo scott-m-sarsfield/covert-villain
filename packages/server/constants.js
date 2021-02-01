@@ -7,6 +7,8 @@ module.exports = {
     CHANCELLOR_CHOOSES_POLICY: 'chancellor_chooses_policy',
     SPECIAL_ACTION_POLICY_PEEK: 'special_action_policy_peek',
     SPECIAL_ACTION_EXECUTION: 'special_action_execution',
+    SPECIAL_ACTION_INVESTIGATE_LOYALTY: 'special_action_investigate_loyalty',
+    SPECIAL_ACTION_ELECTION: 'special_action_election',
     PRESIDENT_APPROVES_VETO: 'president_approves_veto'
   },
   notifications: {
@@ -14,7 +16,8 @@ module.exports = {
     POLICY_ENACTED: 'policy_enacted',
     ELECTION_RESULTS: 'election_results',
     EXECUTION: 'execution',
-    VETO: 'veto'
+    VETO: 'veto',
+    INVESTIGATION: 'investigation'
   },
   parties: {
     LIBERAL: 'liberal',

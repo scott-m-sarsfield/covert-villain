@@ -416,6 +416,21 @@ const Actions = {
             phase: phases.SPECIAL_ACTION_EXECUTION
           };
         }
+        if (presidentialPower === presidentialPowers.INVESTIGATE_LOYALTY) {
+          return {
+            ...game,
+            phase: phases.SPECIAL_ACTION_INVESTIGATE_LOYALTY,
+            investigateOptions: game.players.filter(
+              (player) => !player.investigatedBy && player.alive && player.uuid !== game.president
+            ).map(({ uuid }) => uuid)
+          };
+        }
+        if (presidentialPower === presidentialPowers.SPECIAL_ELECTION) {
+          return {
+            ...game,
+            phase: phases.SPECIAL_ACTION_ELECTION
+          };
+        }
       }
     } else {
       game = {
@@ -476,6 +491,33 @@ const Actions = {
         phase: phases.LOBBY
       };
     }
+
+    return this.rotateToNextPresidentNominee(game);
+  },
+
+  investigate(game, uuid) {
+    game = {
+      ...game,
+      players: game.players.map((player) => {
+        if (player.uuid === uuid) {
+          return {
+            ...player,
+            investigatedBy: game.president
+          };
+        }
+        return player;
+      }),
+      notifications: [
+        ...game.notifications,
+        {
+          type: notifications.INVESTIGATION,
+          data: {
+            president: game.president,
+            player: uuid
+          }
+        }
+      ]
+    };
 
     return this.rotateToNextPresidentNominee(game);
   },
