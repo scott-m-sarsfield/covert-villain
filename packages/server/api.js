@@ -366,6 +366,32 @@ router.post('/games/:code/investigate', authenticateJwt, authenticateRoom, async
   });
 });
 
+router.post('/games/:code/choose-president', authenticateJwt, authenticateRoom, async (req, res) => {
+  withGame(req, res, (game, user) => {
+    if (game.phase !== phases.SPECIAL_ACTION_ELECTION) {
+      return {
+        error: 'this action cannot be performed during this phase'
+      };
+    }
+
+    if (user.uuid !== game.president) {
+      return {
+        error: 'only the president can select the presidential candidate for the special election'
+      };
+    }
+
+    const { uuid } = req.body;
+
+    if (!includes(game.presidentOptions, uuid)) {
+      return {
+        error: 'cannot elect inactive player'
+      };
+    }
+
+    return Actions.chooseSpecialElectionPresident(game, uuid);
+  });
+});
+
 router.post('/games/:code/reset', async (req, res) => {
   const { code } = req.params;
 

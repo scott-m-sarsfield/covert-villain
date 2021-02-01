@@ -144,6 +144,7 @@ const enactPolicy = callApiWithCode((code, card) => Api.enactPolicy(code, card))
 const endPolicyPeek = callApiWithCode((code) => Api.endPolicyPeek(code));
 const executePlayer = callApiWithCode((code, uuid) => Api.executePlayer(code, uuid));
 const investigate = callApiWithCode((code, uuid) => Api.investigate(code, uuid));
+const choosePresident = callApiWithCode((code, uuid) => Api.choosePresident(code, uuid));
 const approveVeto = callApiWithCode((code, approved) => Api.approveVeto(code, approved));
 const goToLobby = callApiWithCode((code) => Api.goToLobby(code));
 
@@ -163,6 +164,7 @@ export {
   endPolicyPeek,
   executePlayer,
   investigate,
+  choosePresident,
   toggleOverview,
   approveVeto,
   dismissError,

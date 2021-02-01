@@ -300,8 +300,16 @@ const Actions = {
       presidentNominee = game.players[presidentIndex];
     }
 
-    const presidentNomineeUuid = presidentNominee.uuid;
+    game = {
+      ...game,
+      presidentNominee: presidentNominee.uuid,
+      presidentIndex
+    };
 
+    return this.prepareChancellorSelection(game);
+  },
+
+  prepareChancellorSelection(game) {
     const chancellorOptions = filter(game.players, ({ alive, uuid }) => {
       if (!alive) {
         return false;
@@ -309,7 +317,7 @@ const Actions = {
       if (uuid === game.president && filter(game.players, 'alive').length > 5) {
         return false;
       }
-      if (uuid === game.chancellor || uuid === presidentNomineeUuid) {
+      if (uuid === game.chancellor || uuid === game.presidentNominee) {
         return false;
       }
       return true;
@@ -318,8 +326,6 @@ const Actions = {
     return {
       ...game,
       phase: phases.PRESIDENT_CHOOSES_CHANCELLOR,
-      presidentIndex,
-      presidentNominee: presidentNomineeUuid,
       chancellorOptions
     };
   },
@@ -428,7 +434,10 @@ const Actions = {
         if (presidentialPower === presidentialPowers.SPECIAL_ELECTION) {
           return {
             ...game,
-            phase: phases.SPECIAL_ACTION_ELECTION
+            phase: phases.SPECIAL_ACTION_ELECTION,
+            presidentOptions: game.players.filter(
+              (player) => player.alive && player.uuid !== game.president
+            ).map(({ uuid }) => uuid)
           };
         }
       }
@@ -520,6 +529,15 @@ const Actions = {
     };
 
     return this.rotateToNextPresidentNominee(game);
+  },
+
+  chooseSpecialElectionPresident(game, uuid) {
+    game = {
+      ...game,
+      presidentNominee: uuid
+    };
+
+    return this.prepareChancellorSelection(game);
   },
 
   vetoPolicies(game) {

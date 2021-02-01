@@ -95,6 +95,10 @@ const Api = {
     return post(`/${code}/investigate`, { uuid });
   },
 
+  choosePresident(code, uuid) {
+    return post(`/${code}/choose-president`, { uuid });
+  },
+
   approveVeto(code, approved) {
     return post(`/${code}/approve-veto`, { approved });
   },
