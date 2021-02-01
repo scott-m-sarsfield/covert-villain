@@ -7,14 +7,25 @@ import pick from 'lodash/pick';
 import compact from 'lodash/compact';
 import App from '../App';
 
+function knowsParty(currentPlayer, player) {
+  console.log(player); /* eslint-disable-line */
+  if (player.uuid === currentPlayer.uuid) {
+    return true;
+  }
+  if (player.investigatedBy === currentPlayer.uuid) {
+    return true;
+  }
+  return false;
+}
+
 function getGameState(fullGameState, uuid) {
   if (!fullGameState) {
     return fullGameState;
   }
 
-  const player = find(fullGameState.players, { uuid });
+  const currentPlayer = find(fullGameState.players, { uuid });
 
-  if (player.party === 'fascist') {
+  if (currentPlayer.party === 'fascist') {
     return fullGameState;
   }
 
@@ -24,7 +35,7 @@ function getGameState(fullGameState, uuid) {
       'uuid',
       'name',
       'alive',
-      player.uuid === uuid && 'party',
+      knowsParty(currentPlayer, player) && 'party',
       player.uuid === uuid && 'role'
     ])))
   };
