@@ -5,6 +5,13 @@ module.exports = {
   ],
   overrides: [
     {
+      files: [ '**/*.ts', '**/*.tsx' ],
+      rules: {
+        'react/prop-types': 'off',
+        'no-undef': 'off'
+      }
+    },
+    {
       files: [
         '**/stories/**/*.js',
         '**/*.stories.js'

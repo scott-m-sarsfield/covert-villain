@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 import find from 'lodash/find';
 import SubmitButton from '../shared/submit_button';
-import Option from '../shared/option';
+import Option from '../shared/option.tsx';
 import { vote } from '../../game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';

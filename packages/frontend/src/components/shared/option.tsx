@@ -29,7 +29,19 @@ const Check: React.FC<CheckProps> = ({ className }) => (
   </svg>
 );
 
-const optionColors = {
+interface Colors {
+  colors: {
+    border: string;
+    background: string;
+  }
+}
+interface OptionColors {
+  fascist: Colors;
+  liberal: Colors;
+  default: Colors;
+}
+
+const optionColors: OptionColors = {
   fascist: {
     colors: {
       border: colors.fascistBorder,
@@ -50,7 +62,7 @@ const optionColors = {
   }
 };
 
-const OptionWrapper = styled.button.attrs((props) => {
+const OptionWrapper = styled.button.attrs((props: OptionWrapperProps) => {
   return optionColors[props.variant] || optionColors.default;
 })`
   appearance: none;
@@ -87,13 +99,17 @@ const StyledCheck = styled(Check)`
   left: 0;
 `;
 
-interface OptionProps {
+interface OptionWrapperProps {
+  value?: any;
+  variant: 'fascist' | 'liberal' | 'default';
+  disabled?: boolean;
+  onClick?: React.MouseEventHandler;
+}
+
+interface OptionProps extends Omit<OptionWrapperProps, 'onClick'> {
   label?: string;
   selected?: boolean;
-  value?: any;
-  onSelect?: React.MouseEventHandler;
-  variant?: string;
-  disabled?: boolean;
+  onSelect: React.MouseEventHandler;
 }
 
 const Option: React.FC<OptionProps> = ({ label, selected, value, onSelect, variant, disabled }) => {
