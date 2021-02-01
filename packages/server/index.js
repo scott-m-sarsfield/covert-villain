@@ -20,6 +20,10 @@ io.on('connection', (socket) => {
     console.log('user is joining room', code); /* eslint-disable-line no-console */
     socket.join(code);
   });
+  socket.on('leave-game', (code) => {
+    console.log('user is leaving room', code); /* eslint-disable-line no-console */
+    socket.leave(code);
+  });
 });
 
 const setCustomCacheControl = (res) => {

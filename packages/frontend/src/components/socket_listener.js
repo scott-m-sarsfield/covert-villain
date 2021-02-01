@@ -13,6 +13,8 @@ socket.on('disconnect', () => {
 });
 /* eslint-enable no-console */
 
+export { socket };
+
 export const useSocket = () => {
   return socket;
 };

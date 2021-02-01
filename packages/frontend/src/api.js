@@ -93,6 +93,10 @@ const Api = {
 
   approveVeto(code, approved) {
     return post(`/${code}/approve-veto`, { approved });
+  },
+
+  goToLobby(code) {
+    return post(`/${code}/go-to-lobby`);
   }
 };
 

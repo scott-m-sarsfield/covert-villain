@@ -169,12 +169,15 @@ const FullWrapper = styled.div`
 
 export const Layout = ({ children, ...otherProps }) => {
   const overviewOpen = useSelector((state) => state.game.overviewOpen);
+  const game = useSelector((state) => state.game.data);
+
+  const canShowOverview = !['lobby', 'game_over'].includes(game.phase);
 
   return (
     <FullWrapper>
-      <WrappedHeading hasSettings />
+      <WrappedHeading hasSettings={canShowOverview} />
       {
-        overviewOpen ? (
+        canShowOverview && overviewOpen ? (
           <OverviewContent />
         ) : (
           <LayoutWrapper {...otherProps}>

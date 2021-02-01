@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import get from 'lodash/get';
 import forEach from 'lodash/forEach';
+import find from 'lodash/find';
 import Api from './api';
+import { socket } from './components/socket_listener';
 
 const gamesSlice = createSlice({
   name: 'game',
@@ -46,8 +48,10 @@ const gamesSlice = createSlice({
     },
     setGameData(state, action) {
       state.data = action.payload;
-      if (action.payload.notifications.length < state.notificationCursor) {
+      const player = find(action.payload.players, { uuid: state.user.uuid });
+      if (get(player, 'lobby')) {
         state.notificationCursor = 0;
+        state.overviewOpen = false;
       }
     },
     forgetGame(state) {
@@ -109,9 +113,11 @@ const leaveGame = () => async (dispatch, getState) => {
   const state = getState();
   const code = get(state, 'game.user.roomCode');
   try {
+    socket.emit('leave-game', code);
     await Api.leaveGame(code);
     dispatch(forgetGame());
   } catch (err) {
+    socket.emit('join-game', code);
     dispatch(actionFailed(err.error));
   }
 };
@@ -138,6 +144,7 @@ const enactPolicy = callApiWithCode((code, card) => Api.enactPolicy(code, card))
 const endPolicyPeek = callApiWithCode((code) => Api.endPolicyPeek(code));
 const executePlayer = callApiWithCode((code, uuid) => Api.executePlayer(code, uuid));
 const approveVeto = callApiWithCode((code, approved) => Api.approveVeto(code, approved));
+const goToLobby = callApiWithCode((code) => Api.goToLobby(code));
 
 export {
   joinGame,
@@ -156,7 +163,8 @@ export {
   executePlayer,
   toggleOverview,
   approveVeto,
-  dismissError
+  dismissError,
+  goToLobby
 };
 
 export default gamesSlice.reducer;
