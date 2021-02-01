@@ -34,6 +34,7 @@ app.use(
   express.static(
     path.join(__dirname, '../frontend/build'),
     {
+      lastModified: false,
       setHeaders: setCustomCacheControl
     }
   )
