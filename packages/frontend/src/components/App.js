@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import types from 'prop-types';
 import JoinGamePage from './pages/join_game_page';
-import LobbyPage from './pages/lobby_page';
 import useGameSession from './use_game_session';
 import useConsoleUtility from './debug_window';
 import NotificationPage from './pages/notification_page';
@@ -42,7 +41,7 @@ function GameScreens({ game, notificationCursor }) {
 
   if (phase === 'lobby') {
     return (
-      <LobbyPage />
+      <GameOverPage />
     );
   }
 
@@ -85,12 +84,6 @@ function GameScreens({ game, notificationCursor }) {
   if (phase === 'president_approves_veto') {
     return (
       <PresidentApprovesVetoPage />
-    );
-  }
-
-  if (phase === 'game_over') {
-    return (
-      <GameOverPage />
     );
   }
 

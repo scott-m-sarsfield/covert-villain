@@ -93,11 +93,6 @@ const Actions = {
     if (game.phase === phases.LOBBY) {
       game = {
         ...game,
-        players: splice(players, index, 1)
-      };
-    } else if (game.phase === phases.GAME_OVER) {
-      game = {
-        ...game,
         players: splice(players, index, 1, {
           ...players[index],
           left: true
@@ -113,10 +108,10 @@ const Actions = {
         })
       };
 
-      if (game.phase !== phases.GAME_OVER && !find(game.players, { role: roles.MUSSOLINI }).alive) {
+      if (game.phase !== phases.LOBBY && !find(game.players, { role: roles.MUSSOLINI }).alive) {
         game = {
           ...game,
-          phase: phases.GAME_OVER
+          phase: phases.LOBBY
         };
       }
     }
@@ -248,7 +243,7 @@ const Actions = {
         if (game.cards.fascist.length >= 3 && game.chancellor === find(game.players, { role: roles.MUSSOLINI }).uuid) {
           return {
             ...game,
-            phase: phases.GAME_OVER
+            phase: phases.LOBBY
           };
         }
 
@@ -395,7 +390,7 @@ const Actions = {
       if (game.cards.fascist.length >= 6) {
         return {
           ...game,
-          phase: phases.GAME_OVER
+          phase: phases.LOBBY
         };
       }
 
@@ -434,7 +429,7 @@ const Actions = {
       if (game.cards.liberal.length >= 5) {
         return {
           ...game,
-          phase: phases.GAME_OVER
+          phase: phases.LOBBY
         };
       }
     }
@@ -478,7 +473,7 @@ const Actions = {
     if (!find(game.players, { role: roles.MUSSOLINI }).alive) {
       return {
         ...game,
-        phase: phases.GAME_OVER
+        phase: phases.LOBBY
       };
     }
 

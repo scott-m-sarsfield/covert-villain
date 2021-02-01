@@ -1,6 +1,5 @@
 const find = require('lodash/find');
 const get = require('lodash/get');
-const includes = require('lodash/includes');
 const pick = require('lodash/pick');
 const compact = require('lodash/compact');
 const map = require('lodash/map');
@@ -8,11 +7,8 @@ const filter = require('lodash/filter');
 const { roles, parties, phases } = require('./constants');
 
 function canSeeRole(currentPlayer, player, playerCount, phase) {
-  if (currentPlayer.lobby) {
-    return false;
-  }
-  if (phase === phases.GAME_OVER) {
-    return true;
+  if (phase === phases.LOBBY) {
+    return !currentPlayer.lobby;
   }
   if (currentPlayer.uuid === player.uuid) {
     return true;
@@ -32,7 +28,7 @@ function canSeeParty(currentPlayer, player, playerCount, phase) {
   if (currentPlayer.lobby) {
     return false;
   }
-  return canSeeRole(currentPlayer, player, playerCount, phase) || includes(player.investigatedBy, currentPlayer.uuid);
+  return canSeeRole(currentPlayer, player, playerCount, phase) || player.investigatedBy === currentPlayer.uuid;
 }
 
 function canSeeHand(currentPlayer, game) {
@@ -60,7 +56,7 @@ function canPeek(currentPlayer, game) {
 }
 
 function serializePlayers(players, phase, currentPlayer) {
-  if (phase === phases.LOBBY || currentPlayer.lobby) {
+  if (phase === phases.LOBBY && currentPlayer.lobby) {
     players = filter(players, (player) => player.lobby && !player.left);
   } else {
     players = filter(players, (player) => player.playing);

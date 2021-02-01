@@ -64,7 +64,7 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
     }
 
     if (!existingPlayer) {
-      if (includes([phases.LOBBY, phases.GAME_OVER], game.data.phase)) {
+      if (includes([phases.LOBBY], game.data.phase)) {
         uuid = uuidv1();
         game.data = Actions.joinGame(game.data, { name, uuid });
         await game.save();
@@ -322,7 +322,7 @@ router.post('/games/:code/approve-veto', authenticateJwt, authenticateRoom, asyn
 
 router.post('/games/:code/go-to-lobby', authenticateJwt, authenticateRoom, async (req, res) => {
   withGame(req, res, (game, user) => {
-    if (game.phase !== phases.GAME_OVER) {
+    if (game.phase !== phases.LOBBY) {
       return {
         error: 'this action cannot be performed during this phase'
       };

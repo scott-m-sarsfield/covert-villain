@@ -67,24 +67,8 @@ describe('leaveGame', () => {
   });
 
   describe('when game is in the lobby phase', () => {
-    it('removes the player outright', () => {
+    it('marks player as left', () => {
       const game = generateGame({ phase: phases.LOBBY });
-
-      const updatedGame = Actions.leaveGame(game, '1');
-
-      expect(updatedGame.players).not.toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            uuid: '1'
-          })
-        ])
-      );
-    });
-  });
-
-  describe('when game is on game over phase', () => {
-    it('only marks player as left', () => {
-      const game = generateGame({ phase: phases.GAME_OVER });
 
       const updatedGame = Actions.leaveGame(game, '1');
 
@@ -123,7 +107,7 @@ describe('leaveGame', () => {
 
         const updatedGame = Actions.leaveGame(game, '1');
 
-        expect(updatedGame.phase).toEqual(phases.GAME_OVER);
+        expect(updatedGame.phase).toEqual(phases.LOBBY);
       });
     });
 
