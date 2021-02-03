@@ -62,12 +62,18 @@ export function buildPlayers() {
     })
   ];
 
+  const liberals = map(
+    filter(players, (player) => player.role === 'liberal'),
+    'uuid'
+  );
+
   return {
     players,
     povUuids: {
       host: '1',
       participant: '2',
-      liberal: find(players, (player) => player.role === 'liberal').uuid,
+      liberals,
+      liberal: liberals[0],
       fascist: find(players, (player) => player.role === 'fascist').uuid,
       mussolini: find(players, (player) => player.role === 'mussolini').uuid,
       not(uuid) {
