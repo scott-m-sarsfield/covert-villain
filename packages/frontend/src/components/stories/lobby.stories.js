@@ -1,19 +1,23 @@
 import React from 'react';
-import SimulatedGame, { buildGame } from './simulated_game';
+import SimulatedGame, { buildGame, buildPlayers } from './simulated_game';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({ title: 'Pages/Lobby' });
 
+const { players, povUuids } = buildPlayers();
+
+const game = buildGame({ phase: 'lobby', players });
+
 export const host = () => (
   <SimulatedGame {...{
-    uuid: '1',
-    gameState: buildGame({ phase: 'lobby', host: '1' })
+    uuid: povUuids.host,
+    gameState: game
   }} />
 );
 
 export const participant = () => (
   <SimulatedGame {...{
-    uuid: '2',
-    gameState: buildGame({ phase: 'lobby', host: '1' })
+    uuid: povUuids.participant,
+    gameState: game
   }} />
 );
