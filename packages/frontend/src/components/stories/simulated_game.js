@@ -1,4 +1,4 @@
-import { createStore } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import get from 'lodash/get';
 import { Provider } from 'react-redux';
 import React from 'react';
@@ -190,14 +190,18 @@ function getGameState(fullGameState, uuid) {
 }
 
 const SimulatedGame = ({ uuid, gameState, notification, overviewOpen }) => {
-  const store = createStore((store) => store, {
-    game: {
-      user: {
-        uuid: uuid
-      },
-      data: getGameState(gameState, uuid),
-      notificationCursor: notification ? get(gameState, 'notifications.length') - 1 : get(gameState, 'notifications.length'),
-      overviewOpen
+  const store = configureStore({
+    reducer: (store) => store,
+    preloadedState: {
+      game: {
+        user: {
+          uuid: uuid,
+          roomCode: get(gameState, 'code')
+        },
+        data: getGameState(gameState, uuid),
+        notificationCursor: notification ? get(gameState, 'notifications.length') - 1 : get(gameState, 'notifications.length'),
+        overviewOpen
+      }
     }
   });
 
