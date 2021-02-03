@@ -35,7 +35,7 @@ const LobbyPage = () => {
   return (
     <Layout withSubmit={isHost}>
       <GameCode>{code}</GameCode>
-      <PlayerTable players={players} />
+      <PlayerTable players={players} ignoreStatus />
       <Button onClick={onLeave}>Leave</Button>
       {
         isHost && (
