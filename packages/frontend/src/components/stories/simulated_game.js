@@ -7,6 +7,69 @@ import pick from 'lodash/pick';
 import compact from 'lodash/compact';
 import App from '../App';
 
+function buildPlayer(overwrites) {
+  return {
+    uuid: '1',
+    name: 'Alpha',
+    lobby: false,
+    playing: true,
+    left: false,
+    party: 'liberal',
+    role: 'liberal',
+    alive: true,
+    ...overwrites
+  };
+}
+
+export function buildGame(overwrites) {
+  return {
+    code: 'ABXGYP',
+    phase: 'lobby',
+    host: '1',
+    presidentNominee: null,
+    chancellorNominee: null,
+    president: null,
+    chancellor: null,
+    cards: {
+      deck: [],
+      hand: [],
+      peek: [],
+      fascist: [],
+      liberal: []
+    },
+    chaos: 0,
+    players: [
+      buildPlayer({
+        uuid: '1',
+        name: 'Alpha',
+        lobby: true
+      }),
+      buildPlayer({
+        uuid: '2',
+        name: 'Bravo',
+        lobby: true
+      }),
+      buildPlayer({
+        uuid: '3',
+        name: 'Charlie',
+        lobby: true
+      }),
+      buildPlayer({
+        uuid: '4',
+        name: 'Delta',
+        lobby: true
+      }),
+      buildPlayer({
+        uuid: '5',
+        name: 'Echo',
+        lobby: true
+      })
+    ],
+    notifications: [],
+    ...overwrites
+  };
+}
+
 function knowsParty(currentPlayer, player) {
   console.log(player); /* eslint-disable-line */
   if (player.uuid === currentPlayer.uuid) {
@@ -35,6 +98,7 @@ function getGameState(fullGameState, uuid) {
       'uuid',
       'name',
       'alive',
+      'lobby',
       knowsParty(currentPlayer, player) && 'party',
       player.uuid === uuid && 'role'
     ])))

@@ -3,7 +3,7 @@ import React from 'react';
 import map from 'lodash/map';
 import types from 'prop-types';
 import { colors } from '../pages/score_hud';
-import { PartyAwareName } from './atoms';
+import { PartyAwareName, Name } from './atoms';
 
 const PlayerList = styled.ul`
   text-indent: 0;
@@ -74,11 +74,19 @@ const Vote = styled.div`
   color: ${colors.white};
 `}
 `;
-export const Player = ({ uuid, index, role, vote }) => (
+export const Player = ({ uuid, index, role, vote, ignoreStatus }) => (
   <PlayerWrapper>
     <Left>
       <PlayerNumber>{numberLabels[index]}</PlayerNumber>
-      <PlayerName><PartyAwareName uuid={uuid}/></PlayerName>
+      <PlayerName>
+        {
+          ignoreStatus ? (
+            <Name uuid={uuid} />
+          ) : (
+            <PartyAwareName uuid={uuid} />
+          )
+        }
+      </PlayerName>
       {role && <PlayerRole>{`(${role})`}</PlayerRole>}
     </Left>
     <Right>
@@ -93,7 +101,8 @@ Player.propTypes = {
   role: types.string,
   vote: types.shape({
     approved: types.bool
-  })
+  }),
+  ignoreStatus: types.bool
 };
 
 const numberLabels = [
@@ -109,7 +118,7 @@ const numberLabels = [
   'ten'
 ];
 
-export const PlayerTable = ({ players }) => (
+export const PlayerTable = ({ players, ignoreStatus }) => (
   <PlayerList>
     {
       map(players, ({ uuid, role, vote }, i) => {
@@ -118,7 +127,8 @@ export const PlayerTable = ({ players }) => (
             index: i,
             uuid,
             role,
-            vote
+            vote,
+            ignoreStatus
           }}/>
         );
       })
@@ -131,5 +141,6 @@ PlayerTable.propTypes = {
     types.shape({
       name: types.string.isRequired
     }).isRequired
-  )
+  ),
+  ignoreStatus: types.bool
 };

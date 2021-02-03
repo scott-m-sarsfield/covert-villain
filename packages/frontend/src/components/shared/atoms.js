@@ -33,6 +33,18 @@ const PartyName = styled(PartyText)`
   `}
 `;
 
+export const Name = ({ uuid }) => {
+  const { name } = useSelector((state) => find(
+    get(state, 'game.data.players'),
+    { uuid }
+  ));
+  return (<span>{name}</span>);
+};
+
+Name.propTypes = {
+  uuid: types.string.isRequired
+};
+
 export const PartyAwareName = ({ uuid }) => {
   const { name, party, alive } = useSelector((state) => find(
     get(state, 'game.data.players'),
