@@ -1,59 +1,24 @@
 import React from 'react';
-import SimulatedGame from './simulated_game';
+import SimulatedGame, { buildPlayers, buildGame } from './simulated_game';
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default ({ title: 'Pages/12 Investigation Notification' });
+export default ({ title: 'Pages/Presidential Powers/Investigation/Notification' });
 
-const createInvestigationNotificationState = (investigatedPlayer = '4') => ({
+const { players, povUuids } = buildPlayers();
+
+const createInvestigationNotificationState = (investigatedPlayer) => buildGame({
   phase: 'president_chooses_chancellor',
-  players: [
-    {
-      uuid: '1',
-      name: 'Alpha',
-      role: 'fascist',
-      party: 'fascist',
-      alive: true
-    },
-    {
-      uuid: '2',
-      name: 'Bravo',
-      role: 'liberal',
-      party: 'liberal',
-      alive: true
-    },
-    {
-      uuid: '3',
-      name: 'Charlie',
-      role: 'liberal',
-      party: 'liberal',
-      alive: true
-    },
-    {
-      uuid: '4',
-      name: 'Delta',
-      role: 'mussolini',
-      party: 'fascist',
-      alive: true,
-      investigatedBy: '2'
-    },
-    {
-      uuid: '5',
-      name: 'Echo',
-      role: 'liberal',
-      party: 'liberal',
-      alive: true
-    }
-  ].map(
+  players: players.map(
     (player) => ({
       ...player,
-      investigatedBy: player.uuid === investigatedPlayer ? '2' : null
+      investigatedBy: player.uuid === investigatedPlayer ? povUuids.liberals[0] : null
     })
   ),
   notifications: [
     {
       type: 'investigation',
       data: {
-        president: '2',
+        president: povUuids.liberals[0],
         player: investigatedPlayer
       }
     }
@@ -62,31 +27,31 @@ const createInvestigationNotificationState = (investigatedPlayer = '4') => ({
 
 export const liberalPresidentInvestigatesFascist = () => (
   <SimulatedGame {...{
-    uuid: '2',
-    gameState: createInvestigationNotificationState(),
+    uuid: povUuids.liberals[0],
+    gameState: createInvestigationNotificationState(povUuids.fascist),
     notification: true
   }} />
 );
 export const liberalPresidentInvestigatesLiberal = () => (
   <SimulatedGame {...{
-    uuid: '2',
-    gameState: createInvestigationNotificationState('5'),
+    uuid: povUuids.liberals[0],
+    gameState: createInvestigationNotificationState(povUuids.liberals[1]),
     notification: true
   }} />
 );
 
 export const liberalBystander = () => (
   <SimulatedGame {...{
-    uuid: '5',
-    gameState: createInvestigationNotificationState(),
+    uuid: povUuids.liberals[1],
+    gameState: createInvestigationNotificationState(povUuids.fascist),
     notification: true
   }} />
 );
 
 export const fascistBystander = () => (
   <SimulatedGame {...{
-    uuid: '1',
-    gameState: createInvestigationNotificationState(),
+    uuid: povUuids.fascist,
+    gameState: createInvestigationNotificationState(povUuids.fascist),
     notification: true
   }} />
 );
