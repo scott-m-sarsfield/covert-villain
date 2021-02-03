@@ -17,6 +17,7 @@ export const parameters = {
           'Joining Game',
           'Lobby',
           'Party Assignment Notification',
+          'Overview',
           'Presidential Candidate Nominates Chancellor',
           'Election',
           'Election Results Notification',
@@ -24,7 +25,22 @@ export const parameters = {
           'Chancellor Enacts Policy',
           'President Approves Veto',
           'Policy Enacted Notification',
-          'Presidential Powers'
+          'Presidential Powers',
+          [
+            'Policy Peek',
+            'Investigation',
+            [
+              'President Investigates Player',
+              'Notification'
+            ],
+            'Special Election',
+            'Execution',
+            [
+              'President Executes Player',
+              'Notification'
+            ]
+          ],
+          'Game Over'
         ]
       ]
     }
