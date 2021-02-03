@@ -5,7 +5,7 @@ import SimulatedGame, { buildGame, buildPlayers } from './simulated_game';
 export default ({ title: 'Pages/Party Assignment Notification' });
 
 const { players, povUuids } = buildPlayers();
-const { game } = buildGame({
+const game = buildGame({
   phase: 'president_chooses_chancellor',
   players,
   notifications: [
