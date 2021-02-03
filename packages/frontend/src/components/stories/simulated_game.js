@@ -155,7 +155,6 @@ export function buildGame(overwrites) {
 }
 
 function knowsParty(currentPlayer, player) {
-  console.log(player); /* eslint-disable-line */
   if (player.uuid === currentPlayer.uuid) {
     return true;
   }

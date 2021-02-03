@@ -4,10 +4,17 @@ import forEach from 'lodash/forEach';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import {action} from '@storybook/addon-actions';
 import Api from '../src/api';
+import Socket from '../src/components/socket';
 
 forEach(Api, (fn, name) => {
   Api[name] = action(`Api.${name}`)
 });
+
+Socket.socket = {
+  on: action('socket.on'),
+  off: action('socket.off'),
+  emit: action('socket.emit')
+};
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },

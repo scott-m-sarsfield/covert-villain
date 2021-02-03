@@ -31,7 +31,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build:app": "react-scripts build",
-    "build:storybook": "build-storybook -s public -o build/storybook",
+    "build:storybook": "build-storybook -s public -o build/storybook --quiet",
     "build": "yarn run build:app && yarn run build:storybook",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

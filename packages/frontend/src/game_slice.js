@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import forEach from 'lodash/forEach';
 import find from 'lodash/find';
 import Api from './api';
-import { socket } from './components/socket_listener';
+import Socket from './components/socket';
 
 const gamesSlice = createSlice({
   name: 'game',
@@ -112,6 +112,7 @@ const resetGame = () => async (dispatch, getState) => {
 const leaveGame = () => async (dispatch, getState) => {
   const state = getState();
   const code = get(state, 'game.user.roomCode');
+  const socket = Socket.getSocket();
   try {
     socket.emit('leave-game', code);
     await Api.leaveGame(code);
