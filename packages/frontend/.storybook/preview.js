@@ -18,8 +18,13 @@ export const parameters = {
           'Lobby',
           'Party Assignment Notification',
           'Presidential Candidate Nominates Chancellor',
+          'Election',
           'Election Results Notification',
-          'Policy Enacted Notification'
+          'President Chooses Policies',
+          'Chancellor Enacts Policy',
+          'President Approves Veto',
+          'Policy Enacted Notification',
+          'Presidential Powers'
         ]
       ]
     }
