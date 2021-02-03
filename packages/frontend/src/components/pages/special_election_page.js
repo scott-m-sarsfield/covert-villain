@@ -12,7 +12,7 @@ const SpecialElectionPage = () => {
   const dispatch = useDispatch();
   const [nomineeUuid, setNomineeUuid] = useState(null);
 
-  const isPresident = user.uuid === game.presidentNominee;
+  const isPresident = user.uuid === game.president;
 
   const presidentOptions = game.presidentOptions.map((uuid) => find(game.players, { uuid }));
 

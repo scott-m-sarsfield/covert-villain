@@ -52,7 +52,7 @@ const PresidentInvestigatesLoyaltyPage = () => {
       {
         !isPresident && (
           <Message>
-            President <PartyAwareName uuid={game.presidentNominee} /> is choosing someone to investigate...
+            President <PartyAwareName uuid={game.president} /> is choosing someone to investigate...
           </Message>
         )
       }

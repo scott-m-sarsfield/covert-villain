@@ -23,44 +23,79 @@ function buildPlayer(overwrites) {
   };
 }
 
-export function buildPlayers() {
+export function buildPlayers(n = 5, { lobby } = {}) {
   const players = [
     buildPlayer({
       uuid: '1',
       name: 'Alpha',
-      lobby: true,
+      lobby,
       party: 'fascist',
       role: 'fascist'
     }),
     buildPlayer({
       uuid: '2',
       name: 'Bravo',
-      lobby: true,
       party: 'liberal',
-      role: 'liberal'
+      role: 'liberal',
+      lobby
     }),
     buildPlayer({
       uuid: '3',
       name: 'Charlie',
-      lobby: true,
+      lobby,
       party: 'liberal',
       role: 'liberal'
     }),
     buildPlayer({
       uuid: '4',
       name: 'Delta',
-      lobby: true,
+      lobby,
       party: 'fascist',
       role: 'mussolini'
     }),
     buildPlayer({
       uuid: '5',
       name: 'Echo',
-      lobby: true,
+      lobby,
+      party: 'liberal',
+      role: 'liberal'
+    }),
+    buildPlayer({
+      uuid: '6',
+      name: 'Foxtrot',
+      lobby,
+      party: 'liberal',
+      role: 'liberal'
+    }),
+    buildPlayer({
+      uuid: '7',
+      name: 'Golf',
+      lobby,
+      party: 'fascist',
+      role: 'fascist'
+    }),
+    buildPlayer({
+      uuid: '8',
+      name: 'Hotel',
+      lobby,
+      party: 'liberal',
+      role: 'liberal'
+    }),
+    buildPlayer({
+      uuid: '9',
+      name: 'India',
+      lobby,
+      party: 'fascist',
+      role: 'fascist'
+    }),
+    buildPlayer({
+      uuid: '10',
+      name: 'Juliet',
+      lobby,
       party: 'liberal',
       role: 'liberal'
     })
-  ];
+  ].slice(0, n);
 
   const liberals = map(
     filter(players, (player) => player.role === 'liberal'),
@@ -98,6 +133,14 @@ export function buildGame(overwrites) {
     chancellor: null,
     chaos: 0,
     notifications: [],
+    fascistBoard: [
+      null,
+      null,
+      'policy_peek',
+      'execution',
+      'execution',
+      null
+    ],
     players,
     ...overwrites,
     cards: {
@@ -146,14 +189,15 @@ function getGameState(fullGameState, uuid) {
   };
 }
 
-const SimulatedGame = ({ uuid, gameState, notification }) => {
+const SimulatedGame = ({ uuid, gameState, notification, overviewOpen }) => {
   const store = createStore((store) => store, {
     game: {
       user: {
         uuid: uuid
       },
       data: getGameState(gameState, uuid),
-      notificationCursor: notification ? get(gameState, 'notifications.length') - 1 : get(gameState, 'notifications.length')
+      notificationCursor: notification ? get(gameState, 'notifications.length') - 1 : get(gameState, 'notifications.length'),
+      overviewOpen
     }
   });
 
