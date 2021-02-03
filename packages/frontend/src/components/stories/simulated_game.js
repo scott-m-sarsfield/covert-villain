@@ -5,6 +5,8 @@ import React from 'react';
 import find from 'lodash/find';
 import pick from 'lodash/pick';
 import compact from 'lodash/compact';
+import filter from 'lodash/filter';
+import map from 'lodash/map';
 import App from '../App';
 
 function buildPlayer(overwrites) {
@@ -21,7 +23,65 @@ function buildPlayer(overwrites) {
   };
 }
 
+export function buildPlayers() {
+  const players = [
+    buildPlayer({
+      uuid: '1',
+      name: 'Alpha',
+      lobby: true,
+      party: 'fascist',
+      role: 'fascist'
+    }),
+    buildPlayer({
+      uuid: '2',
+      name: 'Bravo',
+      lobby: true,
+      party: 'liberal',
+      role: 'liberal'
+    }),
+    buildPlayer({
+      uuid: '3',
+      name: 'Charlie',
+      lobby: true,
+      party: 'liberal',
+      role: 'liberal'
+    }),
+    buildPlayer({
+      uuid: '4',
+      name: 'Delta',
+      lobby: true,
+      party: 'fascist',
+      role: 'mussolini'
+    }),
+    buildPlayer({
+      uuid: '5',
+      name: 'Echo',
+      lobby: true,
+      party: 'liberal',
+      role: 'liberal'
+    })
+  ];
+
+  return {
+    players,
+    povUuids: {
+      host: '1',
+      participant: '2',
+      liberal: find(players, (player) => player.role === 'liberal').uuid,
+      fascist: find(players, (player) => player.role === 'fascist').uuid,
+      mussolini: find(players, (player) => player.role === 'mussolini').uuid,
+      not(uuid) {
+        return map(
+          filter(players, (player) => player.uuid !== uuid),
+          'uuid'
+        );
+      }
+    }
+  };
+}
+
 export function buildGame(overwrites) {
+  const { players } = buildPlayers();
   return {
     code: 'ABXGYP',
     phase: 'lobby',
@@ -30,43 +90,18 @@ export function buildGame(overwrites) {
     chancellorNominee: null,
     president: null,
     chancellor: null,
+    chaos: 0,
+    notifications: [],
+    players,
+    ...overwrites,
     cards: {
       deck: [],
       hand: [],
       peek: [],
       fascist: [],
-      liberal: []
-    },
-    chaos: 0,
-    players: [
-      buildPlayer({
-        uuid: '1',
-        name: 'Alpha',
-        lobby: true
-      }),
-      buildPlayer({
-        uuid: '2',
-        name: 'Bravo',
-        lobby: true
-      }),
-      buildPlayer({
-        uuid: '3',
-        name: 'Charlie',
-        lobby: true
-      }),
-      buildPlayer({
-        uuid: '4',
-        name: 'Delta',
-        lobby: true
-      }),
-      buildPlayer({
-        uuid: '5',
-        name: 'Echo',
-        lobby: true
-      })
-    ],
-    notifications: [],
-    ...overwrites
+      liberal: [],
+      ...get(overwrites, 'cards')
+    }
   };
 }
 

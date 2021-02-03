@@ -15,7 +15,11 @@ export const parameters = {
         'Pages',
         [
           'Joining Game',
-          'Lobby'
+          'Lobby',
+          'Party Assignment Notification',
+          'Presidential Candidate Nominates Chancellor',
+          'Election Results Notification',
+          'Policy Enacted Notification'
         ]
       ]
     }

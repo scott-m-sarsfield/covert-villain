@@ -1,82 +1,51 @@
 import React from 'react';
-import SimulatedGame from './simulated_game';
+import SimulatedGame, { buildGame, buildPlayers } from './simulated_game';
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default ({ title: 'Pages/03 President Chooses Chancellor' });
+export default ({ title: 'Pages/Presidential Candidate Nominates Chancellor' });
 
-const PLAYERS_CHOOSES_CHANCELLOR = {
+const { players, povUuids } = buildPlayers();
+
+const fascistPresidentGame = buildGame({
   phase: 'president_chooses_chancellor',
-  presidentNominee: '1',
-  chancellorOptions: ['2', '3', '4', '5'],
-  cards: {
-    hand: [],
-    fascist: [],
-    liberal: []
-  },
-  players: [
-    {
-      uuid: '1',
-      name: 'Alpha',
-      role: 'fascist',
-      party: 'fascist',
-      alive: true
-    },
-    {
-      uuid: '2',
-      name: 'Bravo',
-      role: 'liberal',
-      party: 'liberal',
-      alive: true
-    },
-    {
-      uuid: '3',
-      name: 'Charlie',
-      role: 'liberal',
-      party: 'liberal',
-      alive: true
-    },
-    {
-      uuid: '4',
-      name: 'Delta',
-      role: 'mussolini',
-      party: 'fascist',
-      alive: true
-    },
-    {
-      uuid: '5',
-      name: 'Echo',
-      role: 'liberal',
-      party: 'liberal',
-      alive: true
-    }
-  ],
-  notifications: [
-    {
-      type: 'party_assignment'
-    }
-  ]
-};
+  players,
+  presidentNominee: povUuids.fascist,
+  chancellorOptions: povUuids.not(povUuids.fascist)
+});
 
-export const fascist = () => (
+const liberalPresidentGame = buildGame({
+  phase: 'president_chooses_chancellor',
+  players,
+  presidentNominee: povUuids.liberal,
+  chancellorOptions: povUuids.not(povUuids.liberal)
+});
+
+export const fascistPresident = () => (
   <SimulatedGame {...{
-    uuid: '1',
-    gameState: PLAYERS_CHOOSES_CHANCELLOR,
+    uuid: povUuids.fascist,
+    gameState: fascistPresidentGame
+  }} />
+);
+
+export const liberalPresident = () => (
+  <SimulatedGame {...{
+    uuid: povUuids.liberal,
+    gameState: liberalPresidentGame
+  }} />
+);
+
+export const liberalNonPresident = () => (
+  <SimulatedGame {...{
+    uuid: povUuids.liberal,
+    gameState: fascistPresidentGame,
     notification: false
   }} />
 );
 
-export const liberal = () => (
+export const fascistNonPresident = () => (
   <SimulatedGame {...{
-    uuid: '2',
-    gameState: PLAYERS_CHOOSES_CHANCELLOR,
-    notification: false
-  }} />
-);
-
-export const mussolini = () => (
-  <SimulatedGame {...{
-    uuid: '4',
-    gameState: PLAYERS_CHOOSES_CHANCELLOR,
+    uuid: povUuids.mussolini,
+    gameState: fascistPresidentGame,
     notification: false
   }} />
 );
