@@ -1,6 +1,13 @@
 import './preview.css';
 import '../src/index.css';
+import forEach from 'lodash/forEach';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+import {action} from '@storybook/addon-actions';
+import Api from '../src/api';
+
+forEach(Api, (fn, name) => {
+  Api[name] = action(`Api.${name}`)
+});
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
