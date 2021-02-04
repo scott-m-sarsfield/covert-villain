@@ -108,7 +108,7 @@ const Actions = {
         })
       };
 
-      if (game.phase !== phases.LOBBY && !find(game.players, { role: roles.MUSSOLINI }).alive) {
+      if (game.phase !== phases.LOBBY && !find(game.players, { role: roles.VILLAIN }).alive) {
         game = {
           ...game,
           phase: phases.LOBBY
@@ -120,15 +120,15 @@ const Actions = {
   },
 
   startGame(game) {
-    const { LIBERAL, FASCIST, MUSSOLINI } = roles;
+    const { BLUE, RED, VILLAIN } = roles;
 
     const assignments = {
-      5: [LIBERAL, LIBERAL, LIBERAL, FASCIST, MUSSOLINI],
-      6: [LIBERAL, LIBERAL, LIBERAL, LIBERAL, FASCIST, MUSSOLINI],
-      7: [LIBERAL, LIBERAL, LIBERAL, LIBERAL, FASCIST, FASCIST, MUSSOLINI],
-      8: [LIBERAL, LIBERAL, LIBERAL, LIBERAL, LIBERAL, FASCIST, FASCIST, MUSSOLINI],
-      9: [LIBERAL, LIBERAL, LIBERAL, LIBERAL, LIBERAL, FASCIST, FASCIST, FASCIST, MUSSOLINI],
-      10: [LIBERAL, LIBERAL, LIBERAL, LIBERAL, LIBERAL, LIBERAL, FASCIST, FASCIST, FASCIST, MUSSOLINI]
+      5: [BLUE, BLUE, BLUE, RED, VILLAIN],
+      6: [BLUE, BLUE, BLUE, BLUE, RED, VILLAIN],
+      7: [BLUE, BLUE, BLUE, BLUE, RED, RED, VILLAIN],
+      8: [BLUE, BLUE, BLUE, BLUE, BLUE, RED, RED, VILLAIN],
+      9: [BLUE, BLUE, BLUE, BLUE, BLUE, RED, RED, RED, VILLAIN],
+      10: [BLUE, BLUE, BLUE, BLUE, BLUE, BLUE, RED, RED, RED, VILLAIN]
     };
 
     const { POLICY_PEEK, EXECUTION, INVESTIGATE_LOYALTY, SPECIAL_ELECTION } = presidentialPowers;
@@ -148,7 +148,7 @@ const Actions = {
 
     players = players.map((player, index) => ({
       ...player,
-      party: gameAssignments[index] === LIBERAL ? LIBERAL : FASCIST,
+      party: gameAssignments[index] === BLUE ? BLUE : RED,
       role: gameAssignments[index],
       investigatedBy: null,
       alive: true,
@@ -240,7 +240,7 @@ const Actions = {
           ]
         };
 
-        if (game.cards.fascist.length >= 3 && game.chancellor === find(game.players, { role: roles.MUSSOLINI }).uuid) {
+        if (game.cards.fascist.length >= 3 && game.chancellor === find(game.players, { role: roles.VILLAIN }).uuid) {
           return {
             ...game,
             phase: phases.LOBBY
@@ -494,7 +494,7 @@ const Actions = {
       ]
     };
 
-    if (!find(game.players, { role: roles.MUSSOLINI }).alive) {
+    if (!find(game.players, { role: roles.VILLAIN }).alive) {
       return {
         ...game,
         phase: phases.LOBBY

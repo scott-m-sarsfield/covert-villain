@@ -4,9 +4,9 @@ const themes = {
     leader: 'President',
     appointee: 'Chancellor',
     redRole: 'Fascist',
-    redPolicy: 'Fascist',
+    redParty: 'Fascist',
     blueRole: 'Liberal',
-    bluePolicy: 'Liberal',
+    blueParty: 'Liberal',
     yes: 'ja! (YES)',
     no: 'nein (NO)',
     villain: 'Hitler'
@@ -16,9 +16,9 @@ const themes = {
     leader: 'Supreme Chancellor',
     appointee: 'Vice Chair',
     redRole: 'Loyalist Senator',
-    redPolicy: 'Loyalist',
+    redParty: 'Loyalist',
     blueRole: 'Delegate Senator',
-    bluePolicy: 'Delegation',
+    blueParty: 'Delegation',
     yes: 'chak! (YES)',
     no: 'den (NO)',
     villain: 'Senator Papillon'

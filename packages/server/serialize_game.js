@@ -13,8 +13,8 @@ function canSeeRole(currentPlayer, player, playerCount, phase) {
   if (currentPlayer.uuid === player.uuid) {
     return true;
   }
-  if (currentPlayer.party === parties.FASCIST) {
-    if (currentPlayer.role !== roles.MUSSOLINI) {
+  if (currentPlayer.party === parties.RED) {
+    if (currentPlayer.role !== roles.VILLAIN) {
       return true;
     } else if (playerCount <= 6) {
       return true;
