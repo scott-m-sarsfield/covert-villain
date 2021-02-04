@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessRook, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { toggleOverview } from '../store/game_slice';
+import themes from '../theme';
 
 const Wrapper = styled.div`
   background: #ecc16b;
@@ -41,10 +42,11 @@ const SettingsButton = styled.button`
 const Heading = ({ hasSettings, className }) => {
   const dispatch = useDispatch();
   const overviewOpen = useSelector((state) => state.game.overviewOpen);
+  const currentTheme = useSelector((state) => state.theme.current) || 'elusiveEmperor';
 
   return (
     <Wrapper {...{ className }}>
-      <Header>Covert Mussolini</Header>
+      <Header>{themes[currentTheme].title}</Header>
       {
         hasSettings ? (
           <SettingsButton onClick={() => dispatch(toggleOverview())}>

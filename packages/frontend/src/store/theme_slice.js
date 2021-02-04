@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 const themesSlice = createSlice({
   name: 'theme',
   initialState: {
-    theme: 'elusiveEmperor'
+    current: 'elusiveEmperor'
   },
   reducers: {
     setThemeState(state, action) {
       const { theme } = action.payload;
-      state.theme = theme;
+      state.current = theme;
     }
   }
 });
