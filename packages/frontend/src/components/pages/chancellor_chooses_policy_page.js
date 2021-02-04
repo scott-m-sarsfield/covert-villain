@@ -43,7 +43,7 @@ const ChancellorChoosesPolicyPage = () => {
               ))
             }
             {
-              game.cards.redPolicy.length >= 5 && (
+              game.cards.redParty.length >= 5 && (
                 <Option {...{
                   label: 'Veto',
                   value: 911,

@@ -34,7 +34,7 @@ const SpecialActionPolicyPeekPage = () => {
             {
               cards.map((card) => (
                 <Option key={card} {...{
-                  label: themes[currentTheme][card < 11 ? 'redPolicy' : 'bluePolicy'],
+                  label: themes[currentTheme][card < 11 ? 'redParty' : 'blueParty'],
                   value: card,
                   variant: card < 11 ? 'redParty' : 'blueParty',
                   disabled: true,

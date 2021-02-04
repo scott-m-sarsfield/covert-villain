@@ -13,7 +13,7 @@ const presidentChoosesPoliciesGame = buildGame({
   chancellor: povUuids.blues[0],
   cards: {
     hand: [4, 15],
-    redPolicy: [1, 2, 3, 5, 6]
+    redParty: [1, 2, 3, 5, 6]
   }
 });
 

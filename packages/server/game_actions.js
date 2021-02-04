@@ -20,8 +20,8 @@ const initialGame = () => ({
     deck: [],
     hand: [],
     discard: [],
-    redPolicy: [],
-    bluePolicy: [],
+    redParty: [],
+    blueParty: [],
     peek: []
   },
   presidentIndex: 0,
@@ -164,8 +164,8 @@ const Actions = {
         deck: shuffle(range(1, 17)),
         hand: [],
         discard: [],
-        redPolicy: [],
-        bluePolicy: []
+        redParty: [],
+        blueParty: []
       },
       notifications: [
         {
@@ -240,7 +240,7 @@ const Actions = {
           ]
         };
 
-        if (game.cards.redPolicy.length >= 3 && game.chancellor === find(game.players, { role: roles.VILLAIN }).uuid) {
+        if (game.cards.redParty.length >= 3 && game.chancellor === find(game.players, { role: roles.VILLAIN }).uuid) {
           return {
             ...game,
             phase: phases.LOBBY
@@ -389,18 +389,18 @@ const Actions = {
         ...game,
         cards: {
           ...game.cards,
-          redPolicy: [...game.cards.redPolicy, card]
+          redParty: [...game.cards.redParty, card]
         }
       };
 
-      if (game.cards.redPolicy.length >= 6) {
+      if (game.cards.redParty.length >= 6) {
         return {
           ...game,
           phase: phases.LOBBY
         };
       }
 
-      const presidentialPower = game.redBoard[game.cards.redPolicy.length - 1];
+      const presidentialPower = game.redBoard[game.cards.redParty.length - 1];
 
       if (presidentialPower && !skipPower) {
         if (presidentialPower === presidentialPowers.POLICY_PEEK) {
@@ -446,11 +446,11 @@ const Actions = {
         ...game,
         cards: {
           ...game.cards,
-          bluePolicy: [...game.cards.bluePolicy, card]
+          blueParty: [...game.cards.blueParty, card]
         }
       };
 
-      if (game.cards.bluePolicy.length >= 5) {
+      if (game.cards.blueParty.length >= 5) {
         return {
           ...game,
           phase: phases.LOBBY

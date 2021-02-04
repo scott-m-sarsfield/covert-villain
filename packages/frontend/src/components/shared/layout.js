@@ -125,7 +125,7 @@ const OverviewContent = () => {
       <CardRow>
         {
           game.redBoard.map((action, i) => (
-            <Card variant="redParty" key={i} active={!!game.cards.redPolicy[i]}>
+            <Card variant="redParty" key={i} active={!!game.cards.redParty[i]}>
               {action && <FontAwesomeIcon icon={actionIcons[action]} />}
             </Card>
           ))

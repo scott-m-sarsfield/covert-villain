@@ -147,8 +147,8 @@ export function buildGame(overwrites) {
       deck: [],
       hand: [],
       peek: [],
-      redPolicy: [],
-      bluePolicy: [],
+      redParty: [],
+      blueParty: [],
       ...get(overwrites, 'cards')
     }
   };

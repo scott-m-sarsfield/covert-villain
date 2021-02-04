@@ -20,8 +20,8 @@ const PolicyEnactedNotificationContent = ({ data }) => { // data prop
   return (
     <React.Fragment>
       <Instructions>
-        {red && <PartyText party="red">{themes[currentTheme].redPolicy} Policy</PartyText>}
-        {!red && <PartyText party="blue">{themes[currentTheme].bluePolicy} Policy</PartyText>}
+        {red && <PartyText party="red">{themes[currentTheme].redParty} Policy</PartyText>}
+        {!red && <PartyText party="blue">{themes[currentTheme].blueParty} Policy</PartyText>}
         <br />
         Enacted!
       </Instructions>
