@@ -39,7 +39,7 @@ const initialGame = () => ({
 Player {
   uuid: "",
   name: "",
-  party: 'redRole' | 'blueRole',
+  party: 'redParty' | 'blueParty',
   role: 'villain' | 'member',
   investigatedBy: null,
   alive: true,

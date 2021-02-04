@@ -12,35 +12,35 @@ describe('leaveGame', () => {
           name: 'Alpha',
           role: 'villain',
           alive: true,
-          party: 'redRole'
+          party: 'redParty'
         },
         {
           uuid: '2',
           name: 'Bravo',
           role: 'blueRole',
           alive: true,
-          party: 'blueRole'
+          party: 'blueParty'
         },
         {
           uuid: '3',
           name: 'Charlie',
           role: 'blueRole',
           alive: true,
-          party: 'blueRole'
+          party: 'blueParty'
         },
         {
           uuid: '4',
           name: 'Delta',
           role: 'redRole',
           alive: true,
-          party: 'redRole'
+          party: 'redParty'
         },
         {
           uuid: '5',
           name: 'Echo',
           role: 'blueRole',
           alive: true,
-          party: 'blueRole'
+          party: 'blueParty'
         }
       ]
     };
