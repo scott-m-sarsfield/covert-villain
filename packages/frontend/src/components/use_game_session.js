@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import get from 'lodash/get';
 import { useSocket, useSocketEvent } from './socket_listener';
-import { forgetGame, joinGame, refreshGame } from '../game_slice';
+import { forgetGame, joinGame, refreshGame } from '../store/game_slice';
 import Auth from '../auth';
 
 const useGameSession = () => {

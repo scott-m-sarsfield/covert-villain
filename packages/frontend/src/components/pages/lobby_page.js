@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import SubmitButton from '../shared/submit_button';
-import { leaveGame, startGame } from '../../game_slice';
+import { leaveGame, startGame } from '../../store/game_slice';
 import Button from '../shared/button';
 import { PlayerTable } from '../shared/player_table';
 import { Layout } from '../shared/layout';

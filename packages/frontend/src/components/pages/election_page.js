@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import find from 'lodash/find';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
-import { vote } from '../../game_slice';
+import { vote } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import SubmitButton from '../shared/submit_button';
-import { readNotification } from '../../game_slice';
+import { readNotification } from '../../store/game_slice';
 import Instructions from '../shared/instructions';
 import PartyAssignmentNotificationContent from './party_assignment_notification_content';
 import ElectionResultsNotificationContent from './election_results_notification_content';

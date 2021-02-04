@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import noop from 'lodash/noop';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
-import { endPolicyPeek } from '../../game_slice';
+import { endPolicyPeek } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
 
