@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loadScenario, resetGame } from '../game_slice';
+import { loadScenario, resetGame } from '../store/game_slice';
 
 const scenarios = {
   partyAssignment: {

@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import get from 'lodash/get';
 import forEach from 'lodash/forEach';
 import find from 'lodash/find';
-import Api from './api';
-import Socket from './components/socket';
+import Api from '../api';
+import Socket from '../components/socket';
 
 const gamesSlice = createSlice({
   name: 'game',

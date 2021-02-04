@@ -10,7 +10,7 @@ import Button from './button';
 import ScoreHud, { colors } from '../pages/score_hud';
 import { PlayerTable } from './player_table';
 import Instructions from './instructions';
-import { leaveGame } from '../../game_slice';
+import { leaveGame } from '../../store/game_slice';
 
 export const WrappedScoreHud = styled(ScoreHud)``;
 const LayoutWrapper = styled.div`

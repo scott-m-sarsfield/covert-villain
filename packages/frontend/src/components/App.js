@@ -14,7 +14,7 @@ import GameOverPage from './pages/game_over_page';
 import SpecialActionPolicyPeekPage from './pages/special_action_policy_peek_page';
 import PresidentExecutesPlayerPage from './pages/president_executes_player_page';
 import PresidentApprovesVetoPage from './pages/president_approves_veto_page';
-import { dismissError } from '../game_slice';
+import { dismissError } from '../store/game_slice';
 import PresidentInvestigatesLoyaltyPage from './pages/president_investigates_loyalty_page';
 import SpecialElectionPage from './pages/special_election_page';
 

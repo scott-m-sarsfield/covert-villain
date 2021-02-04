@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import types from 'prop-types';
-import { joinGame } from '../../game_slice';
+import { joinGame } from '../../store/game_slice';
 import SubmitButton from '../shared/submit_button';
 import Heading from '../heading';
 

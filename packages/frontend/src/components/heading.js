@@ -4,7 +4,7 @@ import types from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessRook, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { toggleOverview } from '../game_slice';
+import { toggleOverview } from '../store/game_slice';
 
 const Wrapper = styled.div`
   background: #ecc16b;
