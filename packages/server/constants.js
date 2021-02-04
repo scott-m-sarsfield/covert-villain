@@ -20,13 +20,13 @@ module.exports = {
     INVESTIGATION: 'investigation'
   },
   parties: {
-    LIBERAL: 'liberal',
-    FASCIST: 'fascist'
+    BLUE: 'blueParty',
+    RED: 'redParty'
   },
   roles: {
-    LIBERAL: 'liberal',
-    FASCIST: 'fascist',
-    MUSSOLINI: 'mussolini'
+    BLUE: 'blueRole',
+    RED: 'redRole',
+    VILLAIN: 'villain'
   },
   presidentialPowers: {
     INVESTIGATE_LOYALTY: 'investigate_loyalty',
