@@ -11,10 +11,10 @@ export const colors = {
   white: '#ffffff',
   grey: '#979797',
   lightGrey: '#d8d8d8',
-  fascist: '#c84e4e',
-  fascistBorder: '#7e0c0c',
-  liberal: '#74b5b5',
-  liberalBorder: '#3761ad'
+  red: '#c84e4e',
+  redBorder: '#7e0c0c',
+  blue: '#74b5b5',
+  blueBorder: '#3761ad'
 };
 
 const MeterSection = styled.div.attrs((props) => ({
@@ -73,7 +73,7 @@ Meter.defaultProps = {
   filled: 0
 };
 
-const FascistMeter = ({ count }) => (
+const RedMeter = ({ count }) => (
   <Meter {...{
     label: (
       <FontAwesomeIcon icon={faSkull} />
@@ -81,28 +81,28 @@ const FascistMeter = ({ count }) => (
     total: 6,
     filled: count,
     colors: {
-      filledBorderColor: colors.fascistBorder,
-      filledBackgroundColor: colors.fascist
+      filledBorderColor: colors.redBorder,
+      filledBackgroundColor: colors.red
     }
   }} />
 );
 
-FascistMeter.propTypes = {
+RedMeter.propTypes = {
   count: types.number
 };
 
-const LiberalMeter = ({ count }) => (
+const BlueMeter = ({ count }) => (
   <Meter {...{
     label: <FontAwesomeIcon icon={faDove} />,
     total: 5,
     filled: count,
     colors: {
-      filledBorderColor: colors.liberalBorder,
-      filledBackgroundColor: colors.liberal
+      filledBorderColor: colors.blueBorder,
+      filledBackgroundColor: colors.blue
     }
   }} />
 );
-LiberalMeter.propTypes = {
+BlueMeter.propTypes = {
   count: types.number
 };
 
@@ -129,19 +129,19 @@ const Left = styled.div`
 
 function getCounts(game) {
   return {
-    fascistCount: get(game, 'cards.fascist', []).length,
-    liberalCount: get(game, 'cards.liberal', []).length,
+    redCount: get(game, 'cards.redParty', []).length,
+    blueCount: get(game, 'cards.blueParty', []).length,
     chaosLevel: get(game, 'chaos', 0)
   };
 }
 
 const ScoreHud = ({ className }) => {
-  const { fascistCount, liberalCount, chaosLevel } = useSelector((state) => getCounts(state.game.data));
+  const { redCount, blueCount, chaosLevel } = useSelector((state) => getCounts(state.game.data));
   return (
     <Wrapper className={className}>
       <Left>
-        <FascistMeter count={fascistCount}/>
-        <LiberalMeter count={liberalCount}/>
+        <RedMeter count={redCount}/>
+        <BlueMeter count={blueCount}/>
       </Left>
       <ChaosMeter count={chaosLevel}/>
     </Wrapper>

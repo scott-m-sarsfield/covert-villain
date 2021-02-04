@@ -9,7 +9,7 @@ const { players, povUuids } = buildPlayers();
 const presidentChoosesPoliciesGame = buildGame({
   phase: 'special_action_policy_peek',
   players,
-  president: povUuids.fascist,
+  president: povUuids.red,
   cards: {
     peek: [4, 15, 10]
   }
@@ -17,21 +17,21 @@ const presidentChoosesPoliciesGame = buildGame({
 
 export const president = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
+    uuid: povUuids.red,
     gameState: presidentChoosesPoliciesGame
   }} />
 );
 
-export const liberalBystander = () => (
+export const blueBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberal,
+    uuid: povUuids.blue,
     gameState: presidentChoosesPoliciesGame
   }} />
 );
 
-export const fascistBystander = () => (
+export const redBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.mussolini,
+    uuid: povUuids.villain,
     gameState: presidentChoosesPoliciesGame
   }} />
 );

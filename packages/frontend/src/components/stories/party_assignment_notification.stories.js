@@ -15,25 +15,25 @@ const game = buildGame({
   ]
 });
 
-export const fascist = () => (
+export const red = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
+    uuid: povUuids.red,
     gameState: game,
     notification: true
   }} />
 );
 
-export const liberal = () => (
+export const blue = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberal,
+    uuid: povUuids.blue,
     gameState: game,
     notification: true
   }} />
 );
 
-export const mussolini = () => (
+export const villain = () => (
   <SimulatedGame {...{
-    uuid: povUuids.mussolini,
+    uuid: povUuids.villain,
     gameState: game,
     notification: true
   }} />

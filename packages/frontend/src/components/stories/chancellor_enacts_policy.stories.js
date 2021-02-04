@@ -6,47 +6,47 @@ export default ({ title: 'Pages/Chancellor Enacts Policy' });
 
 const { players, povUuids } = buildPlayers();
 
-const presidentChoosesPoliciesGame = buildGame({
+const leaderChoosesPoliciesGame = buildGame({
   phase: 'chancellor_chooses_policy',
   players,
-  chancellor: povUuids.fascist,
+  chancellor: povUuids.red,
   cards: {
     hand: [15, 10]
   }
 });
 
 const vetoablePoliciesGame = {
-  ...presidentChoosesPoliciesGame,
+  ...leaderChoosesPoliciesGame,
   cards: {
     hand: [4, 10],
-    fascist: [0, 1, 2, 3, 5]
+    redPolicy: [0, 1, 2, 3, 5]
   }
 };
 
 export const chancellor = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
-    gameState: presidentChoosesPoliciesGame
+    uuid: povUuids.red,
+    gameState: leaderChoosesPoliciesGame
   }} />
 );
 
 export const chancellorWithVeto = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
+    uuid: povUuids.red,
     gameState: vetoablePoliciesGame
   }} />
 );
 
-export const liberalBystander = () => (
+export const blueBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberal,
-    gameState: presidentChoosesPoliciesGame
+    uuid: povUuids.blue,
+    gameState: leaderChoosesPoliciesGame
   }} />
 );
 
-export const fascistBystander = () => (
+export const redBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.mussolini,
-    gameState: presidentChoosesPoliciesGame
+    uuid: povUuids.villain,
+    gameState: leaderChoosesPoliciesGame
   }} />
 );

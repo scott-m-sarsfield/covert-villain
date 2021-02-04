@@ -30,16 +30,16 @@ Check.propTypes = {
 };
 
 const optionColors = {
-  fascist: {
+  redParty: {
     colors: {
-      border: colors.fascistBorder,
-      background: colors.fascist
+      border: colors.redBorder,
+      background: colors.red
     }
   },
-  liberal: {
+  blueParty: {
     colors: {
-      border: colors.liberalBorder,
-      background: colors.liberal
+      border: colors.blueBorder,
+      background: colors.blue
     }
   },
   default: {
@@ -78,7 +78,7 @@ const OptionWrapper = styled.button.attrs((props) => {
   
   ${(props) => props.disabled && css`
     opacity: 0.7;
-   `}
+  `}
 `;
 
 const StyledCheck = styled(Check)`

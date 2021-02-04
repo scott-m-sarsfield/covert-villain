@@ -6,53 +6,53 @@ export default ({ title: 'Pages/Game Over' });
 
 const { players, povUuids } = buildPlayers();
 
-export const fascistPolicyWin = () => (
+export const redPolicyWin = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
+    uuid: povUuids.red,
     gameState: buildGame({
       phase: 'lobby',
       players,
       cards: {
-        fascist: [1, 2, 3, 4, 5, 6]
+        redPolicy: [1, 2, 3, 4, 5, 6]
       }
     })
   }} />
 );
 
-export const liberalPolicyWin = () => (
+export const bluePolicyWin = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
+    uuid: povUuids.red,
     gameState: buildGame({
       phase: 'lobby',
       players,
       cards: {
-        liberal: [12, 13, 14, 15, 16]
+        bluePolicy: [12, 13, 14, 15, 16]
       }
     })
   }} />
 );
 
-export const mussoliniElectedWin = () => (
+export const villainElectedWin = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
+    uuid: povUuids.red,
     gameState: buildGame({
       phase: 'lobby',
       players,
       cards: {
-        fascist: [1, 2, 3]
+        redPolicy: [1, 2, 3]
       },
-      chancellor: povUuids.mussolini
+      chancellor: povUuids.villain
     })
   }} />
 );
 
-export const mussoliniKilledWin = () => (
+export const villainKilledWin = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
+    uuid: povUuids.red,
     gameState: buildGame({
       phase: 'lobby',
       players: players.map((player) => {
-        if (player.role === 'mussolini') {
+        if (player.role === 'villain') {
           return {
             ...player,
             alive: false
@@ -61,7 +61,7 @@ export const mussoliniKilledWin = () => (
         return player;
       }),
       cards: {
-        fascist: [1, 2, 3, 4]
+        redPolicy: [1, 2, 3, 4]
       }
     })
   }}/>

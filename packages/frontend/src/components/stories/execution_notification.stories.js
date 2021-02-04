@@ -9,7 +9,7 @@ const { players, povUuids } = buildPlayers();
 const game = buildGame({
   phase: 'president_chooses_chancellor',
   players: players.map((player) => {
-    if (player.uuid === povUuids.liberal) {
+    if (player.uuid === povUuids.blue) {
       return {
         ...player,
         alive: false
@@ -17,18 +17,18 @@ const game = buildGame({
     }
     return player;
   }),
-  president: povUuids.mussolini,
+  president: povUuids.villain,
   notifications: [
     {
       type: 'execution',
       data: {
-        uuid: povUuids.liberal
+        uuid: povUuids.blue
       }
     }
   ]
 });
 
-export const fascistExecution = () => (
+export const redExecution = () => (
   <SimulatedGame {...{
     uuid: '1',
     gameState: game,
@@ -36,7 +36,7 @@ export const fascistExecution = () => (
   }} />
 );
 
-export const liberalExecution = () => (
+export const blueExecution = () => (
   <SimulatedGame {...{
     uuid: '5',
     gameState: game,

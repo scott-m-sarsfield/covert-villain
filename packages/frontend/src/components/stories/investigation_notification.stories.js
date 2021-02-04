@@ -11,47 +11,47 @@ const createInvestigationNotificationState = (investigatedPlayer) => buildGame({
   players: players.map(
     (player) => ({
       ...player,
-      investigatedBy: player.uuid === investigatedPlayer ? povUuids.liberals[0] : null
+      investigatedBy: player.uuid === investigatedPlayer ? povUuids.blues[0] : null
     })
   ),
   notifications: [
     {
       type: 'investigation',
       data: {
-        president: povUuids.liberals[0],
+        president: povUuids.blues[0],
         player: investigatedPlayer
       }
     }
   ]
 });
 
-export const liberalPresidentInvestigatesFascist = () => (
+export const bluePresidentInvestigatesRed = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberals[0],
-    gameState: createInvestigationNotificationState(povUuids.fascist),
+    uuid: povUuids.blues[0],
+    gameState: createInvestigationNotificationState(povUuids.red),
     notification: true
   }} />
 );
-export const liberalPresidentInvestigatesLiberal = () => (
+export const bluePresidentInvestigatesBlue = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberals[0],
-    gameState: createInvestigationNotificationState(povUuids.liberals[1]),
-    notification: true
-  }} />
-);
-
-export const liberalBystander = () => (
-  <SimulatedGame {...{
-    uuid: povUuids.liberals[1],
-    gameState: createInvestigationNotificationState(povUuids.fascist),
+    uuid: povUuids.blues[0],
+    gameState: createInvestigationNotificationState(povUuids.blues[1]),
     notification: true
   }} />
 );
 
-export const fascistBystander = () => (
+export const blueBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
-    gameState: createInvestigationNotificationState(povUuids.fascist),
+    uuid: povUuids.blues[1],
+    gameState: createInvestigationNotificationState(povUuids.red),
+    notification: true
+  }} />
+);
+
+export const redBystander = () => (
+  <SimulatedGame {...{
+    uuid: povUuids.red,
+    gameState: createInvestigationNotificationState(povUuids.red),
     notification: true
   }} />
 );
