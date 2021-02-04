@@ -11,10 +11,10 @@ export const colors = {
   white: '#ffffff',
   grey: '#979797',
   lightGrey: '#d8d8d8',
-  red: '#c84e4e',
-  redBorder: '#7e0c0c',
-  blue: '#74b5b5',
-  blueBorder: '#3761ad'
+  evil: '#c84e4e',
+  evilBorder: '#7e0c0c',
+  good: '#74b5b5',
+  goodBorder: '#3761ad'
 };
 
 const MeterSection = styled.div.attrs((props) => ({
@@ -73,7 +73,7 @@ Meter.defaultProps = {
   filled: 0
 };
 
-const RedMeter = ({ count }) => (
+const EvilMeter = ({ count }) => (
   <Meter {...{
     label: (
       <FontAwesomeIcon icon={faSkull} />
@@ -81,28 +81,28 @@ const RedMeter = ({ count }) => (
     total: 6,
     filled: count,
     colors: {
-      filledBorderColor: colors.redBorder,
-      filledBackgroundColor: colors.red
+      filledBorderColor: colors.evilBorder,
+      filledBackgroundColor: colors.evil
     }
   }} />
 );
 
-RedMeter.propTypes = {
+EvilMeter.propTypes = {
   count: types.number
 };
 
-const BlueMeter = ({ count }) => (
+const GoodMeter = ({ count }) => (
   <Meter {...{
     label: <FontAwesomeIcon icon={faDove} />,
     total: 5,
     filled: count,
     colors: {
-      filledBorderColor: colors.blueBorder,
-      filledBackgroundColor: colors.blue
+      filledBorderColor: colors.goodBorder,
+      filledBackgroundColor: colors.good
     }
   }} />
 );
-BlueMeter.propTypes = {
+GoodMeter.propTypes = {
   count: types.number
 };
 
@@ -129,19 +129,19 @@ const Left = styled.div`
 
 function getCounts(game) {
   return {
-    redCount: get(game, 'cards.redParty', []).length,
-    blueCount: get(game, 'cards.blueParty', []).length,
+    evilCount: get(game, 'cards.evilParty', []).length,
+    goodCount: get(game, 'cards.goodParty', []).length,
     chaosLevel: get(game, 'chaos', 0)
   };
 }
 
 const ScoreHud = ({ className }) => {
-  const { redCount, blueCount, chaosLevel } = useSelector((state) => getCounts(state.game.data));
+  const { evilCount, goodCount, chaosLevel } = useSelector((state) => getCounts(state.game.data));
   return (
     <Wrapper className={className}>
       <Left>
-        <RedMeter count={redCount}/>
-        <BlueMeter count={blueCount}/>
+        <EvilMeter count={evilCount}/>
+        <GoodMeter count={goodCount}/>
       </Left>
       <ChaosMeter count={chaosLevel}/>
     </Wrapper>

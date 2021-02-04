@@ -15,17 +15,17 @@ const game = buildGame({
   ]
 });
 
-export const red = () => (
+export const evil = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: game,
     notification: true
   }} />
 );
 
-export const blue = () => (
+export const good = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
+    uuid: povUuids.good,
     gameState: game,
     notification: true
   }} />

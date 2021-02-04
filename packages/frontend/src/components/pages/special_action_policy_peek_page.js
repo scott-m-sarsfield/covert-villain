@@ -34,9 +34,9 @@ const SpecialActionPolicyPeekPage = () => {
             {
               cards.map((card) => (
                 <Option key={card} {...{
-                  label: themes[currentTheme][card < 11 ? 'redParty' : 'blueParty'],
+                  label: themes[currentTheme][card < 11 ? 'evilParty' : 'goodParty'],
                   value: card,
-                  variant: card < 11 ? 'redParty' : 'blueParty',
+                  variant: card < 11 ? 'evilParty' : 'goodParty',
                   disabled: true,
                   onSelect: noop
                 }}/>

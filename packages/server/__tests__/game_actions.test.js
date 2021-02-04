@@ -12,35 +12,35 @@ describe('leaveGame', () => {
           name: 'Alpha',
           role: 'villain',
           alive: true,
-          party: 'redParty'
+          party: 'evilParty'
         },
         {
           uuid: '2',
           name: 'Bravo',
-          role: 'blueRole',
+          role: 'goodRole',
           alive: true,
-          party: 'blueParty'
+          party: 'goodParty'
         },
         {
           uuid: '3',
           name: 'Charlie',
-          role: 'blueRole',
+          role: 'goodRole',
           alive: true,
-          party: 'blueParty'
+          party: 'goodParty'
         },
         {
           uuid: '4',
           name: 'Delta',
-          role: 'redRole',
+          role: 'evilRole',
           alive: true,
-          party: 'redParty'
+          party: 'evilParty'
         },
         {
           uuid: '5',
           name: 'Echo',
-          role: 'blueRole',
+          role: 'goodRole',
           alive: true,
-          party: 'blueParty'
+          party: 'goodParty'
         }
       ]
     };
@@ -129,8 +129,8 @@ describe('drawPolicies', () => {
       cards: {
         deck: [17, 15, 13, 11, 9, 7, 5, 3, 1],
         discard: [16, 14, 12, 10, 8, 6, 4, 2],
-        blueParty: [],
-        redParty: [],
+        goodParty: [],
+        evilParty: [],
         hand: []
       }
     };
@@ -141,8 +141,8 @@ describe('drawPolicies', () => {
       cards: {
         deck: [11, 9, 7, 5, 3, 1],
         discard: [16, 14, 12, 10, 8, 6, 4, 2],
-        blueParty: [],
-        redParty: [],
+        goodParty: [],
+        evilParty: [],
         hand: [17, 15, 13]
       }
     });
@@ -154,8 +154,8 @@ describe('drawPolicies', () => {
         cards: {
           deck: [17, 15],
           discard: [16, 14, 12, 10, 8, 6, 4, 2, 13, 11, 9, 7, 5, 3, 1],
-          blueParty: [],
-          redParty: [],
+          goodParty: [],
+          evilParty: [],
           hand: []
         }
       };
@@ -165,8 +165,8 @@ describe('drawPolicies', () => {
       expect(updatedGame).toEqual({
         cards: expect.objectContaining({
           discard: [],
-          blueParty: [],
-          redParty: []
+          goodParty: [],
+          evilParty: []
         })
       });
       expect(updatedGame.cards.deck).toHaveLength(14);

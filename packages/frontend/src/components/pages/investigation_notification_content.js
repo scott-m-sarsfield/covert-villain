@@ -14,7 +14,7 @@ const Party = styled.h2`
   margin: 0;
   padding: 0;
   
-  ${({ party }) => party === 'blueParty' ? `
+  ${({ party }) => party === 'goodParty' ? `
       color: #74b5d5;
     ` : `
       color: #c84e4e;

@@ -9,7 +9,7 @@ const { players, povUuids } = buildPlayers();
 const game = buildGame({
   phase: 'president_chooses_chancellor',
   players: players.map((player) => {
-    if (player.uuid === povUuids.blue) {
+    if (player.uuid === povUuids.good) {
       return {
         ...player,
         alive: false
@@ -22,13 +22,13 @@ const game = buildGame({
     {
       type: 'execution',
       data: {
-        uuid: povUuids.blue
+        uuid: povUuids.good
       }
     }
   ]
 });
 
-export const redExecution = () => (
+export const evilExecution = () => (
   <SimulatedGame {...{
     uuid: '1',
     gameState: game,
@@ -36,7 +36,7 @@ export const redExecution = () => (
   }} />
 );
 
-export const blueExecution = () => (
+export const goodExecution = () => (
   <SimulatedGame {...{
     uuid: '5',
     gameState: game,

@@ -64,49 +64,49 @@ const chaosElection = {
   ]
 };
 
-export const successfulRed = () => (
+export const successfulEvil = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: successfulElection,
     notification: true
   }} />
 );
 
-export const successfulBlue = () => (
+export const successfulGood = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
+    uuid: povUuids.good,
     gameState: successfulElection,
     notification: true
   }} />
 );
 
-export const failedRed = () => (
+export const failedEvil = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: failedElection,
     notification: true
   }} />
 );
 
-export const failedBlue = () => (
+export const failedGood = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
+    uuid: povUuids.good,
     gameState: failedElection,
     notification: true
   }} />
 );
 
-export const chaosRed = () => (
+export const chaosEvil = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: chaosElection,
     notification: true
   }} />
 );
 
-export const chaosBlue = () => (
+export const chaosGood = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
+    uuid: povUuids.good,
     gameState: chaosElection,
     notification: true
   }} />

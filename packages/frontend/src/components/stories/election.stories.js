@@ -9,7 +9,7 @@ const { players, povUuids } = buildPlayers();
 const electionGame = buildGame({
   phase: 'election',
   players,
-  presidentNominee: povUuids.red,
+  presidentNominee: povUuids.evil,
   chancellorNominee: povUuids.villain,
   votes: {}
 });
@@ -27,23 +27,23 @@ function addVote(game, uuid) {
   };
 }
 
-export const redVoting = () => (
+export const evilVoting = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: electionGame
   }} />
 );
 
-export const blueVoting = () => (
+export const goodVoting = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
+    uuid: povUuids.good,
     gameState: electionGame
   }} />
 );
 
 export const voted = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
-    gameState: addVote(electionGame, povUuids.blue)
+    uuid: povUuids.good,
+    gameState: addVote(electionGame, povUuids.good)
   }} />
 );

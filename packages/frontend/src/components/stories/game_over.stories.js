@@ -6,27 +6,27 @@ export default ({ title: 'Pages/Game Over' });
 
 const { players, povUuids } = buildPlayers();
 
-export const redPolicyWin = () => (
+export const evilPolicyWin = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: buildGame({
       phase: 'lobby',
       players,
       cards: {
-        redParty: [1, 2, 3, 4, 5, 6]
+        evilParty: [1, 2, 3, 4, 5, 6]
       }
     })
   }} />
 );
 
-export const bluePolicyWin = () => (
+export const goodPolicyWin = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: buildGame({
       phase: 'lobby',
       players,
       cards: {
-        blueParty: [12, 13, 14, 15, 16]
+        goodParty: [12, 13, 14, 15, 16]
       }
     })
   }} />
@@ -34,12 +34,12 @@ export const bluePolicyWin = () => (
 
 export const villainElectedWin = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: buildGame({
       phase: 'lobby',
       players,
       cards: {
-        redParty: [1, 2, 3]
+        evilParty: [1, 2, 3]
       },
       chancellor: povUuids.villain
     })
@@ -48,7 +48,7 @@ export const villainElectedWin = () => (
 
 export const villainKilledWin = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: buildGame({
       phase: 'lobby',
       players: players.map((player) => {
@@ -61,7 +61,7 @@ export const villainKilledWin = () => (
         return player;
       }),
       cards: {
-        redParty: [1, 2, 3, 4]
+        evilParty: [1, 2, 3, 4]
       }
     })
   }}/>

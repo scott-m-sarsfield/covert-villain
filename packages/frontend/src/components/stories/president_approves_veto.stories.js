@@ -10,10 +10,10 @@ const presidentChoosesPoliciesGame = buildGame({
   phase: 'president_approves_veto',
   players,
   president: povUuids.villain,
-  chancellor: povUuids.blues[0],
+  chancellor: povUuids.goods[0],
   cards: {
     hand: [4, 15],
-    redParty: [1, 2, 3, 5, 6]
+    evilParty: [1, 2, 3, 5, 6]
   }
 });
 
@@ -24,16 +24,16 @@ export const president = () => (
   }} />
 );
 
-export const blueBystander = () => (
+export const goodBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blues[1],
+    uuid: povUuids.goods[1],
     gameState: presidentChoosesPoliciesGame
   }} />
 );
 
-export const redBystander = () => (
+export const evilBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: presidentChoosesPoliciesGame
   }} />
 );

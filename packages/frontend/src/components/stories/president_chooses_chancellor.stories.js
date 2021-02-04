@@ -6,46 +6,46 @@ export default ({ title: 'Pages/Presidential Candidate Nominates Chancellor' });
 
 const { players, povUuids } = buildPlayers();
 
-const redPresidentGame = buildGame({
+const evilPresidentGame = buildGame({
   phase: 'president_chooses_chancellor',
   players,
-  presidentNominee: povUuids.red,
-  chancellorOptions: povUuids.not(povUuids.red)
+  presidentNominee: povUuids.evil,
+  chancellorOptions: povUuids.not(povUuids.evil)
 });
 
-const bluePresidentGame = buildGame({
+const goodPresidentGame = buildGame({
   phase: 'president_chooses_chancellor',
   players,
-  presidentNominee: povUuids.blue,
-  chancellorOptions: povUuids.not(povUuids.blue)
+  presidentNominee: povUuids.good,
+  chancellorOptions: povUuids.not(povUuids.good)
 });
 
-export const redPresident = () => (
+export const evilPresident = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
-    gameState: redPresidentGame
+    uuid: povUuids.evil,
+    gameState: evilPresidentGame
   }} />
 );
 
-export const bluePresident = () => (
+export const goodPresident = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
-    gameState: bluePresidentGame
+    uuid: povUuids.good,
+    gameState: goodPresidentGame
   }} />
 );
 
-export const blueNonPresident = () => (
+export const goodNonPresident = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
-    gameState: redPresidentGame,
+    uuid: povUuids.good,
+    gameState: evilPresidentGame,
     notification: false
   }} />
 );
 
-export const redNonPresident = () => (
+export const evilNonPresident = () => (
   <SimulatedGame {...{
     uuid: povUuids.villain,
-    gameState: redPresidentGame,
+    gameState: evilPresidentGame,
     notification: false
   }} />
 );

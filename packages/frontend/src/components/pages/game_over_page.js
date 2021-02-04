@@ -19,10 +19,10 @@ const GameOverPage = () => {
 
   const villain = find(players, { role: 'villain' });
 
-  const bluePoliciesEnacted = game.cards.blueParty.length >= 5;
+  const goodPoliciesEnacted = game.cards.goodParty.length >= 5;
   const villainKilled = !get(find(game.players, { role: 'villain' }), 'alive');
-  const redPoliciesEnacted = game.cards.redParty.length >= 6;
-  const villainElected = game.cards.redParty.length >= 3 && game.chancellor === villain.uuid;
+  const evilPoliciesEnacted = game.cards.evilParty.length >= 6;
+  const villainElected = game.cards.evilParty.length >= 3 && game.chancellor === villain.uuid;
 
   const dispatch = useDispatch();
 
@@ -34,25 +34,25 @@ const GameOverPage = () => {
       <WrappedScoreHud />
       <Instructions>
         {
-          (bluePoliciesEnacted || villainKilled) && (
-            <PartyText party="blue">{themes[currentTheme].blueRole}s Win!</PartyText>
+          (goodPoliciesEnacted || villainKilled) && (
+            <PartyText party="good">{themes[currentTheme].goodRole}s Win!</PartyText>
           )
         }
         {
-          (redPoliciesEnacted || villainElected) && (
-            <PartyText party="red">{themes[currentTheme].redRole}s Win!</PartyText>
+          (evilPoliciesEnacted || villainElected) && (
+            <PartyText party="evil">{themes[currentTheme].evilRole}s Win!</PartyText>
           )
         }
       </Instructions>
       <Details>
         {
-          bluePoliciesEnacted && <span>5 {themes[currentTheme].blueParty} policies enacted</span>
+          goodPoliciesEnacted && <span>5 {themes[currentTheme].goodParty} policies enacted</span>
         }
         {
           villainKilled && <span>{themes[currentTheme].villain} killed</span>
         }
         {
-          redPoliciesEnacted && <span>6 {themes[currentTheme].redParty} policies enacted</span>
+          evilPoliciesEnacted && <span>6 {themes[currentTheme].evilParty} policies enacted</span>
         }
         {
           villainElected && <span>{themes[currentTheme].villain} elected {themes[currentTheme].appointee}</span>

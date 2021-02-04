@@ -9,11 +9,11 @@ const { players, povUuids } = buildPlayers(5);
 const fivePlayerGame = buildGame({
   phase: 'president_chooses_chancellor',
   players,
-  presidentNominee: povUuids.red,
-  chancellorOptions: povUuids.not(povUuids.red),
+  presidentNominee: povUuids.evil,
+  chancellorOptions: povUuids.not(povUuids.evil),
   cards: {
-    redParty: [1, 2, 3, 4],
-    blueParty: [12, 13, 14]
+    evilParty: [1, 2, 3, 4],
+    goodParty: [12, 13, 14]
   },
   chaos: 1
 });
@@ -21,42 +21,42 @@ const fivePlayerGame = buildGame({
 const sevenPlayerGame = {
   ...fivePlayerGame,
   players: buildPlayers(7).players,
-  redBoard: [ null, 'investigate_loyalty', 'special_election', 'execution', 'execution', null]
+  evilBoard: [ null, 'investigate_loyalty', 'special_election', 'execution', 'execution', null]
 };
 
 const tenPlayerGame = {
   ...fivePlayerGame,
   players: buildPlayers(10).players,
-  redBoard: [ 'investigate_loyalty', 'investigate_loyalty', 'special_election', 'execution', 'execution', null]
+  evilBoard: [ 'investigate_loyalty', 'investigate_loyalty', 'special_election', 'execution', 'execution', null]
 };
 
-export const redFivePlayerGame = () => (
+export const evilFivePlayerGame = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
+    uuid: povUuids.evil,
     gameState: fivePlayerGame,
     overviewOpen: true
   }} />
 );
 
-export const blueFivePlayerGame = () => (
+export const goodFivePlayerGame = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
+    uuid: povUuids.good,
     gameState: fivePlayerGame,
     overviewOpen: true
   }} />
 );
 
-export const blueSevenPlayerGame = () => (
+export const goodSevenPlayerGame = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
+    uuid: povUuids.good,
     gameState: sevenPlayerGame,
     overviewOpen: true
   }} />
 );
 
-export const blueTenPlayerGame = () => (
+export const goodTenPlayerGame = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
+    uuid: povUuids.good,
     gameState: tenPlayerGame,
     overviewOpen: true
   }} />

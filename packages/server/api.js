@@ -242,9 +242,9 @@ router.post('/games/:code/enact-policy', authenticateJwt, authenticateRoom, asyn
     const { card } = req.body;
 
     if (card === 911) {
-      if (game.cards.redParty.length < 5) {
+      if (game.cards.evilParty.length < 5) {
         return {
-          error: 'cannot veto before 5 red policies are enacted'
+          error: 'cannot veto before 5 evil policies are enacted'
         };
       }
 

@@ -13,7 +13,7 @@ function canSeeRole(currentPlayer, player, playerCount, phase) {
   if (currentPlayer.uuid === player.uuid) {
     return true;
   }
-  if (currentPlayer.party === parties.RED) {
+  if (currentPlayer.party === parties.EVIL) {
     if (currentPlayer.role !== roles.VILLAIN) {
       return true;
     } else if (playerCount <= 6) {
@@ -92,8 +92,8 @@ function serializeGame(game, { uuid }) {
       cards: pick(
         data.cards,
         compact([
-          'redParty',
-          'blueParty',
+          'evilParty',
+          'goodParty',
           canSeeHand(currentPlayer, data) && 'hand',
           canPeek(currentPlayer, data) && 'peek'
         ])
