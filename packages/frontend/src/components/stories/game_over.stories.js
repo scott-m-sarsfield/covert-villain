@@ -13,7 +13,7 @@ export const redPolicyWin = () => (
       phase: 'lobby',
       players,
       cards: {
-        redPolicy: [1, 2, 3, 4, 5, 6]
+        redParty: [1, 2, 3, 4, 5, 6]
       }
     })
   }} />
@@ -26,7 +26,7 @@ export const bluePolicyWin = () => (
       phase: 'lobby',
       players,
       cards: {
-        bluePolicy: [12, 13, 14, 15, 16]
+        blueParty: [12, 13, 14, 15, 16]
       }
     })
   }} />
@@ -39,7 +39,7 @@ export const villainElectedWin = () => (
       phase: 'lobby',
       players,
       cards: {
-        redPolicy: [1, 2, 3]
+        redParty: [1, 2, 3]
       },
       chancellor: povUuids.villain
     })
@@ -61,7 +61,7 @@ export const villainKilledWin = () => (
         return player;
       }),
       cards: {
-        redPolicy: [1, 2, 3, 4]
+        redParty: [1, 2, 3, 4]
       }
     })
   }}/>

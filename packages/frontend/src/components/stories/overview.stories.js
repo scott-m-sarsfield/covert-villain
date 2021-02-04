@@ -12,8 +12,8 @@ const fivePlayerGame = buildGame({
   presidentNominee: povUuids.red,
   chancellorOptions: povUuids.not(povUuids.red),
   cards: {
-    redPolicy: [1, 2, 3, 4],
-    bluePolicy: [12, 13, 14]
+    redParty: [1, 2, 3, 4],
+    blueParty: [12, 13, 14]
   },
   chaos: 1
 });

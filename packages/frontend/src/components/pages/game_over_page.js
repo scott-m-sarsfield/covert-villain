@@ -19,10 +19,10 @@ const GameOverPage = () => {
 
   const villain = find(players, { role: 'villain' });
 
-  const bluePoliciesEnacted = game.cards.bluePolicy.length >= 5;
+  const bluePoliciesEnacted = game.cards.blueParty.length >= 5;
   const villainKilled = !get(find(game.players, { role: 'villain' }), 'alive');
-  const redPoliciesEnacted = game.cards.redPolicy.length >= 6;
-  const villainElected = game.cards.redPolicy.length >= 3 && game.chancellor === villain.uuid;
+  const redPoliciesEnacted = game.cards.redParty.length >= 6;
+  const villainElected = game.cards.redParty.length >= 3 && game.chancellor === villain.uuid;
 
   const dispatch = useDispatch();
 
@@ -46,13 +46,13 @@ const GameOverPage = () => {
       </Instructions>
       <Details>
         {
-          bluePoliciesEnacted && <span>5 {themes[currentTheme].bluePolicy} policies enacted</span>
+          bluePoliciesEnacted && <span>5 {themes[currentTheme].blueParty} policies enacted</span>
         }
         {
           villainKilled && <span>{themes[currentTheme].villain} killed</span>
         }
         {
-          redPoliciesEnacted && <span>6 {themes[currentTheme].redPolicy} policies enacted</span>
+          redPoliciesEnacted && <span>6 {themes[currentTheme].redParty} policies enacted</span>
         }
         {
           villainElected && <span>{themes[currentTheme].villain} elected {themes[currentTheme].appointee}</span>

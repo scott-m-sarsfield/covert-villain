@@ -92,8 +92,8 @@ function serializeGame(game, { uuid }) {
       cards: pick(
         data.cards,
         compact([
-          'redPolicy',
-          'bluePolicy',
+          'redParty',
+          'blueParty',
           canSeeHand(currentPlayer, data) && 'hand',
           canPeek(currentPlayer, data) && 'peek'
         ])

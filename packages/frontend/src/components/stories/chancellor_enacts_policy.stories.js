@@ -19,7 +19,7 @@ const vetoablePoliciesGame = {
   ...leaderChoosesPoliciesGame,
   cards: {
     hand: [4, 10],
-    redPolicy: [0, 1, 2, 3, 5]
+    redParty: [0, 1, 2, 3, 5]
   }
 };
 
