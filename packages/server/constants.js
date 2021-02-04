@@ -20,12 +20,12 @@ module.exports = {
     INVESTIGATION: 'investigation'
   },
   parties: {
-    BLUE: 'blueParty',
-    RED: 'redParty'
+    GOOD: 'goodParty',
+    EVIL: 'evilParty'
   },
   roles: {
-    BLUE: 'blueRole',
-    RED: 'redRole',
+    GOOD: 'goodRole',
+    EVIL: 'evilRole',
     VILLAIN: 'villain'
   },
   presidentialPowers: {

@@ -12,12 +12,12 @@ function getPlayer(state) {
   return find(state.game.data.players, { uuid });
 }
 
-function getReds(state) {
+function getEvils(state) {
   const uuid = state.game.user.uuid;
-  return filter(state.game.data.players, (player) => player.party === 'redParty' && player.uuid !== uuid);
+  return filter(state.game.data.players, (player) => player.party === 'evilParty' && player.uuid !== uuid);
 }
 
-function getVillainKnowsReds(state) {
+function getVillainKnowsEvils(state) {
   return state.game.data.players.length < 7;
 }
 
@@ -29,14 +29,14 @@ const Role = styled.h2`
   margin: 0;
   padding: 0;
   
-  ${({ role }) => role === 'blueRole' ? `
+  ${({ role }) => role === 'goodRole' ? `
       color: #74b5d5;
     ` : `
       color: #c84e4e;
     `}
 `;
 
-const RedList = styled.div`
+const EvilList = styled.div`
   margin-top: 30px;
   text-align: center;
   font-size: 16px;
@@ -68,10 +68,10 @@ const VillainAnnotation = styled.span`
 `;
 
 const PartyAssignmentNotificationContent = () => {
-  const { role, reds, villainKnowsReds } = useSelector((state) => ({
+  const { role, evils, villainKnowsEvils } = useSelector((state) => ({
     ...getPlayer(state),
-    reds: getReds(state),
-    villainKnowsReds: getVillainKnowsReds(state)
+    evils: getEvils(state),
+    villainKnowsEvils: getVillainKnowsEvils(state)
   }));
   const currentTheme = useSelector((state) => get(state.theme, 'current')) || 'elusiveEmperor';
 
@@ -81,12 +81,12 @@ const PartyAssignmentNotificationContent = () => {
       <Role role={role}>{role}</Role>
       <AdditionalInfo>
         {
-          role === 'redRole' && (
-            <RedList>
-              Your fellow {themes[currentTheme].redRole}s are:
+          role === 'evilRole' && (
+            <EvilList>
+              Your fellow {themes[currentTheme].evilRole}s are:
               <ul>
                 {
-                  reds.map((player, i) => (
+                  evils.map((player, i) => (
                     <li key={i}>
                       {player.name}
                       <VillainAnnotation>{player.role === 'villain' && `(${themes[currentTheme].villain})`}</VillainAnnotation>
@@ -94,16 +94,16 @@ const PartyAssignmentNotificationContent = () => {
                   ))
                 }
               </ul>
-            </RedList>
+            </EvilList>
           )
         }
         {
-          role === 'villain' && villainKnowsReds && (
-            <RedList>
-            Your fellow {themes[currentTheme].redRole}s are:
+          role === 'villain' && villainKnowsEvils && (
+            <EvilList>
+            Your fellow {themes[currentTheme].evilRole}s are:
               <ul>
                 {
-                  reds.map((player, i) => (
+                  evils.map((player, i) => (
                     <li key={i}>
                       {player.name}
                       <VillainAnnotation>{player.role === 'villain' && `(${themes[currentTheme].villain})`}</VillainAnnotation>
@@ -111,17 +111,17 @@ const PartyAssignmentNotificationContent = () => {
                   ))
                 }
               </ul>
-            </RedList>
+            </EvilList>
           )
         }
         {
-          role === 'villain' && !villainKnowsReds && (
+          role === 'villain' && !villainKnowsEvils && (
             <Details>Your party members know who you are.</Details>
           )
         }
         {
-          role === 'blueRole' && (
-            <Details>Enact 5 {themes[currentTheme].blueParty} Policies to Win.</Details>
+          role === 'goodRole' && (
+            <Details>Enact 5 {themes[currentTheme].goodParty} Policies to Win.</Details>
           )
         }
       </AdditionalInfo>

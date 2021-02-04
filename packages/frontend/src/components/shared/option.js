@@ -30,16 +30,16 @@ Check.propTypes = {
 };
 
 const optionColors = {
-  redParty: {
+  evilParty: {
     colors: {
-      border: colors.redBorder,
-      background: colors.red
+      border: colors.evilBorder,
+      background: colors.evil
     }
   },
-  blueParty: {
+  goodParty: {
     colors: {
-      border: colors.blueBorder,
-      background: colors.blue
+      border: colors.goodBorder,
+      background: colors.good
     }
   },
   default: {

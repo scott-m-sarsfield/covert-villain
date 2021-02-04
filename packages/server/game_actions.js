@@ -20,8 +20,8 @@ const initialGame = () => ({
     deck: [],
     hand: [],
     discard: [],
-    redParty: [],
-    blueParty: [],
+    evilParty: [],
+    goodParty: [],
     peek: []
   },
   presidentIndex: 0,
@@ -39,7 +39,7 @@ const initialGame = () => ({
 Player {
   uuid: "",
   name: "",
-  party: 'redParty' | 'blueParty',
+  party: 'evilParty' | 'goodParty',
   role: 'villain' | 'member',
   investigatedBy: null,
   alive: true,
@@ -120,20 +120,20 @@ const Actions = {
   },
 
   startGame(game) {
-    const { BLUE, RED, VILLAIN } = roles;
+    const { GOOD, EVIL, VILLAIN } = roles;
 
     const assignments = {
-      5: [BLUE, BLUE, BLUE, RED, VILLAIN],
-      6: [BLUE, BLUE, BLUE, BLUE, RED, VILLAIN],
-      7: [BLUE, BLUE, BLUE, BLUE, RED, RED, VILLAIN],
-      8: [BLUE, BLUE, BLUE, BLUE, BLUE, RED, RED, VILLAIN],
-      9: [BLUE, BLUE, BLUE, BLUE, BLUE, RED, RED, RED, VILLAIN],
-      10: [BLUE, BLUE, BLUE, BLUE, BLUE, BLUE, RED, RED, RED, VILLAIN]
+      5: [GOOD, GOOD, GOOD, EVIL, VILLAIN],
+      6: [GOOD, GOOD, GOOD, GOOD, EVIL, VILLAIN],
+      7: [GOOD, GOOD, GOOD, GOOD, EVIL, EVIL, VILLAIN],
+      8: [GOOD, GOOD, GOOD, GOOD, GOOD, EVIL, EVIL, VILLAIN],
+      9: [GOOD, GOOD, GOOD, GOOD, GOOD, EVIL, EVIL, EVIL, VILLAIN],
+      10: [GOOD, GOOD, GOOD, GOOD, GOOD, GOOD, EVIL, EVIL, EVIL, VILLAIN]
     };
 
     const { POLICY_PEEK, EXECUTION, INVESTIGATE_LOYALTY, SPECIAL_ELECTION } = presidentialPowers;
 
-    const redBoards = {
+    const evilBoards = {
       5: [null, null, POLICY_PEEK, EXECUTION, EXECUTION, null],
       6: [null, null, POLICY_PEEK, EXECUTION, EXECUTION, null],
       7: [null, INVESTIGATE_LOYALTY, SPECIAL_ELECTION, EXECUTION, EXECUTION, null],
@@ -148,7 +148,7 @@ const Actions = {
 
     players = players.map((player, index) => ({
       ...player,
-      party: gameAssignments[index] === BLUE ? BLUE : RED,
+      party: gameAssignments[index] === GOOD ? GOOD : EVIL,
       role: gameAssignments[index],
       investigatedBy: null,
       alive: true,
@@ -159,13 +159,13 @@ const Actions = {
     game = {
       ...game,
       players,
-      redBoard: redBoards[players.length],
+      evilBoard: evilBoards[players.length],
       cards: {
         deck: shuffle(range(1, 17)),
         hand: [],
         discard: [],
-        redParty: [],
-        blueParty: []
+        evilParty: [],
+        goodParty: []
       },
       notifications: [
         {
@@ -240,7 +240,7 @@ const Actions = {
           ]
         };
 
-        if (game.cards.redParty.length >= 3 && game.chancellor === find(game.players, { role: roles.VILLAIN }).uuid) {
+        if (game.cards.evilParty.length >= 3 && game.chancellor === find(game.players, { role: roles.VILLAIN }).uuid) {
           return {
             ...game,
             phase: phases.LOBBY
@@ -389,18 +389,18 @@ const Actions = {
         ...game,
         cards: {
           ...game.cards,
-          redParty: [...game.cards.redParty, card]
+          evilParty: [...game.cards.evilParty, card]
         }
       };
 
-      if (game.cards.redParty.length >= 6) {
+      if (game.cards.evilParty.length >= 6) {
         return {
           ...game,
           phase: phases.LOBBY
         };
       }
 
-      const presidentialPower = game.redBoard[game.cards.redParty.length - 1];
+      const presidentialPower = game.evilBoard[game.cards.evilParty.length - 1];
 
       if (presidentialPower && !skipPower) {
         if (presidentialPower === presidentialPowers.POLICY_PEEK) {
@@ -446,11 +446,11 @@ const Actions = {
         ...game,
         cards: {
           ...game.cards,
-          blueParty: [...game.cards.blueParty, card]
+          goodParty: [...game.cards.goodParty, card]
         }
       };
 
-      if (game.cards.blueParty.length >= 5) {
+      if (game.cards.goodParty.length >= 5) {
         return {
           ...game,
           phase: phases.LOBBY

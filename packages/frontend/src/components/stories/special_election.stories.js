@@ -6,43 +6,43 @@ export default ({ title: 'Pages/Presidential Powers/Special Election/President C
 
 const { players, povUuids } = buildPlayers();
 
-const redPresidentGame = buildGame({
+const evilPresidentGame = buildGame({
   phase: 'special_action_election',
   players,
-  president: povUuids.red,
-  presidentOptions: povUuids.not(povUuids.red)
+  president: povUuids.evil,
+  presidentOptions: povUuids.not(povUuids.evil)
 });
 
-const bluePresidentGame = {
-  ...redPresidentGame,
-  president: povUuids.blue,
-  presidentOptions: povUuids.not(povUuids.blue)
+const goodPresidentGame = {
+  ...evilPresidentGame,
+  president: povUuids.good,
+  presidentOptions: povUuids.not(povUuids.good)
 };
 
-export const redPresident = () => (
+export const evilPresident = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
-    gameState: redPresidentGame
+    uuid: povUuids.evil,
+    gameState: evilPresidentGame
   }} />
 );
 
-export const bluePresident = () => (
+export const goodPresident = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
-    gameState: bluePresidentGame
+    uuid: povUuids.good,
+    gameState: goodPresidentGame
   }} />
 );
 
-export const blueBystander = () => (
+export const goodBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blue,
-    gameState: redPresidentGame
+    uuid: povUuids.good,
+    gameState: evilPresidentGame
   }} />
 );
 
-export const redBystander = () => (
+export const evilBystander = () => (
   <SimulatedGame {...{
     uuid: povUuids.villain,
-    gameState: redPresidentGame
+    gameState: evilPresidentGame
   }} />
 );

@@ -9,13 +9,13 @@ import Instructions, { Details } from './instructions';
 
 export const PartyText = styled.span.attrs((props) => {
   switch (props.party) {
-    case 'red':
+    case 'evil':
       return {
-        color: colors.red
+        color: colors.evil
       };
-    case 'blue':
+    case 'good':
       return {
-        color: colors.blue
+        color: colors.good
       };
     default:
       return {

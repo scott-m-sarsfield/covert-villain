@@ -12,7 +12,7 @@ const PolicyEnactedNotificationContent = ({ data }) => { // data prop
 
   const { card } = data;
 
-  const red = card < 11;
+  const evil = card < 11;
 
   // eslint-disable-next-line no-console
   console.log(game);
@@ -20,8 +20,8 @@ const PolicyEnactedNotificationContent = ({ data }) => { // data prop
   return (
     <React.Fragment>
       <Instructions>
-        {red && <PartyText party="red">{themes[currentTheme].redParty} Policy</PartyText>}
-        {!red && <PartyText party="blue">{themes[currentTheme].blueParty} Policy</PartyText>}
+        {evil && <PartyText party="evil">{themes[currentTheme].evilParty} Policy</PartyText>}
+        {!evil && <PartyText party="good">{themes[currentTheme].goodParty} Policy</PartyText>}
         <br />
         Enacted!
       </Instructions>

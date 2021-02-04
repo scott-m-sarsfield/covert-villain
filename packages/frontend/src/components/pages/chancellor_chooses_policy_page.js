@@ -34,16 +34,16 @@ const ChancellorChoosesPolicyPage = () => {
             {
               cards.map((card) => (
                 <Option key={card} {...{
-                  label: card < 11 ? themes[currentTheme].redParty : themes[currentTheme].blueParty,
+                  label: card < 11 ? themes[currentTheme].evilParty : themes[currentTheme].goodParty,
                   value: card,
                   selected: selected === card,
                   onSelect: setSelected,
-                  variant: card < 11 ? 'redParty' : 'blueParty'
+                  variant: card < 11 ? 'evilParty' : 'goodParty'
                 }}/>
               ))
             }
             {
-              game.cards.redParty.length >= 5 && (
+              game.cards.evilParty.length >= 5 && (
                 <Option {...{
                   label: 'Veto',
                   value: 911,

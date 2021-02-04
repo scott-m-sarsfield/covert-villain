@@ -11,47 +11,47 @@ const createInvestigationNotificationState = (investigatedPlayer) => buildGame({
   players: players.map(
     (player) => ({
       ...player,
-      investigatedBy: player.uuid === investigatedPlayer ? povUuids.blues[0] : null
+      investigatedBy: player.uuid === investigatedPlayer ? povUuids.goods[0] : null
     })
   ),
   notifications: [
     {
       type: 'investigation',
       data: {
-        president: povUuids.blues[0],
+        president: povUuids.goods[0],
         player: investigatedPlayer
       }
     }
   ]
 });
 
-export const bluePresidentInvestigatesRed = () => (
+export const goodPresidentInvestigatesEvil = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blues[0],
-    gameState: createInvestigationNotificationState(povUuids.red),
+    uuid: povUuids.goods[0],
+    gameState: createInvestigationNotificationState(povUuids.evil),
     notification: true
   }} />
 );
-export const bluePresidentInvestigatesBlue = () => (
+export const goodPresidentInvestigatesGood = () => (
   <SimulatedGame {...{
-    uuid: povUuids.blues[0],
-    gameState: createInvestigationNotificationState(povUuids.blues[1]),
-    notification: true
-  }} />
-);
-
-export const blueBystander = () => (
-  <SimulatedGame {...{
-    uuid: povUuids.blues[1],
-    gameState: createInvestigationNotificationState(povUuids.red),
+    uuid: povUuids.goods[0],
+    gameState: createInvestigationNotificationState(povUuids.goods[1]),
     notification: true
   }} />
 );
 
-export const redBystander = () => (
+export const goodBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.red,
-    gameState: createInvestigationNotificationState(povUuids.red),
+    uuid: povUuids.goods[1],
+    gameState: createInvestigationNotificationState(povUuids.evil),
+    notification: true
+  }} />
+);
+
+export const evilBystander = () => (
+  <SimulatedGame {...{
+    uuid: povUuids.evil,
+    gameState: createInvestigationNotificationState(povUuids.evil),
     notification: true
   }} />
 );

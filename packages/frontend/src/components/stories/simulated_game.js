@@ -16,8 +16,8 @@ function buildPlayer(overwrites) {
     lobby: false,
     playing: true,
     left: false,
-    party: 'blueParty',
-    role: 'blueRole',
+    party: 'goodParty',
+    role: 'goodRole',
     alive: true,
     ...overwrites
   };
@@ -29,76 +29,76 @@ export function buildPlayers(n = 5, { lobby } = {}) {
       uuid: '1',
       name: 'Alpha',
       lobby,
-      party: 'redParty',
-      role: 'redRole'
+      party: 'evilParty',
+      role: 'evilRole'
     }),
     buildPlayer({
       uuid: '2',
       name: 'Bravo',
-      party: 'blueParty',
-      role: 'blueRole',
+      party: 'goodParty',
+      role: 'goodRole',
       lobby
     }),
     buildPlayer({
       uuid: '3',
       name: 'Charlie',
       lobby,
-      party: 'blueParty',
-      role: 'blueRole'
+      party: 'goodParty',
+      role: 'goodRole'
     }),
     buildPlayer({
       uuid: '4',
       name: 'Delta',
       lobby,
-      party: 'redParty',
+      party: 'evilParty',
       role: 'villain'
     }),
     buildPlayer({
       uuid: '5',
       name: 'Echo',
       lobby,
-      party: 'blueParty',
-      role: 'blueRole'
+      party: 'goodParty',
+      role: 'goodRole'
     }),
     buildPlayer({
       uuid: '6',
       name: 'Foxtrot',
       lobby,
-      party: 'blueParty',
-      role: 'blueRole'
+      party: 'goodParty',
+      role: 'goodRole'
     }),
     buildPlayer({
       uuid: '7',
       name: 'Golf',
       lobby,
-      party: 'redParty',
-      role: 'redRole'
+      party: 'evilParty',
+      role: 'evilRole'
     }),
     buildPlayer({
       uuid: '8',
       name: 'Hotel',
       lobby,
-      party: 'blueParty',
-      role: 'blueRole'
+      party: 'goodParty',
+      role: 'goodRole'
     }),
     buildPlayer({
       uuid: '9',
       name: 'India',
       lobby,
-      party: 'redParty',
-      role: 'redRole'
+      party: 'evilParty',
+      role: 'evilRole'
     }),
     buildPlayer({
       uuid: '10',
       name: 'Juliet',
       lobby,
-      party: 'blueParty',
-      role: 'blueRole'
+      party: 'goodParty',
+      role: 'goodRole'
     })
   ].slice(0, n);
 
-  const blues = map(
-    filter(players, (player) => player.role === 'blueRole'),
+  const goods = map(
+    filter(players, (player) => player.role === 'goodRole'),
     'uuid'
   );
 
@@ -107,9 +107,9 @@ export function buildPlayers(n = 5, { lobby } = {}) {
     povUuids: {
       host: '1',
       participant: '2',
-      blues,
-      blue: blues[0],
-      red: find(players, (player) => player.role === 'redParty').uuid,
+      goods,
+      good: goods[0],
+      evil: find(players, (player) => player.role === 'evilParty').uuid,
       villain: find(players, (player) => player.role === 'villain').uuid,
       not(uuid) {
         return map(
@@ -133,7 +133,7 @@ export function buildGame(overwrites) {
     chancellor: null,
     chaos: 0,
     notifications: [],
-    redBoard: [
+    evilBoard: [
       null,
       null,
       'policy_peek',
@@ -147,8 +147,8 @@ export function buildGame(overwrites) {
       deck: [],
       hand: [],
       peek: [],
-      redParty: [],
-      blueParty: [],
+      evilParty: [],
+      goodParty: [],
       ...get(overwrites, 'cards')
     }
   };
@@ -171,7 +171,7 @@ function getGameState(fullGameState, uuid) {
 
   const currentPlayer = find(fullGameState.players, { uuid });
 
-  if (currentPlayer.party === 'redParty') {
+  if (currentPlayer.party === 'evilParty') {
     return fullGameState;
   }
 

@@ -37,11 +37,11 @@ const PresidentChoosesPoliciesPage = () => {
             {
               cards.map((card) => (
                 <Option key={card} {...{
-                  label: themes[currentTheme][card < 11 ? 'redParty' : 'blueParty'],
+                  label: themes[currentTheme][card < 11 ? 'evilParty' : 'goodParty'],
                   value: card,
                   selected: selected[card],
                   onSelect: (card) => setSelected({ ...selected, [card]: !selected[card] }),
-                  variant: card < 11 ? 'redParty' : 'blueParty'
+                  variant: card < 11 ? 'evilParty' : 'goodParty'
                 }}/>
               ))
             }

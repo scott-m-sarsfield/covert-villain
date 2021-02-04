@@ -48,19 +48,19 @@ const GameCode = styled.h3`
 `;
 
 const Card = styled.div.attrs((props) => {
-  if (props.variant === 'redParty') {
+  if (props.variant === 'evilParty') {
     return {
       colors: {
-        border: colors.redBorder,
-        background: colors.red
+        border: colors.evilBorder,
+        background: colors.evil
       }
     };
   }
-  if (props.variant === 'blueParty') {
+  if (props.variant === 'goodParty') {
     return {
       colors: {
-        border: colors.blueBorder,
-        background: colors.blue
+        border: colors.goodBorder,
+        background: colors.good
       }
     };
   }
@@ -124,8 +124,8 @@ const OverviewContent = () => {
       <GameCode>{game.code}</GameCode>
       <CardRow>
         {
-          game.redBoard.map((action, i) => (
-            <Card variant="redParty" key={i} active={!!game.cards.redParty[i]}>
+          game.evilBoard.map((action, i) => (
+            <Card variant="evilParty" key={i} active={!!game.cards.evilParty[i]}>
               {action && <FontAwesomeIcon icon={actionIcons[action]} />}
             </Card>
           ))
@@ -134,7 +134,7 @@ const OverviewContent = () => {
       <CardRow>
         {
           range(5).map((i) => (
-            <Card variant="blueParty" key={i} />
+            <Card variant="goodParty" key={i} />
           ))
         }
       </CardRow>
