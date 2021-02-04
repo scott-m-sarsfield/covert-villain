@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import get from 'lodash/get';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { enactPolicy } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
+import themes from '../../theme';
 
 const ChancellorChoosesPolicyPage = () => {
-  const { user, data: game } = useSelector((state) => state.game);
   const dispatch = useDispatch();
+  const { user, data: game } = useSelector((state) => state.game);
+  const currentTheme = useSelector((state) => get(state.theme, 'current')) || 'elusiveEmperor';
   const [selected, setSelected] = useState(null);
 
   const cards = game.cards.hand || [];
@@ -31,16 +34,16 @@ const ChancellorChoosesPolicyPage = () => {
             {
               cards.map((card) => (
                 <Option key={card} {...{
-                  label: card < 11 ? 'Fascist' : 'Liberal',
+                  label: card < 11 ? themes[currentTheme].redParty : themes[currentTheme].blueParty,
                   value: card,
                   selected: selected === card,
                   onSelect: setSelected,
-                  variant: card < 11 ? 'fascist' : 'liberal'
+                  variant: card < 11 ? 'redParty' : 'blueParty'
                 }}/>
               ))
             }
             {
-              game.cards.fascist.length >= 5 && (
+              game.cards.redPolicy.length >= 5 && (
                 <Option {...{
                   label: 'Veto',
                   value: 911,

@@ -4,7 +4,7 @@ import SimulatedGame, { buildGame } from './simulated_game';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({ title: 'Pages/Policy Enacted Notification' });
 
-const fascistPolicyEnactedGame = buildGame({
+const redPolicyEnactedGame = buildGame({
   phase: 'president_chooses_policies',
   notifications: [
     {
@@ -16,7 +16,7 @@ const fascistPolicyEnactedGame = buildGame({
   ]
 });
 
-const liberalPolicyEnactedGame = buildGame({
+const bluePolicyEnactedGame = buildGame({
   phase: 'president_chooses_policies',
   notifications: [
     {
@@ -28,18 +28,18 @@ const liberalPolicyEnactedGame = buildGame({
   ]
 });
 
-export const fascistPolicyEnacted = () => (
+export const redPolicyEnacted = () => (
   <SimulatedGame {...{
     uuid: '1',
-    gameState: fascistPolicyEnactedGame,
+    gameState: redPolicyEnactedGame,
     notification: true
   }} />
 );
 
-export const liberalPolicyEnacted = () => (
+export const bluePolicyEnacted = () => (
   <SimulatedGame {...{
     uuid: '1',
-    gameState: liberalPolicyEnactedGame,
+    gameState: bluePolicyEnactedGame,
     notification: true
   }} />
 );

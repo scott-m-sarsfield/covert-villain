@@ -242,9 +242,9 @@ router.post('/games/:code/enact-policy', authenticateJwt, authenticateRoom, asyn
     const { card } = req.body;
 
     if (card === 911) {
-      if (game.cards.fascist.length < 5) {
+      if (game.cards.redPolicy.length < 5) {
         return {
-          error: 'cannot veto before 5 fascist policies are enacted'
+          error: 'cannot veto before 5 red policies are enacted'
         };
       }
 

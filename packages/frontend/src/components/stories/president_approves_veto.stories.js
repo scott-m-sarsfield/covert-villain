@@ -9,31 +9,31 @@ const { players, povUuids } = buildPlayers();
 const presidentChoosesPoliciesGame = buildGame({
   phase: 'president_approves_veto',
   players,
-  president: povUuids.mussolini,
-  chancellor: povUuids.liberals[0],
+  president: povUuids.villain,
+  chancellor: povUuids.blues[0],
   cards: {
     hand: [4, 15],
-    fascist: [1, 2, 3, 5, 6]
+    redPolicy: [1, 2, 3, 5, 6]
   }
 });
 
 export const president = () => (
   <SimulatedGame {...{
-    uuid: povUuids.mussolini,
+    uuid: povUuids.villain,
     gameState: presidentChoosesPoliciesGame
   }} />
 );
 
-export const liberalBystander = () => (
+export const blueBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberals[1],
+    uuid: povUuids.blues[1],
     gameState: presidentChoosesPoliciesGame
   }} />
 );
 
-export const fascistBystander = () => (
+export const redBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
+    uuid: povUuids.red,
     gameState: presidentChoosesPoliciesGame
   }} />
 );

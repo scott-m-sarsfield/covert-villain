@@ -4,6 +4,7 @@ import types from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessRook, faTimes } from '@fortawesome/free-solid-svg-icons';
+import get from 'lodash/get';
 import { toggleOverview } from '../store/game_slice';
 import themes from '../theme';
 
@@ -42,7 +43,7 @@ const SettingsButton = styled.button`
 const Heading = ({ hasSettings, className }) => {
   const dispatch = useDispatch();
   const overviewOpen = useSelector((state) => state.game.overviewOpen);
-  const currentTheme = useSelector((state) => state.theme.current) || 'elusiveEmperor';
+  const currentTheme = useSelector((state) => get(state.theme, 'current')) || 'elusiveEmperor';
 
   return (
     <Wrapper {...{ className }}>

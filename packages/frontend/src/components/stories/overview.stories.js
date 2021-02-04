@@ -9,11 +9,11 @@ const { players, povUuids } = buildPlayers(5);
 const fivePlayerGame = buildGame({
   phase: 'president_chooses_chancellor',
   players,
-  presidentNominee: povUuids.fascist,
-  chancellorOptions: povUuids.not(povUuids.fascist),
+  presidentNominee: povUuids.red,
+  chancellorOptions: povUuids.not(povUuids.red),
   cards: {
-    fascist: [1, 2, 3, 4],
-    liberal: [12, 13, 14]
+    redPolicy: [1, 2, 3, 4],
+    bluePolicy: [12, 13, 14]
   },
   chaos: 1
 });
@@ -21,42 +21,42 @@ const fivePlayerGame = buildGame({
 const sevenPlayerGame = {
   ...fivePlayerGame,
   players: buildPlayers(7).players,
-  fascistBoard: [ null, 'investigate_loyalty', 'special_election', 'execution', 'execution', null]
+  redBoard: [ null, 'investigate_loyalty', 'special_election', 'execution', 'execution', null]
 };
 
 const tenPlayerGame = {
   ...fivePlayerGame,
   players: buildPlayers(10).players,
-  fascistBoard: [ 'investigate_loyalty', 'investigate_loyalty', 'special_election', 'execution', 'execution', null]
+  redBoard: [ 'investigate_loyalty', 'investigate_loyalty', 'special_election', 'execution', 'execution', null]
 };
 
-export const fascistFivePlayerGame = () => (
+export const redFivePlayerGame = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
+    uuid: povUuids.red,
     gameState: fivePlayerGame,
     overviewOpen: true
   }} />
 );
 
-export const liberalFivePlayerGame = () => (
+export const blueFivePlayerGame = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberal,
+    uuid: povUuids.blue,
     gameState: fivePlayerGame,
     overviewOpen: true
   }} />
 );
 
-export const liberalSevenPlayerGame = () => (
+export const blueSevenPlayerGame = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberal,
+    uuid: povUuids.blue,
     gameState: sevenPlayerGame,
     overviewOpen: true
   }} />
 );
 
-export const liberalTenPlayerGame = () => (
+export const blueTenPlayerGame = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberal,
+    uuid: povUuids.blue,
     gameState: tenPlayerGame,
     overviewOpen: true
   }} />

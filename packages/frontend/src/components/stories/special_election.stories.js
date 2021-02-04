@@ -6,43 +6,43 @@ export default ({ title: 'Pages/Presidential Powers/Special Election/President C
 
 const { players, povUuids } = buildPlayers();
 
-const fascistPresidentGame = buildGame({
+const redPresidentGame = buildGame({
   phase: 'special_action_election',
   players,
-  president: povUuids.fascist,
-  presidentOptions: povUuids.not(povUuids.fascist)
+  president: povUuids.red,
+  presidentOptions: povUuids.not(povUuids.red)
 });
 
-const liberalPresidentGame = {
-  ...fascistPresidentGame,
-  president: povUuids.liberal,
-  presidentOptions: povUuids.not(povUuids.liberal)
+const bluePresidentGame = {
+  ...redPresidentGame,
+  president: povUuids.blue,
+  presidentOptions: povUuids.not(povUuids.blue)
 };
 
-export const fascistPresident = () => (
+export const redPresident = () => (
   <SimulatedGame {...{
-    uuid: povUuids.fascist,
-    gameState: fascistPresidentGame
+    uuid: povUuids.red,
+    gameState: redPresidentGame
   }} />
 );
 
-export const liberalPresident = () => (
+export const bluePresident = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberal,
-    gameState: liberalPresidentGame
+    uuid: povUuids.blue,
+    gameState: bluePresidentGame
   }} />
 );
 
-export const liberalBystander = () => (
+export const blueBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.liberal,
-    gameState: fascistPresidentGame
+    uuid: povUuids.blue,
+    gameState: redPresidentGame
   }} />
 );
 
-export const fascistBystander = () => (
+export const redBystander = () => (
   <SimulatedGame {...{
-    uuid: povUuids.mussolini,
-    gameState: fascistPresidentGame
+    uuid: povUuids.villain,
+    gameState: redPresidentGame
   }} />
 );

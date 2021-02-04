@@ -16,8 +16,8 @@ function buildPlayer(overwrites) {
     lobby: false,
     playing: true,
     left: false,
-    party: 'liberal',
-    role: 'liberal',
+    party: 'blueParty',
+    role: 'blueRole',
     alive: true,
     ...overwrites
   };
@@ -29,76 +29,76 @@ export function buildPlayers(n = 5, { lobby } = {}) {
       uuid: '1',
       name: 'Alpha',
       lobby,
-      party: 'fascist',
-      role: 'fascist'
+      party: 'redParty',
+      role: 'redRole'
     }),
     buildPlayer({
       uuid: '2',
       name: 'Bravo',
-      party: 'liberal',
-      role: 'liberal',
+      party: 'blueParty',
+      role: 'blueRole',
       lobby
     }),
     buildPlayer({
       uuid: '3',
       name: 'Charlie',
       lobby,
-      party: 'liberal',
-      role: 'liberal'
+      party: 'blueParty',
+      role: 'blueRole'
     }),
     buildPlayer({
       uuid: '4',
       name: 'Delta',
       lobby,
-      party: 'fascist',
-      role: 'mussolini'
+      party: 'redParty',
+      role: 'villain'
     }),
     buildPlayer({
       uuid: '5',
       name: 'Echo',
       lobby,
-      party: 'liberal',
-      role: 'liberal'
+      party: 'blueParty',
+      role: 'blueRole'
     }),
     buildPlayer({
       uuid: '6',
       name: 'Foxtrot',
       lobby,
-      party: 'liberal',
-      role: 'liberal'
+      party: 'blueParty',
+      role: 'blueRole'
     }),
     buildPlayer({
       uuid: '7',
       name: 'Golf',
       lobby,
-      party: 'fascist',
-      role: 'fascist'
+      party: 'redParty',
+      role: 'redRole'
     }),
     buildPlayer({
       uuid: '8',
       name: 'Hotel',
       lobby,
-      party: 'liberal',
-      role: 'liberal'
+      party: 'blueParty',
+      role: 'blueRole'
     }),
     buildPlayer({
       uuid: '9',
       name: 'India',
       lobby,
-      party: 'fascist',
-      role: 'fascist'
+      party: 'redParty',
+      role: 'redRole'
     }),
     buildPlayer({
       uuid: '10',
       name: 'Juliet',
       lobby,
-      party: 'liberal',
-      role: 'liberal'
+      party: 'blueParty',
+      role: 'blueRole'
     })
   ].slice(0, n);
 
-  const liberals = map(
-    filter(players, (player) => player.role === 'liberal'),
+  const blues = map(
+    filter(players, (player) => player.role === 'blueRole'),
     'uuid'
   );
 
@@ -107,10 +107,10 @@ export function buildPlayers(n = 5, { lobby } = {}) {
     povUuids: {
       host: '1',
       participant: '2',
-      liberals,
-      liberal: liberals[0],
-      fascist: find(players, (player) => player.role === 'fascist').uuid,
-      mussolini: find(players, (player) => player.role === 'mussolini').uuid,
+      blues,
+      blue: blues[0],
+      red: find(players, (player) => player.role === 'redParty').uuid,
+      villain: find(players, (player) => player.role === 'villain').uuid,
       not(uuid) {
         return map(
           filter(players, (player) => player.uuid !== uuid),
@@ -133,7 +133,7 @@ export function buildGame(overwrites) {
     chancellor: null,
     chaos: 0,
     notifications: [],
-    fascistBoard: [
+    redBoard: [
       null,
       null,
       'policy_peek',
@@ -147,8 +147,8 @@ export function buildGame(overwrites) {
       deck: [],
       hand: [],
       peek: [],
-      fascist: [],
-      liberal: [],
+      redPolicy: [],
+      bluePolicy: [],
       ...get(overwrites, 'cards')
     }
   };
@@ -171,7 +171,7 @@ function getGameState(fullGameState, uuid) {
 
   const currentPlayer = find(fullGameState.players, { uuid });
 
-  if (currentPlayer.party === 'fascist') {
+  if (currentPlayer.party === 'redParty') {
     return fullGameState;
   }
 

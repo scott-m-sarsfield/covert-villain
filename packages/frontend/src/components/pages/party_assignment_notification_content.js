@@ -1,21 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import get from 'lodash/get';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import Instructions, { Details } from '../shared/instructions';
+import themes from '../../theme';
 
 function getPlayer(state) {
   const uuid = state.game.user.uuid;
   return find(state.game.data.players, { uuid });
 }
 
-function getFascists(state) {
+function getReds(state) {
   const uuid = state.game.user.uuid;
-  return filter(state.game.data.players, (player) => player.party === 'fascist' && player.uuid !== uuid);
+  return filter(state.game.data.players, (player) => player.party === 'redParty' && player.uuid !== uuid);
 }
 
-function getMussoliniKnowsFascists(state) {
+function getVillainKnowsReds(state) {
   return state.game.data.players.length < 7;
 }
 
@@ -27,14 +29,14 @@ const Role = styled.h2`
   margin: 0;
   padding: 0;
   
-  ${({ role }) => role === 'liberal' ? `
+  ${({ role }) => role === 'blueRole' ? `
       color: #74b5d5;
     ` : `
       color: #c84e4e;
     `}
 `;
 
-const FascistList = styled.div`
+const RedList = styled.div`
   margin-top: 30px;
   text-align: center;
   font-size: 16px;
@@ -59,18 +61,19 @@ const AdditionalInfo = styled.div`
   justify-content: center;
 `;
 
-const MussoliniAnnotation = styled.span`
+const VillainAnnotation = styled.span`
   font-size: smaller;
   line-height: 21px;
   margin-left: 5px;
 `;
 
 const PartyAssignmentNotificationContent = () => {
-  const { role, fascists, mussoliniKnowsFascists } = useSelector((state) => ({
+  const { role, reds, villainKnowsReds } = useSelector((state) => ({
     ...getPlayer(state),
-    fascists: getFascists(state),
-    mussoliniKnowsFascists: getMussoliniKnowsFascists(state)
+    reds: getReds(state),
+    villainKnowsReds: getVillainKnowsReds(state)
   }));
+  const currentTheme = useSelector((state) => get(state.theme, 'current')) || 'elusiveEmperor';
 
   return (
     <React.Fragment>
@@ -78,47 +81,47 @@ const PartyAssignmentNotificationContent = () => {
       <Role role={role}>{role}</Role>
       <AdditionalInfo>
         {
-          role === 'fascist' && (
-            <FascistList>
-              Your fellow fascists are:
+          role === 'redRole' && (
+            <RedList>
+              Your fellow {themes[currentTheme].redRole}s are:
               <ul>
                 {
-                  fascists.map((player, i) => (
+                  reds.map((player, i) => (
                     <li key={i}>
                       {player.name}
-                      <MussoliniAnnotation>{player.role === 'mussolini' && '(mussolini)'}</MussoliniAnnotation>
+                      <VillainAnnotation>{player.role === 'villain' && `(${themes[currentTheme].villain})`}</VillainAnnotation>
                     </li>
                   ))
                 }
               </ul>
-            </FascistList>
+            </RedList>
           )
         }
         {
-          role === 'mussolini' && mussoliniKnowsFascists && (
-            <FascistList>
-              Your fellow fascists are:
+          role === 'villain' && villainKnowsReds && (
+            <RedList>
+            Your fellow {themes[currentTheme].redRole}s are:
               <ul>
                 {
-                  fascists.map((player, i) => (
+                  reds.map((player, i) => (
                     <li key={i}>
                       {player.name}
-                      <MussoliniAnnotation>{player.role === 'mussolini' && '(mussolini)'}</MussoliniAnnotation>
+                      <VillainAnnotation>{player.role === 'villain' && `(${themes[currentTheme].villain})`}</VillainAnnotation>
                     </li>
                   ))
                 }
               </ul>
-            </FascistList>
+            </RedList>
           )
         }
         {
-          role === 'mussolini' && !mussoliniKnowsFascists && (
+          role === 'villain' && !villainKnowsReds && (
             <Details>Your party members know who you are.</Details>
           )
         }
         {
-          role === 'liberal' && (
-            <Details>Enact 5 Liberal Policies to Win.</Details>
+          role === 'blueRole' && (
+            <Details>Enact 5 {themes[currentTheme].blueParty} Policies to Win.</Details>
           )
         }
       </AdditionalInfo>

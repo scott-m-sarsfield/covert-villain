@@ -13,32 +13,32 @@ const scenarios = {
         {
           uuid: '1',
           name: 'Alpha',
-          role: 'fascist',
-          party: 'fascist'
+          role: 'redRole',
+          party: 'redParty'
         },
         {
           uuid: '2',
           name: 'Bravo',
-          role: 'liberal',
-          party: 'liberal'
+          role: 'blueRole',
+          party: 'blueParty'
         },
         {
           uuid: '3',
           name: 'Charlie',
-          role: 'liberal',
-          party: 'liberal'
+          role: 'blueRole',
+          party: 'blueParty'
         },
         {
           uuid: '4',
           name: 'Delta',
-          role: 'mussolini',
-          party: 'fascist'
+          role: 'villain',
+          party: 'redParty'
         },
         {
           uuid: '5',
           name: 'Echo',
-          role: 'liberal',
-          party: 'liberal'
+          role: 'blueRole',
+          party: 'blueParty'
         }
       ],
       notifications: [

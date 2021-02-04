@@ -13,8 +13,8 @@ const themes = {
   },
   elusiveEmperor: {
     title: 'Elusive Emperor',
-    leader: 'Supreme Chancellor',
-    appointee: 'Vice Chair',
+    leader: 'Vice Chair',
+    appointee: 'Supreme Chancellor',
     redRole: 'Loyalist Senator',
     redParty: 'Loyalist',
     blueRole: 'Delegate Senator',

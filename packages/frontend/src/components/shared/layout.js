@@ -48,19 +48,19 @@ const GameCode = styled.h3`
 `;
 
 const Card = styled.div.attrs((props) => {
-  if (props.variant === 'fascist') {
+  if (props.variant === 'redParty') {
     return {
       colors: {
-        border: colors.fascistBorder,
-        background: colors.fascist
+        border: colors.redBorder,
+        background: colors.red
       }
     };
   }
-  if (props.variant === 'liberal') {
+  if (props.variant === 'blueParty') {
     return {
       colors: {
-        border: colors.liberalBorder,
-        background: colors.liberal
+        border: colors.blueBorder,
+        background: colors.blue
       }
     };
   }
@@ -124,8 +124,8 @@ const OverviewContent = () => {
       <GameCode>{game.code}</GameCode>
       <CardRow>
         {
-          game.fascistBoard.map((action, i) => (
-            <Card variant="fascist" key={i} active={!!game.cards.fascist[i]}>
+          game.redBoard.map((action, i) => (
+            <Card variant="redParty" key={i} active={!!game.cards.redPolicy[i]}>
               {action && <FontAwesomeIcon icon={actionIcons[action]} />}
             </Card>
           ))
@@ -134,7 +134,7 @@ const OverviewContent = () => {
       <CardRow>
         {
           range(5).map((i) => (
-            <Card variant="liberal" key={i} />
+            <Card variant="blueParty" key={i} />
           ))
         }
       </CardRow>

@@ -10,37 +10,37 @@ describe('leaveGame', () => {
         {
           uuid: '1',
           name: 'Alpha',
-          role: 'mussolini',
+          role: 'villain',
           alive: true,
-          party: 'fascist'
+          party: 'redRole'
         },
         {
           uuid: '2',
           name: 'Bravo',
-          role: 'liberal',
+          role: 'blueRole',
           alive: true,
-          party: 'liberal'
+          party: 'blueRole'
         },
         {
           uuid: '3',
           name: 'Charlie',
-          role: 'liberal',
+          role: 'blueRole',
           alive: true,
-          party: 'liberal'
+          party: 'blueRole'
         },
         {
           uuid: '4',
           name: 'Delta',
-          role: 'fascist',
+          role: 'redRole',
           alive: true,
-          party: 'fascist'
+          party: 'redRole'
         },
         {
           uuid: '5',
           name: 'Echo',
-          role: 'liberal',
+          role: 'blueRole',
           alive: true,
-          party: 'liberal'
+          party: 'blueRole'
         }
       ]
     };
@@ -101,7 +101,7 @@ describe('leaveGame', () => {
       );
     });
 
-    describe('when leaving player is mussolini', () => {
+    describe('when leaving player is the villain', () => {
       it('ends the game', () => {
         const game = generateGame({ phase: phases.PRESIDENT_CHOOSES_CHANCELLOR });
 
@@ -111,7 +111,7 @@ describe('leaveGame', () => {
       });
     });
 
-    describe('when leaving player is not mussolini', () => {
+    describe('when leaving player is not the villain', () => {
       it('does not end the game', () => {
         const game = generateGame({ phase: phases.PRESIDENT_CHOOSES_CHANCELLOR });
 
@@ -129,8 +129,8 @@ describe('drawPolicies', () => {
       cards: {
         deck: [17, 15, 13, 11, 9, 7, 5, 3, 1],
         discard: [16, 14, 12, 10, 8, 6, 4, 2],
-        liberal: [],
-        fascist: [],
+        bluePolicy: [],
+        redPolicy: [],
         hand: []
       }
     };
@@ -141,8 +141,8 @@ describe('drawPolicies', () => {
       cards: {
         deck: [11, 9, 7, 5, 3, 1],
         discard: [16, 14, 12, 10, 8, 6, 4, 2],
-        liberal: [],
-        fascist: [],
+        bluePolicy: [],
+        redPolicy: [],
         hand: [17, 15, 13]
       }
     });
@@ -154,8 +154,8 @@ describe('drawPolicies', () => {
         cards: {
           deck: [17, 15],
           discard: [16, 14, 12, 10, 8, 6, 4, 2, 13, 11, 9, 7, 5, 3, 1],
-          liberal: [],
-          fascist: [],
+          bluePolicy: [],
+          redPolicy: [],
           hand: []
         }
       };
@@ -165,8 +165,8 @@ describe('drawPolicies', () => {
       expect(updatedGame).toEqual({
         cards: expect.objectContaining({
           discard: [],
-          liberal: [],
-          fascist: []
+          bluePolicy: [],
+          redPolicy: []
         })
       });
       expect(updatedGame.cards.deck).toHaveLength(14);

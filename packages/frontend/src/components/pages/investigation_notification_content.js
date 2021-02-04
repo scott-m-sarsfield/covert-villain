@@ -14,7 +14,7 @@ const Party = styled.h2`
   margin: 0;
   padding: 0;
   
-  ${({ party }) => party === 'liberal' ? `
+  ${({ party }) => party === 'blueParty' ? `
       color: #74b5d5;
     ` : `
       color: #c84e4e;
@@ -29,16 +29,16 @@ const InvestigationNotificationContent = ({ data }) => {
 
   const isPresident = user.uuid === president;
   return isPresident ? (
-    <React.Fragment>
+    <>
       <Instructions>
         <PartyAwareName uuid={playerUuid} />
         <br />
         is
       </Instructions>
       <Party party={player.party}>{player.party}</Party>
-    </React.Fragment>
+    </>
   ) : (
-    <React.Fragment>
+    <>
       <Instructions>
         <PartyAwareName uuid={president} />
         <br />
@@ -46,7 +46,7 @@ const InvestigationNotificationContent = ({ data }) => {
         <br />
         <PartyAwareName uuid={playerUuid} />
       </Instructions>
-    </React.Fragment>
+    </>
   );
 };
 

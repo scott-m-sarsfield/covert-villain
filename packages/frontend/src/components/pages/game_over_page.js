@@ -10,17 +10,19 @@ import Instructions, { Details } from '../shared/instructions';
 import { PartyText } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
 import LobbyPage from './lobby_page';
+import themes from '../../theme';
 
 const GameOverPage = () => {
   const { data: game } = useSelector((state) => state.game);
+  const currentTheme = useSelector((state) => get(state.theme, 'current')) || 'elusiveEmperor';
   const players = get(game, 'players', []);
 
-  const mussolini = find(players, { role: 'mussolini' });
+  const villain = find(players, { role: 'villain' });
 
-  const liberalPoliciesEnacted = game.cards.liberal.length >= 5;
-  const mussoliniKilled = !get(find(game.players, { role: 'mussolini' }), 'alive');
-  const fascistPoliciesEnacted = game.cards.fascist.length >= 6;
-  const mussoliniElected = game.cards.fascist.length >= 3 && game.chancellor === mussolini.uuid;
+  const bluePoliciesEnacted = game.cards.bluePolicy.length >= 5;
+  const villainKilled = !get(find(game.players, { role: 'villain' }), 'alive');
+  const redPoliciesEnacted = game.cards.redPolicy.length >= 6;
+  const villainElected = game.cards.redPolicy.length >= 3 && game.chancellor === villain.uuid;
 
   const dispatch = useDispatch();
 
@@ -32,30 +34,28 @@ const GameOverPage = () => {
       <WrappedScoreHud />
       <Instructions>
         {
-          (liberalPoliciesEnacted || mussoliniKilled) && (
-            <PartyText party="liberal">Liberals</PartyText>
+          (bluePoliciesEnacted || villainKilled) && (
+            <PartyText party="blue">{themes[currentTheme].blueRole}s Win!</PartyText>
           )
         }
         {
-          (fascistPoliciesEnacted || mussoliniElected) && (
-            <PartyText party="fascist">Fascists</PartyText>
+          (redPoliciesEnacted || villainElected) && (
+            <PartyText party="red">{themes[currentTheme].redRole}s Win!</PartyText>
           )
         }
-
-        &nbsp;Win!
       </Instructions>
       <Details>
         {
-          liberalPoliciesEnacted && <span>5 liberal policies enacted</span>
+          bluePoliciesEnacted && <span>5 {themes[currentTheme].bluePolicy} policies enacted</span>
         }
         {
-          mussoliniKilled && <span>Mussolini killed</span>
+          villainKilled && <span>{themes[currentTheme].villain} killed</span>
         }
         {
-          fascistPoliciesEnacted && <span>6 fascist policies enacted</span>
+          redPoliciesEnacted && <span>6 {themes[currentTheme].redPolicy} policies enacted</span>
         }
         {
-          mussoliniElected && <span>Mussolini elected Chancellor</span>
+          villainElected && <span>{themes[currentTheme].villain} elected {themes[currentTheme].appointee}</span>
         }
       </Details>
       <PlayerTable players={players} />

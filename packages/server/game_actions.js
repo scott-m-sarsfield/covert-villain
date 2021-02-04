@@ -20,8 +20,8 @@ const initialGame = () => ({
     deck: [],
     hand: [],
     discard: [],
-    fascist: [],
-    liberal: [],
+    redPolicy: [],
+    bluePolicy: [],
     peek: []
   },
   presidentIndex: 0,
@@ -39,8 +39,8 @@ const initialGame = () => ({
 Player {
   uuid: "",
   name: "",
-  party: 'fascist' | 'liberal',
-  role: 'mussolini' | 'member',
+  party: 'redRole' | 'blueRole',
+  role: 'villain' | 'member',
   investigatedBy: null,
   alive: true,
   lobby: false,
@@ -133,7 +133,7 @@ const Actions = {
 
     const { POLICY_PEEK, EXECUTION, INVESTIGATE_LOYALTY, SPECIAL_ELECTION } = presidentialPowers;
 
-    const fascistBoards = {
+    const redBoards = {
       5: [null, null, POLICY_PEEK, EXECUTION, EXECUTION, null],
       6: [null, null, POLICY_PEEK, EXECUTION, EXECUTION, null],
       7: [null, INVESTIGATE_LOYALTY, SPECIAL_ELECTION, EXECUTION, EXECUTION, null],
@@ -159,13 +159,13 @@ const Actions = {
     game = {
       ...game,
       players,
-      fascistBoard: fascistBoards[players.length],
+      redBoard: redBoards[players.length],
       cards: {
         deck: shuffle(range(1, 17)),
         hand: [],
         discard: [],
-        fascist: [],
-        liberal: []
+        redPolicy: [],
+        bluePolicy: []
       },
       notifications: [
         {
@@ -240,7 +240,7 @@ const Actions = {
           ]
         };
 
-        if (game.cards.fascist.length >= 3 && game.chancellor === find(game.players, { role: roles.VILLAIN }).uuid) {
+        if (game.cards.redPolicy.length >= 3 && game.chancellor === find(game.players, { role: roles.VILLAIN }).uuid) {
           return {
             ...game,
             phase: phases.LOBBY
@@ -389,18 +389,18 @@ const Actions = {
         ...game,
         cards: {
           ...game.cards,
-          fascist: [...game.cards.fascist, card]
+          redPolicy: [...game.cards.redPolicy, card]
         }
       };
 
-      if (game.cards.fascist.length >= 6) {
+      if (game.cards.redPolicy.length >= 6) {
         return {
           ...game,
           phase: phases.LOBBY
         };
       }
 
-      const presidentialPower = game.fascistBoard[game.cards.fascist.length - 1];
+      const presidentialPower = game.redBoard[game.cards.redPolicy.length - 1];
 
       if (presidentialPower && !skipPower) {
         if (presidentialPower === presidentialPowers.POLICY_PEEK) {
@@ -446,11 +446,11 @@ const Actions = {
         ...game,
         cards: {
           ...game.cards,
-          liberal: [...game.cards.liberal, card]
+          bluePolicy: [...game.cards.bluePolicy, card]
         }
       };
 
-      if (game.cards.liberal.length >= 5) {
+      if (game.cards.bluePolicy.length >= 5) {
         return {
           ...game,
           phase: phases.LOBBY
