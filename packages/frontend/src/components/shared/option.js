@@ -2,53 +2,36 @@ import React from 'react';
 import types from 'prop-types';
 import styled, { css } from 'styled-components';
 import { colors } from '../pages/score_hud';
-
-const OptionCheckbox = styled.div`
-  position: relative;
-  border: solid 1px #979797;
-  background: #ffffff;
-  border-radius: 4px;
-  height: 30px;
-  width: 30px;
-`;
-
-const Check = ({ className }) => (
-  <svg className={className} width="35px" height="38px" viewBox="0 0 35 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-    <title>checked</title>
-    <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="square">
-      <g id="CheckboxButton" transform="translate(-15.000000, -5.000000)" stroke="#000000" strokeWidth="9">
-        <g id="checked" transform="translate(21.500000, 11.548424)">
-          <polyline id="Line" points="-0.244565217 18.3840216 7.75543478 24.5172815 22.2554348 -0.159513357" />
-        </g>
-      </g>
-    </g>
-  </svg>
-);
-
-Check.propTypes = {
-  className: types.string
-};
+import Check from './check';
+import { addElusiveEmperorStyles } from '../../theme';
+import useTheme from './use_theme';
 
 const optionColors = {
   evilParty: {
     colors: {
+      text: colors.white,
       border: colors.evilBorder,
       background: colors.evil
     }
   },
   goodParty: {
     colors: {
+      text: colors.white,
       border: colors.goodBorder,
       background: colors.good
     }
   },
   default: {
     colors: {
+      text: colors.black,
       border: colors.grey,
       background: colors.lightGrey
     }
   }
 };
+
+const OptionCheckbox = styled.div``;
+const StyledCheck = styled(Check)``;
 
 const OptionWrapper = styled.button.attrs((props) => {
   return optionColors[props.variant] || optionColors.default;
@@ -72,24 +55,34 @@ const OptionWrapper = styled.button.attrs((props) => {
   }
   
   ${OptionCheckbox} {
+    display: block;
+    position: relative;
+    border: solid 1px #979797;
+    background: #ffffff;
+    border-radius: 4px;
+    height: 30px;
+    width: 30px;
     margin-right: 20px;
     border-color: ${(props) => props.colors.border}
+    
+    ${StyledCheck} {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
   }
   
   ${(props) => props.disabled && css`
     opacity: 0.7;
   `}
-`;
-
-const StyledCheck = styled(Check)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  
+  ${addElusiveEmperorStyles('option', { OptionCheckbox })}
 `;
 
 const Option = ({ label, selected, value, onSelect, variant, disabled }) => {
+  const theme = useTheme();
   return (
-    <OptionWrapper {...{ variant, onClick: () => onSelect(value), disabled }}>
+    <OptionWrapper {...{ variant, onClick: () => onSelect(value), disabled, selected, theme }}>
       <OptionCheckbox>
         {selected && (<StyledCheck />)}
       </OptionCheckbox>

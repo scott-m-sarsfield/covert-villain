@@ -6,12 +6,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessRook, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { toggleOverview } from '../store/game_slice';
 import useTheme from './shared/use_theme';
+import { addElusiveEmperorStyles } from '../theme';
 
 const Wrapper = styled.div`
   background: #ecc16b;
   box-shadow: rgba(0,0,0,0.5) 0 2px 4px;
   display: flex;
   justify-content: space-between;
+  
+  ${addElusiveEmperorStyles('heading')}
 `;
 
 const Header = styled.h2`
@@ -22,6 +25,8 @@ const Header = styled.h2`
   margin: 0 0 0 15px;
   max-width: 1080px;
   padding: 10px 0;
+  
+  ${addElusiveEmperorStyles('header')}
 `;
 
 const SettingsButton = styled.button`
@@ -45,8 +50,8 @@ const Heading = ({ hasSettings, className }) => {
   const theme = useTheme();
 
   return (
-    <Wrapper {...{ className }}>
-      <Header>{theme.title}</Header>
+    <Wrapper {...{ className, theme }}>
+      <Header theme={theme}>{theme.title}</Header>
       {
         hasSettings ? (
           <SettingsButton onClick={() => dispatch(toggleOverview())}>

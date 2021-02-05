@@ -35,12 +35,12 @@ const GameOverPage = () => {
       <Instructions>
         {
           (goodPoliciesEnacted || villainKilled) && (
-            <PartyText party="good">{theme.goodRole}s Win!</PartyText>
+            <PartyText party="goodParty">{theme.goodRole}s Win!</PartyText>
           )
         }
         {
           (evilPoliciesEnacted || villainElected) && (
-            <PartyText party="evil">{theme.evilRole}s Win!</PartyText>
+            <PartyText party="evilParty">{theme.evilRole}s Win!</PartyText>
           )
         }
       </Instructions>

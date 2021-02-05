@@ -5,6 +5,8 @@ import types from 'prop-types';
 import { joinGame } from '../../store/game_slice';
 import SubmitButton from '../shared/submit_button';
 import Heading from '../heading';
+import { addElusiveEmperorStyles } from '../../theme';
+import useTheme from '../shared/use_theme';
 
 const Content = styled.div`
   padding: 60px 30px 0;
@@ -25,23 +27,27 @@ const JoinInput = styled.input`
   box-sizing: border-box;
   border-radius: 4px;
   border: 1px solid #979797;
+  
+  ${addElusiveEmperorStyles('joinInput')}
 `;
 
-const JoinInputRow = ({ label, value, onChange }) => (
+const JoinInputRow = ({ label, value, onChange, theme }) => (
   <div>
     <InputRowLabel>{label}</InputRowLabel>
-    <JoinInput type="text" value={value} placeholder={label} onChange={onChange}/>
+    <JoinInput type="text" value={value} placeholder={label} onChange={onChange} theme={theme}/>
   </div>
 );
 
 JoinInputRow.propTypes = {
   label: types.string,
   value: types.string,
-  onChange: types.func.isRequired
+  onChange: types.func.isRequired,
+  theme: types.object
 };
 
 const JoinGamePage = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
 
@@ -70,13 +76,15 @@ const JoinGamePage = () => {
         <JoinInputRow {...{
           label: 'Code',
           value: code,
-          onChange: onChangeCode
+          onChange: onChangeCode,
+          theme
         }} />
 
         <JoinInputRow {...{
           label: 'Name',
           value: name,
-          onChange: onChangeName
+          onChange: onChangeName,
+          theme
         }} />
       </Content>
       <SubmitButton onClick={onJoin} disabled={!code || !name}>Join</SubmitButton>

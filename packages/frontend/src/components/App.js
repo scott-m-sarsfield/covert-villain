@@ -17,6 +17,8 @@ import PresidentApprovesVetoPage from './pages/president_approves_veto_page';
 import { dismissError } from '../store/game_slice';
 import PresidentInvestigatesLoyaltyPage from './pages/president_investigates_loyalty_page';
 import SpecialElectionPage from './pages/special_election_page';
+import { addElusiveEmperorStyles } from '../theme';
+import useTheme from './shared/use_theme';
 
 const Body = styled.div`
   background: beige;
@@ -30,6 +32,8 @@ const Body = styled.div`
     font-family: 'Potta One', sans-serif;
     letter-spacing: 2px;
   }
+  
+  ${addElusiveEmperorStyles('body')}
 `;
 
 function GameScreens({ game, notificationCursor }) {
@@ -161,9 +165,10 @@ function App() {
     notificationCursor,
     errorMessage
   } = useSelector((state) => state.game);
+  const theme = useTheme();
 
   return (
-    <Body>
+    <Body theme={theme}>
       {errorMessage && (
         <ErrorPopup>
           <ErrorMessage>
