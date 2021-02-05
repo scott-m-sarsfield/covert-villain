@@ -8,7 +8,7 @@ const filter = require('lodash/filter');
 const find = require('lodash/find');
 const get = require('lodash/get');
 const { v1: uuidv1 } = require('uuid');
-const { phases, notifications, roles, presidentialPowers } = require('./constants');
+const { phases, notifications, parties, roles, presidentialPowers } = require('./constants');
 const { splice } = require('./util');
 
 const initialGame = () => ({
@@ -148,7 +148,7 @@ const Actions = {
 
     players = players.map((player, index) => ({
       ...player,
-      party: gameAssignments[index] === GOOD ? GOOD : EVIL,
+      party: gameAssignments[index] === GOOD ? parties.GOOD : parties.EVIL,
       role: gameAssignments[index],
       investigatedBy: null,
       alive: true,
