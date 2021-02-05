@@ -5,15 +5,10 @@ html {
 body {
     margin: 0;
     height: 100%;
-    font-family: 'Potta One', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
     font-size: 16px;
-}
-
-body * {
-    font-family: 'Potta One', sans-serif;
 }
 
 #root {

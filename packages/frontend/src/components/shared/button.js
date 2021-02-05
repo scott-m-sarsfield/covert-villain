@@ -1,4 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
+import useTheme from './use_theme';
+import { addElusiveEmperorStyles } from '../../theme';
 
 const Button = styled.button`
   width: 100%;
@@ -9,6 +12,16 @@ const Button = styled.button`
   font-size: 21px;
   line-height: 30px;
   letter-spacing: 2px;
+  
+  ${addElusiveEmperorStyles('button')}
 `;
 
-export default Button;
+const WrappedButton = (props) => {
+  const theme = useTheme();
+
+  return (
+    <Button {...{ ...props, theme }} />
+  );
+};
+
+export default styled(WrappedButton)``;

@@ -4,6 +4,8 @@ import map from 'lodash/map';
 import types from 'prop-types';
 import { colors } from '../pages/score_hud';
 import { PartyAwareName, Name } from './atoms';
+import { addElusiveEmperorStyles } from '../../theme';
+import useTheme from './use_theme';
 
 const PlayerList = styled.ul`
   text-indent: 0;
@@ -25,6 +27,8 @@ const PlayerWrapper = styled.li`
   &:first-child {
     border-top-width: 1px;
   }
+  
+  ${addElusiveEmperorStyles('player')}
 `;
 
 const PlayerNumber = styled.div`
@@ -73,11 +77,13 @@ export const Vote = styled.div`
   background: ${colors.black};
   color: ${colors.white};
 `}
+  ${addElusiveEmperorStyles('vote')}
 `;
 
 export const Player = ({ uuid, index, ignoreStatus, rightContent }) => {
+  const theme = useTheme();
   return (
-    <PlayerWrapper>
+    <PlayerWrapper theme={theme}>
       <Left>
         <PlayerNumber>{numberLabels[index]}</PlayerNumber>
         <PlayerName>
