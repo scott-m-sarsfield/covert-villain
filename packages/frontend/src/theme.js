@@ -1,8 +1,9 @@
 const themes = {
   secretHitler: {
     title: 'Secret Hitler',
-    leader: 'President',
-    appointee: 'Chancellor',
+    president: 'President',
+    presidentialCandidate: 'Presidential Candidate',
+    chancellor: 'Chancellor',
     evilRole: 'Fascist',
     evilParty: 'Fascist',
     goodRole: 'Liberal',
@@ -13,15 +14,16 @@ const themes = {
   },
   elusiveEmperor: {
     title: 'Elusive Emperor',
-    leader: 'Vice Chair',
-    appointee: 'Supreme Chancellor',
-    evilRole: 'Loyalist Senator',
+    president: 'Vice Chair',
+    presidentialCandidate: 'Vice Chair Nominee',
+    chancellor: 'Supreme Chancellor',
+    evilRole: 'Loyalist',
     evilParty: 'Loyalist',
-    goodRole: 'Delegate Senator',
+    goodRole: 'Delegate',
     goodParty: 'Delegation',
     yes: 'chak! (YES)',
     no: 'den (NO)',
-    villain: 'Senator Papillon'
+    villain: 'Palpatine'
   }
 };
 

@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import get from 'lodash/get';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import Instructions, { Details } from '../shared/instructions';
-import themes from '../../theme';
+import useTheme from '../shared/use_theme';
 
 function getPlayer(state) {
   const uuid = state.game.user.uuid;
@@ -73,23 +72,23 @@ const PartyAssignmentNotificationContent = () => {
     evils: getEvils(state),
     villainKnowsEvils: getVillainKnowsEvils(state)
   }));
-  const currentTheme = useSelector((state) => get(state.theme, 'current')) || 'elusiveEmperor';
+  const theme = useTheme();
 
   return (
     <React.Fragment>
-      <Instructions>You Are</Instructions>
-      <Role role={role}>{role}</Role>
+      <Instructions>Your Role:</Instructions>
+      <Role role={role}>{theme[role]}</Role>
       <AdditionalInfo>
         {
           role === 'evilRole' && (
             <EvilList>
-              Your fellow {themes[currentTheme].evilRole}s are:
+              Your fellow {theme.evilRole}s are:
               <ul>
                 {
                   evils.map((player, i) => (
                     <li key={i}>
                       {player.name}
-                      <VillainAnnotation>{player.role === 'villain' && `(${themes[currentTheme].villain})`}</VillainAnnotation>
+                      <VillainAnnotation>{player.role === 'villain' && `(${theme.villain})`}</VillainAnnotation>
                     </li>
                   ))
                 }
@@ -100,13 +99,13 @@ const PartyAssignmentNotificationContent = () => {
         {
           role === 'villain' && villainKnowsEvils && (
             <EvilList>
-            Your fellow {themes[currentTheme].evilRole}s are:
+            Your fellow {theme.evilRole}s are:
               <ul>
                 {
                   evils.map((player, i) => (
                     <li key={i}>
                       {player.name}
-                      <VillainAnnotation>{player.role === 'villain' && `(${themes[currentTheme].villain})`}</VillainAnnotation>
+                      <VillainAnnotation>{player.role === 'villain' && `(${theme.villain})`}</VillainAnnotation>
                     </li>
                   ))
                 }
@@ -121,7 +120,7 @@ const PartyAssignmentNotificationContent = () => {
         }
         {
           role === 'goodRole' && (
-            <Details>Enact 5 {themes[currentTheme].goodParty} Policies to Win.</Details>
+            <Details>Enact 5 {theme.goodParty} Policies to Win.</Details>
           )
         }
       </AdditionalInfo>

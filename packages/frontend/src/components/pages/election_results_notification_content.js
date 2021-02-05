@@ -2,13 +2,11 @@ import React from 'react';
 import types from 'prop-types';
 import { useSelector } from 'react-redux';
 import Instructions, { Details } from '../shared/instructions';
-import { PlayerTable } from '../shared/player_table';
+import { PlayerTable, Vote } from '../shared/player_table';
 
 const ElectionResultsNotificationContent = ({ data }) => { // data prop
   const { data: game } = useSelector((state) => state.game);
   const { votes, success, failed, chaos } = data;
-
-  console.log(game); /* eslint-disable-line */
 
   const players = game.players.map((player) => ({
     ...player,
@@ -21,7 +19,9 @@ const ElectionResultsNotificationContent = ({ data }) => { // data prop
       {success && <Instructions>Election Successful!</Instructions>}
       {failed && <Instructions>Election Failed!</Instructions>}
 
-      <PlayerTable players={players} />
+      <PlayerTable players={players} renderRightContent={({ vote }) => (
+        <Vote approved={vote.approved}>{vote.approved ? 'Yes' : 'No'}</Vote>
+      )}/>
 
       {
         failed && (
