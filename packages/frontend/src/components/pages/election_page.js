@@ -7,10 +7,12 @@ import Option from '../shared/option';
 import { vote } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
+import useTheme from '../shared/use_theme';
 
 const ElectionPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
   const dispatch = useDispatch();
+  const theme = useTheme();
   const [approved, setApproved] = useState(null);
 
   const voted = get(game, ['votes', user.uuid, 'voted']);
@@ -29,9 +31,9 @@ const ElectionPage = () => {
             <Prompt>
               Vote!
               <br />
-              President <PartyAwareName uuid={game.presidentNominee} />
+              {theme.president} <PartyAwareName uuid={game.presidentNominee} />
               <br />
-              Chancellor <PartyAwareName uuid={game.chancellorNominee} />
+              {theme.chancellor} <PartyAwareName uuid={game.chancellorNominee} />
             </Prompt>
             <Option {...{
               label: 'Yes',

@@ -42,7 +42,7 @@ const PlayerName = styled.div`
   line-height: 30px;
 `;
 
-const PlayerRole = styled.div`
+export const PlayerRole = styled.div`
   margin-left: 10px;
   font-size: 12px;
   line-height: 17px;
@@ -58,7 +58,7 @@ const Right = styled.div`
   margin: 0 5px;
 `;
 
-const Vote = styled.div`
+export const Vote = styled.div`
   align-self: flex-end;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -74,35 +74,34 @@ const Vote = styled.div`
   color: ${colors.white};
 `}
 `;
-export const Player = ({ uuid, index, role, vote, ignoreStatus }) => (
-  <PlayerWrapper>
-    <Left>
-      <PlayerNumber>{numberLabels[index]}</PlayerNumber>
-      <PlayerName>
-        {
-          ignoreStatus ? (
-            <Name uuid={uuid} />
-          ) : (
-            <PartyAwareName uuid={uuid} />
-          )
-        }
-      </PlayerName>
-      {role && <PlayerRole>{`(${role})`}</PlayerRole>}
-    </Left>
-    <Right>
-      {vote && <Vote approved={vote.approved}>{vote.approved ? 'Yes' : 'No'}</Vote>}
-    </Right>
-  </PlayerWrapper>
-);
+
+export const Player = ({ uuid, index, ignoreStatus, rightContent }) => {
+  return (
+    <PlayerWrapper>
+      <Left>
+        <PlayerNumber>{numberLabels[index]}</PlayerNumber>
+        <PlayerName>
+          {
+            ignoreStatus ? (
+              <Name uuid={uuid} />
+            ) : (
+              <PartyAwareName uuid={uuid} />
+            )
+          }
+        </PlayerName>
+      </Left>
+      <Right>
+        {rightContent}
+      </Right>
+    </PlayerWrapper>
+  );
+};
 
 Player.propTypes = {
   uuid: types.string,
   index: types.number,
-  role: types.string,
-  vote: types.shape({
-    approved: types.bool
-  }),
-  ignoreStatus: types.bool
+  ignoreStatus: types.bool,
+  rightContent: types.node
 };
 
 const numberLabels = [
@@ -118,17 +117,17 @@ const numberLabels = [
   'ten'
 ];
 
-export const PlayerTable = ({ players, ignoreStatus }) => (
+export const PlayerTable = ({ players, ignoreStatus, renderRightContent }) => (
   <PlayerList>
     {
-      map(players, ({ uuid, role, vote }, i) => {
+      map(players, (player, i) => {
+        const { uuid } = player;
         return (
           <Player key={i} {...{
             index: i,
             uuid,
-            role,
-            vote,
-            ignoreStatus
+            ignoreStatus,
+            rightContent: renderRightContent && renderRightContent(player)
           }}/>
         );
       })
@@ -142,5 +141,6 @@ PlayerTable.propTypes = {
       name: types.string.isRequired
     }).isRequired
   ),
-  ignoreStatus: types.bool
+  ignoreStatus: types.bool,
+  renderRightContent: types.func
 };

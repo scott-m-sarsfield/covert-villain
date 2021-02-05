@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SubmitButton from '../shared/submit_button';
 import { leaveGame, startGame } from '../../store/game_slice';
 import Button from '../shared/button';
-import { PlayerTable } from '../shared/player_table';
+import { PlayerRole, PlayerTable } from '../shared/player_table';
 import { Layout } from '../shared/layout';
 
 const GameCode = styled.h3`
@@ -22,8 +22,7 @@ const LobbyPage = () => {
   const code = get(game, 'code', '');
   const players = get(game, 'players', []).map((player) => ({
     ...player,
-    role: player.uuid === game.host ? 'host' : '',
-    alive: true
+    host: player.uuid === game.host
   }));
   const isHost = user.uuid === game.host;
 
@@ -35,7 +34,9 @@ const LobbyPage = () => {
   return (
     <Layout withSubmit={isHost}>
       <GameCode>{code}</GameCode>
-      <PlayerTable players={players} ignoreStatus />
+      <PlayerTable players={players} ignoreStatus renderRightContent={({ uuid }) => (
+        <PlayerRole>{uuid === game.host && 'Host'}</PlayerRole>
+      )}/>
       <Button onClick={onLeave}>Leave</Button>
       {
         isHost && (

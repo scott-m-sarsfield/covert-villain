@@ -109,7 +109,7 @@ export function buildPlayers(n = 5, { lobby } = {}) {
       participant: '2',
       goods,
       good: goods[0],
-      evil: find(players, (player) => player.role === 'evilParty').uuid,
+      evil: find(players, (player) => player.role === 'evilRole').uuid,
       villain: find(players, (player) => player.role === 'villain').uuid,
       not(uuid) {
         return map(
@@ -200,6 +200,9 @@ const SimulatedGame = ({ uuid, gameState, notification, overviewOpen }) => {
         data: getGameState(gameState, uuid),
         notificationCursor: notification ? get(gameState, 'notifications.length') - 1 : get(gameState, 'notifications.length'),
         overviewOpen
+      },
+      theme: {
+        current: 'elusiveEmperor'
       }
     }
   });

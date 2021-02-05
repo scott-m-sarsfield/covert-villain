@@ -5,6 +5,7 @@ import find from 'lodash/find';
 import styled from 'styled-components';
 import Instructions from '../shared/instructions';
 import { PartyAwareName } from '../shared/atoms';
+import useTheme from '../shared/use_theme';
 
 const Party = styled.h2`
   font-size: 30px;
@@ -23,6 +24,7 @@ const Party = styled.h2`
 
 const InvestigationNotificationContent = ({ data }) => {
   const { user, data: game } = useSelector((state) => state.game);
+  const theme = useTheme();
   const { president, player: playerUuid } = data;
 
   const player = find(game.players, { uuid: playerUuid });
@@ -31,11 +33,9 @@ const InvestigationNotificationContent = ({ data }) => {
   return isPresident ? (
     <>
       <Instructions>
-        <PartyAwareName uuid={playerUuid} />
-        <br />
-        is
+        <PartyAwareName uuid={playerUuid} renderName={(name) => `${name}'s`}/> Party:
       </Instructions>
-      <Party party={player.party}>{player.party}</Party>
+      <Party party={player.party}>{theme[player.party]}</Party>
     </>
   ) : (
     <>

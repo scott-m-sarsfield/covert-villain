@@ -6,10 +6,12 @@ import Option from '../shared/option';
 import { investigate } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
+import useTheme from '../shared/use_theme';
 
 const PresidentInvestigatesLoyaltyPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
   const dispatch = useDispatch();
+  const theme = useTheme();
   const [investigateUuid, setInvestigateUuid] = useState(null);
 
   const isPresident = user.uuid === game.president;
@@ -52,7 +54,7 @@ const PresidentInvestigatesLoyaltyPage = () => {
       {
         !isPresident && (
           <Message>
-            President <PartyAwareName uuid={game.president} /> is choosing someone to investigate...
+            {theme.president} <PartyAwareName uuid={game.president} /> is choosing someone to investigate...
           </Message>
         )
       }

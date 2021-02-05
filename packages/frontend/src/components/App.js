@@ -162,8 +162,6 @@ function App() {
     errorMessage
   } = useSelector((state) => state.game);
 
-  console.log(errorMessage); /* eslint-disable-line */
-
   return (
     <Body>
       {errorMessage && (

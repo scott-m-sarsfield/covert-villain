@@ -5,16 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import SubmitButton from '../shared/submit_button';
 import { goToLobby, leaveGame } from '../../store/game_slice';
 import Button from '../shared/button';
-import { PlayerTable } from '../shared/player_table';
+import { PlayerRole, PlayerTable } from '../shared/player_table';
 import Instructions, { Details } from '../shared/instructions';
 import { PartyText } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
 import LobbyPage from './lobby_page';
-import themes from '../../theme';
+import useTheme from '../shared/use_theme';
 
 const GameOverPage = () => {
   const { data: game } = useSelector((state) => state.game);
-  const currentTheme = useSelector((state) => get(state.theme, 'current')) || 'elusiveEmperor';
+  const theme = useTheme();
   const players = get(game, 'players', []);
 
   const villain = find(players, { role: 'villain' });
@@ -35,30 +35,32 @@ const GameOverPage = () => {
       <Instructions>
         {
           (goodPoliciesEnacted || villainKilled) && (
-            <PartyText party="good">{themes[currentTheme].goodRole}s Win!</PartyText>
+            <PartyText party="good">{theme.goodRole}s Win!</PartyText>
           )
         }
         {
           (evilPoliciesEnacted || villainElected) && (
-            <PartyText party="evil">{themes[currentTheme].evilRole}s Win!</PartyText>
+            <PartyText party="evil">{theme.evilRole}s Win!</PartyText>
           )
         }
       </Instructions>
       <Details>
         {
-          goodPoliciesEnacted && <span>5 {themes[currentTheme].goodParty} policies enacted</span>
+          goodPoliciesEnacted && <span>5 {theme.goodParty} policies enacted</span>
         }
         {
-          villainKilled && <span>{themes[currentTheme].villain} killed</span>
+          villainKilled && <span>{theme.villain} killed</span>
         }
         {
-          evilPoliciesEnacted && <span>6 {themes[currentTheme].evilParty} policies enacted</span>
+          evilPoliciesEnacted && <span>6 {theme.evilParty} policies enacted</span>
         }
         {
-          villainElected && <span>{themes[currentTheme].villain} elected {themes[currentTheme].appointee}</span>
+          villainElected && <span>{theme.villain} elected {theme.chancellor}</span>
         }
       </Details>
-      <PlayerTable players={players} />
+      <PlayerTable players={players} renderRightContent={({ role }) => role && (
+        <PlayerRole>{`${theme[role]}`}</PlayerRole>
+      )}/>
       <Button onClick={onLeave}>Leave</Button>
 
       <SubmitButton onClick={onLobby}>Go to lobby</SubmitButton>

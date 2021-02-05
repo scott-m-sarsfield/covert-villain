@@ -6,7 +6,7 @@ export default ({ title: 'Pages/Chancellor Enacts Policy' });
 
 const { players, povUuids } = buildPlayers();
 
-const leaderChoosesPoliciesGame = buildGame({
+const chancellorChoosesPolicyGame = buildGame({
   phase: 'chancellor_chooses_policy',
   players,
   chancellor: povUuids.evil,
@@ -16,7 +16,7 @@ const leaderChoosesPoliciesGame = buildGame({
 });
 
 const vetoablePoliciesGame = {
-  ...leaderChoosesPoliciesGame,
+  ...chancellorChoosesPolicyGame,
   cards: {
     hand: [4, 10],
     evilParty: [0, 1, 2, 3, 5]
@@ -26,7 +26,7 @@ const vetoablePoliciesGame = {
 export const chancellor = () => (
   <SimulatedGame {...{
     uuid: povUuids.evil,
-    gameState: leaderChoosesPoliciesGame
+    gameState: chancellorChoosesPolicyGame
   }} />
 );
 
@@ -40,13 +40,13 @@ export const chancellorWithVeto = () => (
 export const goodBystander = () => (
   <SimulatedGame {...{
     uuid: povUuids.good,
-    gameState: leaderChoosesPoliciesGame
+    gameState: chancellorChoosesPolicyGame
   }} />
 );
 
 export const evilBystander = () => (
   <SimulatedGame {...{
     uuid: povUuids.villain,
-    gameState: leaderChoosesPoliciesGame
+    gameState: chancellorChoosesPolicyGame
   }} />
 );

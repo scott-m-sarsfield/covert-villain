@@ -8,9 +8,10 @@ import { faEye, faSearch, faSkullCrossbones, faVoteYea } from '@fortawesome/free
 import Heading from '../heading';
 import Button from './button';
 import ScoreHud, { colors } from '../pages/score_hud';
-import { PlayerTable } from './player_table';
+import { PlayerTable, PlayerRole } from './player_table';
 import Instructions from './instructions';
 import { leaveGame } from '../../store/game_slice';
+import useTheme from './use_theme';
 
 export const WrappedScoreHud = styled(ScoreHud)``;
 const LayoutWrapper = styled.div`
@@ -119,6 +120,7 @@ const actionIcons = {
 const OverviewContent = () => {
   const dispatch = useDispatch();
   const game = useSelector((state) => state.game.data);
+  const theme = useTheme();
   return (
     <OverviewWrapper>
       <GameCode>{game.code}</GameCode>
@@ -146,7 +148,9 @@ const OverviewContent = () => {
         }
       </ChaosRow>
       <PlayersHeader>Players</PlayersHeader>
-      <PlayerTable players={game.players}/>
+      <PlayerTable players={game.players} renderRightContent={({ role }) => role && (
+        <PlayerRole>{`${theme[role]}`}</PlayerRole>
+      )}/>
       <Button onClick={() => dispatch(leaveGame())}>Leave Game</Button>
     </OverviewWrapper>
   );

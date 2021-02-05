@@ -9,11 +9,11 @@ import Instructions, { Details } from './instructions';
 
 export const PartyText = styled.span.attrs((props) => {
   switch (props.party) {
-    case 'evil':
+    case 'evilParty':
       return {
         color: colors.evil
       };
-    case 'good':
+    case 'goodParty':
       return {
         color: colors.good
       };
@@ -45,18 +45,21 @@ Name.propTypes = {
   uuid: types.string.isRequired
 };
 
-export const PartyAwareName = ({ uuid }) => {
+const defaultRenderName = (name) => name;
+
+export const PartyAwareName = ({ uuid, renderName = defaultRenderName }) => {
   const { name, party, alive } = useSelector((state) => find(
     get(state, 'game.data.players'),
     { uuid }
   ));
   return (
-    <PartyName party={party} dead={!alive}>{name}</PartyName>
+    <PartyName party={party} dead={!alive}>{renderName(name)}</PartyName>
   );
 };
 
 PartyAwareName.propTypes = {
-  uuid: types.string.isRequired
+  uuid: types.string.isRequired,
+  renderName: types.func
 };
 
 export const Message = styled(Details)`

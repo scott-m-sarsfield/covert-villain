@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import get from 'lodash/get';
 import filter from 'lodash/filter';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { discardPolicy } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
-import themes from '../../theme';
+import useTheme from '../shared/use_theme';
 
 const PresidentChoosesPoliciesPage = () => {
   const dispatch = useDispatch();
   const { user, data: game } = useSelector((state) => state.game);
-  const currentTheme = useSelector((state) => get(state.theme, 'current')) || 'elusiveEmperor';
+  const theme = useTheme();
   const [selected, setSelected] = useState({});
 
   const cards = game.cards.hand || [];
 
-  const isLeader = user.uuid === game.leader;
+  const isPresident = user.uuid === game.president;
 
   const cardsToDiscard = filter(cards, (card) => !selected[card]);
 
@@ -26,10 +25,10 @@ const PresidentChoosesPoliciesPage = () => {
   };
 
   return (
-    <Layout withSubmit={isLeader}>
+    <Layout withSubmit={isPresident}>
       <WrappedScoreHud/>
       {
-        isLeader && (
+        isPresident && (
           <>
             <Prompt>
               Choose 2 Policies
@@ -37,7 +36,7 @@ const PresidentChoosesPoliciesPage = () => {
             {
               cards.map((card) => (
                 <Option key={card} {...{
-                  label: themes[currentTheme][card < 11 ? 'evilParty' : 'goodParty'],
+                  label: theme[card < 11 ? 'evilParty' : 'goodParty'],
                   value: card,
                   selected: selected[card],
                   onSelect: (card) => setSelected({ ...selected, [card]: !selected[card] }),
@@ -55,9 +54,9 @@ const PresidentChoosesPoliciesPage = () => {
         )
       }
       {
-        !isLeader && (
+        !isPresident && (
           <Message>
-            {themes[currentTheme].leader} <PartyAwareName uuid={game.leader} /> is choosing two policies.
+            {theme.president} <PartyAwareName uuid={game.president} /> is choosing two policies.
           </Message>
         )
       }

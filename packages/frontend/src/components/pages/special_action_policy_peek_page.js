@@ -1,32 +1,31 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import get from 'lodash/get';
 import noop from 'lodash/noop';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { endPolicyPeek } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
-import themes from '../../theme';
+import useTheme from '../shared/use_theme';
 
 const SpecialActionPolicyPeekPage = () => {
   const dispatch = useDispatch();
   const { user, data: game } = useSelector((state) => state.game);
-  const currentTheme = useSelector((state) => get(state.theme, 'current')) || 'elusiveEmperor';
+  const theme = useTheme();
 
   const cards = game.cards.peek;
 
-  const isLeader = user.uuid === game.leader;
+  const isPresident = user.uuid === game.president;
 
   const onSubmit = () => {
     dispatch(endPolicyPeek());
   };
 
   return (
-    <Layout withSubmit={isLeader}>
+    <Layout withSubmit={isPresident}>
       <WrappedScoreHud/>
       {
-        isLeader && (
+        isPresident && (
           <>
             <Prompt>
               Top 3 Policies
@@ -34,7 +33,7 @@ const SpecialActionPolicyPeekPage = () => {
             {
               cards.map((card) => (
                 <Option key={card} {...{
-                  label: themes[currentTheme][card < 11 ? 'evilParty' : 'goodParty'],
+                  label: theme[card < 11 ? 'evilParty' : 'goodParty'],
                   value: card,
                   variant: card < 11 ? 'evilParty' : 'goodParty',
                   disabled: true,
@@ -51,9 +50,9 @@ const SpecialActionPolicyPeekPage = () => {
         )
       }
       {
-        !isLeader && (
+        !isPresident && (
           <Message>
-            {themes[currentTheme].leader} <PartyAwareName uuid={game.leader} /> is peeking at the top 3 policies in the deck.
+            {theme.president} <PartyAwareName uuid={game.president} /> is peeking at the top 3 policies in the deck.
           </Message>
         )
       }

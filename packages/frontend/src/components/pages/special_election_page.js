@@ -6,10 +6,12 @@ import Option from '../shared/option';
 import { choosePresident } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
+import useTheme from '../shared/use_theme';
 
 const SpecialElectionPage = () => {
-  const { user, data: game } = useSelector((state) => state.game);
   const dispatch = useDispatch();
+  const { user, data: game } = useSelector((state) => state.game);
+  const theme = useTheme();
   const [nomineeUuid, setNomineeUuid] = useState(null);
 
   const isPresident = user.uuid === game.president;
@@ -27,7 +29,7 @@ const SpecialElectionPage = () => {
         isPresident && (
           <React.Fragment>
             <Prompt>
-              Choose a Presidential Candidate:
+              Choose a {theme.presidentialCandidate}:
             </Prompt>
             {
               presidentOptions.map(({ name, uuid, party }) => (
@@ -52,8 +54,8 @@ const SpecialElectionPage = () => {
       {
         !isPresident && (
           <Message>
-            President <PartyAwareName uuid={game.president} /> is choosing a Presidential Candidate
-            for the special election...
+            {theme.president} <PartyAwareName uuid={game.president} /> is
+            choosing a {theme.presidentialCandidate} for the special election...
           </Message>
         )
       }

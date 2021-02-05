@@ -6,10 +6,12 @@ import Option from '../shared/option';
 import { chooseChancellor } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
+import useTheme from '../shared/use_theme';
 
 const PresidentChoosesChancellorPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
   const dispatch = useDispatch();
+  const theme = useTheme();
   const [chancellorUuid, setChancellorUuid] = useState(null);
 
   const isPresidentNominee = user.uuid === game.presidentNominee;
@@ -27,7 +29,7 @@ const PresidentChoosesChancellorPage = () => {
         isPresidentNominee && (
           <React.Fragment>
             <Prompt>
-              Choose a Chancellor:
+              Choose a {theme.chancellor}:
             </Prompt>
             {
               chancellorOptions.map(({ name, uuid, party }) => (
@@ -52,7 +54,7 @@ const PresidentChoosesChancellorPage = () => {
       {
         !isPresidentNominee && (
           <Message>
-            Presidential Candidate <PartyAwareName uuid={game.presidentNominee} /> is choosing a Chancellor...
+            {theme.presidentialCandidate} <PartyAwareName uuid={game.presidentNominee} /> is choosing a {theme.chancellor}...
           </Message>
         )
       }

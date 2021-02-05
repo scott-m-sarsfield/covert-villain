@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import get from 'lodash/get';
 import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { enactPolicy } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
-import themes from '../../theme';
+import useTheme from '../shared/use_theme';
 
 const ChancellorChoosesPolicyPage = () => {
   const dispatch = useDispatch();
   const { user, data: game } = useSelector((state) => state.game);
-  const currentTheme = useSelector((state) => get(state.theme, 'current')) || 'elusiveEmperor';
+  const theme = useTheme();
   const [selected, setSelected] = useState(null);
 
   const cards = game.cards.hand || [];
@@ -34,7 +33,7 @@ const ChancellorChoosesPolicyPage = () => {
             {
               cards.map((card) => (
                 <Option key={card} {...{
-                  label: card < 11 ? themes[currentTheme].evilParty : themes[currentTheme].goodParty,
+                  label: card < 11 ? theme.evilParty : theme.goodParty,
                   value: card,
                   selected: selected === card,
                   onSelect: setSelected,
@@ -64,7 +63,7 @@ const ChancellorChoosesPolicyPage = () => {
       {
         !isChancellor && (
           <Message>
-            Chancellor <PartyAwareName uuid={game.chancellor} /> is choosing a policy.
+            {theme.chancellor} <PartyAwareName uuid={game.chancellor} /> is choosing a policy.
           </Message>
         )
       }
