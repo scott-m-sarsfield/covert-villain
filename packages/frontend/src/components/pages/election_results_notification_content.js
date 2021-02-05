@@ -19,7 +19,7 @@ const ElectionResultsNotificationContent = ({ data }) => { // data prop
       {success && <Instructions>Election Successful!</Instructions>}
       {failed && <Instructions>Election Failed!</Instructions>}
 
-      <PlayerTable players={players} renderRightContent={({ vote }) => (
+      <PlayerTable players={players} renderRightContent={({ vote }) => vote && (
         <Vote approved={vote.approved}>{vote.approved ? 'Yes' : 'No'}</Vote>
       )}/>
 
