@@ -151,14 +151,15 @@ router.post('/games/:code/leave', authenticateJwt, authenticateRoom, async (req,
 
 router.post('/games/:code/start', authenticateJwt, authenticateRoom, async (req, res) => {
   await withGame(req, res, (game, user) => {
+    if (game.phase !== phases.LOBBY) {
+      return {
+        error: 'must be in the lobby to start the game'
+      };
+    }
+
     if (game.host !== user.uuid) {
       return {
         error: 'you must be the host to start the game'
-      };
-    }
-    if (game.players.length < 5 || game.players.length > 10) {
-      return {
-        error: 'must have between 5 and 10 players'
       };
     }
 

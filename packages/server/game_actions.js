@@ -144,6 +144,12 @@ const Actions = {
 
     let players = shuffle(filter(game.players, (player) => !player.left && player.lobby));
 
+    if (players.length < 5 || players.length > 10) {
+      return {
+        error: 'must have between 5 and 10 players'
+      };
+    }
+
     const gameAssignments = shuffle(assignments[players.length]);
 
     players = players.map((player, index) => ({
