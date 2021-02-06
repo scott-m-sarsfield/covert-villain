@@ -131,6 +131,7 @@ const ErrorPopup = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  color: black;
 `;
 
 const ErrorHeading = styled.h3`

@@ -188,7 +188,7 @@ function getGameState(fullGameState, uuid) {
   };
 }
 
-const SimulatedGame = ({ uuid, gameState, notification, overviewOpen }) => {
+const SimulatedGame = ({ uuid, gameState, notification, overviewOpen, errorMessage }) => {
   const store = configureStore({
     reducer: (store) => store,
     preloadedState: {
@@ -199,7 +199,8 @@ const SimulatedGame = ({ uuid, gameState, notification, overviewOpen }) => {
         },
         data: getGameState(gameState, uuid),
         notificationCursor: notification ? get(gameState, 'notifications.length') - 1 : get(gameState, 'notifications.length'),
-        overviewOpen
+        overviewOpen,
+        errorMessage
       },
       theme: {
         current: 'elusiveEmperor'

@@ -21,3 +21,11 @@ export const participant = () => (
     gameState: game
   }} />
 );
+
+export const withError = () => (
+  <SimulatedGame {...{
+    uuid: povUuids.host,
+    gameState: game,
+    errorMessage: 'Sucks to suck.'
+  }} />
+);
