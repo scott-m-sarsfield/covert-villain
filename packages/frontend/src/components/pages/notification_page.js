@@ -27,6 +27,7 @@ const Wrapper = styled.div`
   height: 100%;
   min-height: 100vh;
   min-height: fill-available;
+  overflow: auto;
   
   ${WrappedHeading} {
     flex: 0 0 auto;

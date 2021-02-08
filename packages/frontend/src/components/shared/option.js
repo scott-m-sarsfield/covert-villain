@@ -49,6 +49,7 @@ const OptionWrapper = styled.button.attrs((props) => {
   line-height: 30px;
   letter-spacing: 2px;
   color: inherit;
+  word-break: break-all;
   
   &:not(:last-child){
     margin-bottom: 30px;

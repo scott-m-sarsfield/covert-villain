@@ -22,19 +22,27 @@ const ElectionPage = () => {
     dispatch(vote(approved));
   };
 
+  const canVote = alive & !voted;
+
   return (
     <Layout withSubmit={!voted}>
       <WrappedScoreHud/>
-      {
-        alive && !voted ? (
-          <React.Fragment>
-            <Prompt>
+      <Prompt>
+        {
+          canVote ? (
+            <React.Fragment>
               Vote!
-              <br />
-              {theme.president} <PartyAwareName uuid={game.presidentNominee} />
-              <br />
-              {theme.chancellor} <PartyAwareName uuid={game.chancellorNominee} />
-            </Prompt>
+              <br/>
+            </React.Fragment>
+          ) : null
+        }
+        {theme.president} <PartyAwareName uuid={game.presidentNominee} />
+        <br />
+        {theme.chancellor} <PartyAwareName uuid={game.chancellorNominee} />
+      </Prompt>
+      {
+        canVote ? (
+          <React.Fragment>
             <Option {...{
               label: 'Yes',
               value: true,

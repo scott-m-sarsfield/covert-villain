@@ -35,6 +35,7 @@ const successfulElection = {
     }
   ]
 };
+
 const failedElection = {
   ...successfulElection,
   notifications: [
@@ -50,6 +51,24 @@ const failedElection = {
     }
   ]
 };
+
+const tenPlayerFailedElection = {
+  ...successfulElection,
+  players: buildPlayers(10).players,
+  notifications: [
+    {
+      type: 'party_assignment'
+    },
+    {
+      type: 'election_results',
+      data: {
+        failed: true,
+        votes: buildVotes(players, [true, false, false, true, false, true, false, true, false, false])
+      }
+    }
+  ]
+};
+
 const chaosElection = {
   ...successfulElection,
   notifications: [
@@ -92,6 +111,14 @@ export const failedGood = () => (
   <SimulatedGame {...{
     uuid: povUuids.good,
     gameState: failedElection,
+    notification: true
+  }} />
+);
+
+export const failedTenPlayerGood = () => (
+  <SimulatedGame {...{
+    uuid: povUuids.good,
+    gameState: tenPlayerFailedElection,
     notification: true
   }} />
 );

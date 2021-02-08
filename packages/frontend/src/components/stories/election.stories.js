@@ -41,7 +41,7 @@ export const goodVoting = () => (
   }} />
 );
 
-export const voted = () => (
+export const votedOrDead = () => (
   <SimulatedGame {...{
     uuid: povUuids.good,
     gameState: addVote(electionGame, povUuids.good)

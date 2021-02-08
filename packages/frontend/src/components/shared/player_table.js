@@ -44,6 +44,7 @@ const PlayerName = styled.div`
   margin-left: 5px;
   font-size: 21px;
   line-height: 30px;
+  white-space: nowrap;
 `;
 
 export const PlayerRole = styled.div`
