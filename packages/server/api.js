@@ -194,7 +194,7 @@ router.post('/games/:code/choose-chancellor', authenticateJwt, authenticateRoom,
 });
 
 router.post('/games/:code/vote', authenticateJwt, authenticateRoom, async (req, res) => {
-  await withGame(req, res, async (game, user) => {
+  await withGame(req, res, (game, user) => {
     if (game.phase !== phases.ELECTION) {
       return {
         error: 'this action cannot be performed during this phase'

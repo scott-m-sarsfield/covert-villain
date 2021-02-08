@@ -27,6 +27,8 @@ export const PartyText = styled.span.attrs((props) => {
 `;
 
 const PartyName = styled(PartyText)`
+  word-break: break-word;
+  
   ${(props) => props.dead && css`
     text-decoration: double line-through;
     opacity: 0.5;

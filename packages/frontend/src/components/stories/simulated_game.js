@@ -34,14 +34,14 @@ export function buildPlayers(n = 5, { lobby } = {}) {
     }),
     buildPlayer({
       uuid: '2',
-      name: 'Bravo',
+      name: 'BBBBBBBBBBBBBBBBBBBBBBravo',
       party: 'goodParty',
       role: 'goodRole',
       lobby
     }),
     buildPlayer({
       uuid: '3',
-      name: 'Charlie',
+      name: 'Charlie charlie charlie',
       lobby,
       party: 'goodParty',
       role: 'goodRole'

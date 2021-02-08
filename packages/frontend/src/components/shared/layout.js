@@ -136,7 +136,7 @@ const OverviewContent = () => {
       <CardRow>
         {
           range(5).map((i) => (
-            <Card variant="goodParty" key={i} />
+            <Card variant="goodParty" key={i} active={!!game.cards.goodParty[i]}/>
           ))
         }
       </CardRow>
