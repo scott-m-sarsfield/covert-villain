@@ -31,14 +31,55 @@ const JoinInput = styled.input`
   ${addElusiveEmperorStyles('joinInput')}
 `;
 
-const JoinInputRow = ({ label, value, onChange, theme }) => (
+const CharCount = styled.div`
+  text-align: right;
+  position: relative;
+  top: -25px;
+`;
+
+const JoinCodeInput = styled(JoinInput)`
+  text-transform: uppercase;
+`;
+
+const CodeRow = ({ label, value, onChange, theme }) => (
   <div>
     <InputRowLabel>{label}</InputRowLabel>
-    <JoinInput type="text" value={value} placeholder={label} onChange={onChange} theme={theme}/>
+    <JoinCodeInput {...{
+      type: 'text',
+      value,
+      placeholder: label,
+      onChange,
+      theme,
+      autocapitalize: 'characters',
+      maxLength: 10
+    }}/>
+    <CharCount>{10 - value.length}</CharCount>
   </div>
 );
 
-JoinInputRow.propTypes = {
+CodeRow.propTypes = {
+  label: types.string,
+  value: types.string,
+  onChange: types.func.isRequired,
+  theme: types.object
+};
+
+const NameRow = ({ label, value, onChange, theme }) => (
+  <div>
+    <InputRowLabel>{label}</InputRowLabel>
+    <JoinInput {...{
+      type: 'text',
+      value,
+      placeholder: label,
+      onChange,
+      theme,
+      maxLength: 15
+    }}/>
+    <CharCount>{15 - value.length}</CharCount>
+  </div>
+);
+
+NameRow.propTypes = {
   label: types.string,
   value: types.string,
   onChange: types.func.isRequired,
@@ -73,14 +114,14 @@ const JoinGamePage = () => {
     <div>
       <Heading />
       <Content>
-        <JoinInputRow {...{
+        <CodeRow {...{
           label: 'Code',
           value: code,
           onChange: onChangeCode,
           theme
         }} />
 
-        <JoinInputRow {...{
+        <NameRow {...{
           label: 'Name',
           value: name,
           onChange: onChangeName,
