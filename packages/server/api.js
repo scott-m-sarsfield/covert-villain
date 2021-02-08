@@ -2,6 +2,7 @@ const express = require('express');
 const find = require('lodash/find');
 const get = require('lodash/get');
 const includes = require('lodash/includes');
+const trim = require('lodash/trim');
 const { v1: uuidv1 } = require('uuid');
 const { Game: SequelizeGame, sequelize } = require('./models');
 const { getJwt, authenticateJwt, authenticateOptionalJwt } = require('./jwt');
@@ -50,9 +51,26 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
       name = req.user.name;
       code = req.user.roomCode;
       uuid = req.user.uuid;
+    } else {
+      name = trim(name);
+      code = trim(code);
     }
 
     code = code.toUpperCase();
+
+    if (code.length > 10) {
+      res.status(400).send({
+        error: 'code cannot exceed 10 characters'
+      });
+      return;
+    }
+
+    if (name.length > 15) {
+      res.status(400).send({
+        error: 'name cannot exceed 15 characters'
+      });
+      return;
+    }
 
     await sequelize.transaction(async (transaction) => {
       const game = await getGame(code, transaction);
