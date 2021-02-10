@@ -46,11 +46,16 @@ const Api = {
   },
 
   async joinGame(code, name) {
-    const { game, user, token } = await post('/join', { code, name });
+    try {
+      const { game, user, token } = await post('/join', { code, name });
 
-    Auth.set(token);
+      Auth.set(token);
 
-    return { game, user };
+      return { game, user };
+    } catch (err) {
+      Auth.clear();
+      throw err;
+    }
   },
 
   resetGame(code) {
