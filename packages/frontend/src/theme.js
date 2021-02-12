@@ -1,6 +1,7 @@
 import isFunction from 'lodash/isFunction';
 import get from 'lodash/get';
 import elusiveEmperorTheme from './elusive_emperor_theme';
+import privatePonyTheme from './private_pony_theme';
 
 const themes = {};
 
@@ -28,6 +29,7 @@ registerTheme('secretHitler', {
 });
 
 registerTheme('elusiveEmperor', elusiveEmperorTheme);
+registerTheme('privatePony', privatePonyTheme);
 
 export function getThemeStyles(theme, component, props) {
   const styles = get(themes, [theme.id, 'styles', component]);
@@ -51,6 +53,22 @@ export function getThemeText(theme, key) {
   }
 
   return text;
+}
+
+const defaultColors = {
+  evil: '#c84e4e',
+  evilBorder: '#7e0c0c',
+  evilText: 'inherit',
+  good: '#74b5b5',
+  goodBorder: '#3761ad',
+  goodText: 'inherit',
+  neutral: '#d8d8d8',
+  neutralBorder: '#979797',
+  neutralText: 'inherit'
+};
+
+export function getThemeColor(theme, key) {
+  return get(themes, [theme.id, 'colors', key], get(defaultColors, key));
 }
 
 export default themes;

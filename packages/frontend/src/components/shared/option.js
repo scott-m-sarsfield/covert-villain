@@ -1,28 +1,9 @@
 import React from 'react';
 import types from 'prop-types';
 import { css, cx } from '@emotion/css';
-import { colors } from '../pages/score_hud';
 import Check from './check';
-import { getThemeStyles } from '../../theme';
+import { getThemeColor, getThemeStyles } from '../../theme';
 import useTheme from './use_theme';
-
-const optionColors = {
-  evilParty: {
-    text: colors.white,
-    border: colors.evilBorder,
-    background: colors.evil
-  },
-  goodParty: {
-    text: colors.white,
-    border: colors.goodBorder,
-    background: colors.good
-  },
-  default: {
-    text: colors.black,
-    border: colors.grey,
-    background: colors.lightGrey
-  }
-};
 
 const styles = {
   optionWrapper: ({ colors }) => css`
@@ -38,7 +19,7 @@ const styles = {
     font-size: 21px;
     line-height: 30px;
     letter-spacing: 2px;
-    color: inherit;
+    color: ${colors.text};
     word-break: break-all;
     
     &:not(:last-child){
@@ -67,9 +48,31 @@ const styles = {
   `
 };
 
+function getOptionColors(theme, variant) {
+  const optionColors = {
+    evilParty: {
+      text: getThemeColor(theme, 'evilText'),
+      border: getThemeColor(theme, 'evilBorder'),
+      background: getThemeColor(theme, 'evil')
+    },
+    goodParty: {
+      text: getThemeColor(theme, 'goodText'),
+      border: getThemeColor(theme, 'goodBorder'),
+      background: getThemeColor(theme, 'good')
+    },
+    default: {
+      text: getThemeColor(theme, 'neutralText'),
+      border: getThemeColor(theme, 'neutralBorder'),
+      background: getThemeColor(theme, 'neutral')
+    }
+  };
+
+  return optionColors[variant] || optionColors.default;
+}
+
 const Option = ({ label, selected, value, onSelect, variant, disabled }) => {
   const theme = useTheme();
-  const colors = optionColors[variant] || optionColors.default;
+  const colors = getOptionColors(theme, variant);
   return (
     <button {...{
       className: cx(

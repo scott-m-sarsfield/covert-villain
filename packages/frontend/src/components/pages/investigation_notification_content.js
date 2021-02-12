@@ -6,24 +6,20 @@ import { css, cx } from '@emotion/css';
 import Instructions from '../shared/instructions';
 import { PartyAwareName } from '../shared/atoms';
 import useTheme from '../shared/use_theme';
-import { colors } from './score_hud';
-import { getThemeText } from '../../theme';
+import { getThemeColor, getThemeText } from '../../theme';
 
 const styles = {
   party: css`
-font-size: 30px;
-  line-height: 40px;
-  text-align: center;
-  text-transform: capitalize;
-  margin: 0;
-  padding: 0;
+    font-size: 30px;
+    line-height: 40px;
+    text-align: center;
+    text-transform: capitalize;
+    margin: 0;
+    padding: 0;
 `,
-  goodParty: css`
-    color: ${colors.good}
-`,
-  evilParty: css`
-    color: ${colors.evil}
-`
+  partyColor: (color) => css`
+    color: ${color}
+  `
 };
 
 const InvestigationNotificationContent = ({ data }) => {
@@ -41,8 +37,8 @@ const InvestigationNotificationContent = ({ data }) => {
       </Instructions>
       <h2 className={cx(
         styles.party, {
-          [styles.goodParty]: player.party === 'goodParty',
-          [styles.evilParty]: player.party !== 'goodParty'
+          [styles.partyColor(getThemeColor(theme, 'good'))]: player.party === 'goodParty',
+          [styles.partyColor(getThemeColor(theme, 'evil'))]: player.party !== 'goodParty'
         })}>
         {getThemeText(theme, player.party)}
       </h2>

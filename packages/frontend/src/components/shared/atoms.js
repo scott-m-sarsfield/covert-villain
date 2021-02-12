@@ -4,15 +4,16 @@ import find from 'lodash/find';
 import get from 'lodash/get';
 import types from 'prop-types';
 import React from 'react';
-import { colors } from '../pages/score_hud';
 import Instructions, { Details } from './instructions';
+import useTheme from './use_theme';
+import { getThemeColor, getThemeStyles } from '../../theme';
 
-function getPartyColor(party) {
+function getPartyColor(theme, party) {
   switch (party) {
     case 'evilParty':
-      return colors.evil;
+      return getThemeColor(theme, 'evil');
     case 'goodParty':
-      return colors.good;
+      return getThemeColor(theme, 'good');
     default:
       return 'inherit';
   }
@@ -31,6 +32,7 @@ const styles = {
   `,
   message: css`
     margin-top: 60px;
+    line-height: 2em;
   `,
   prompt: css`
     margin: 45px 0 30px;  
@@ -38,7 +40,8 @@ const styles = {
 };
 
 export const PartyText = ({ className, party, children }) => {
-  const color = getPartyColor(party);
+  const theme = useTheme();
+  const color = getPartyColor(theme, party);
   return (
     <span className={cx('cv-party-text', styles.partyText({ color }), className)}>
       {children}
@@ -85,12 +88,13 @@ Name.propTypes = {
 const defaultRenderName = (name) => name;
 
 export const PartyAwareName = ({ uuid, renderName = defaultRenderName }) => {
+  const theme = useTheme();
   const { name, party, alive } = useSelector((state) => find(
     get(state, 'game.data.players'),
     { uuid }
   ));
   return (
-    <PartyName party={party} dead={!alive}>{renderName(name)}</PartyName>
+    <PartyName party={party} dead={!alive} className={getThemeStyles(theme, 'partyAwareName', { party })}>{renderName(name)}</PartyName>
   );
 };
 

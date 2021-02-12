@@ -6,8 +6,7 @@ import find from 'lodash/find';
 import filter from 'lodash/filter';
 import Instructions, { Details } from '../shared/instructions';
 import useTheme from '../shared/use_theme';
-import { colors } from './score_hud';
-import { getThemeText } from '../../theme';
+import { getThemeColor, getThemeStyles, getThemeText } from '../../theme';
 
 function getPlayer(state) {
   const uuid = state.game.user.uuid;
@@ -32,13 +31,10 @@ const styles = {
     margin: 0;
     padding: 0;
 `,
-  goodRole: css`
-    color: ${colors.good}
+  roleColor: (color) => css`
+    color: ${color}
 `,
-  evilRole: css`
-    color: ${colors.evil}
-`,
-  evilList: css`
+  evilList: (color) => css`
     margin-top: 30px;
     text-align: center;
     font-size: 16px;
@@ -51,7 +47,7 @@ const styles = {
       
       li {
         margin: 0;
-        color: #c84e4e;
+        color: ${color};
       }
     }
 `,
@@ -68,28 +64,35 @@ const styles = {
 `
 };
 
-const Role = ({ className, role, children }) => (
+const Role = ({ className, role, children, theme }) => (
   <h2 className={cx(
     styles.role,
     {
-      [styles.goodRole]: role === 'goodRole',
-      [styles.evilRole]: role !== 'goodRole'
+      [styles.roleColor(getThemeColor(theme, 'good'))]: role === 'goodRole',
+      [styles.roleColor(getThemeColor(theme, 'evil'))]: role !== 'goodRole'
     },
     className
   )}>
     {children}
   </h2>
 );
+
 Role.propTypes = {
   className: types.string,
   children: types.node,
-  role: types.string
+  role: types.string,
+  theme: types.object
 };
 
-const EvilList = ({ className, children }) => (<div className={cx(styles.evilList, className)}>{children}</div>);
+const EvilList = ({ className, children, theme }) => (
+  <div className={cx(styles.evilList(getThemeColor(theme, 'evil')), getThemeStyles(theme, 'evilList'), className)}>
+    {children}
+  </div>
+);
 EvilList.propTypes = {
   className: types.string,
-  children: types.node
+  children: types.node,
+  theme: types.object
 };
 
 const PartyAssignmentNotificationContent = () => {
@@ -103,11 +106,11 @@ const PartyAssignmentNotificationContent = () => {
   return (
     <React.Fragment>
       <Instructions>Your Role:</Instructions>
-      <Role role={role}>{getThemeText(theme, role)}</Role>
+      <Role role={role} theme={theme}>{getThemeText(theme, role)}</Role>
       <div className={styles.additionalInfo}>
         {
           role === 'evilRole' && (
-            <EvilList>
+            <EvilList theme={theme}>
               Your fellow {getThemeText(theme, 'evilRole')}s are:
               <ul>
                 {
@@ -126,7 +129,7 @@ const PartyAssignmentNotificationContent = () => {
         }
         {
           role === 'villain' && villainKnowsEvils && (
-            <EvilList>
+            <EvilList theme={theme}>
             Your fellow {getThemeText(theme, 'evilRole')}s are:
               <ul>
                 {

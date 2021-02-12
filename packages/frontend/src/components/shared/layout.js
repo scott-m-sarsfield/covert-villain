@@ -7,12 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faSearch, faSkullCrossbones, faVoteYea } from '@fortawesome/free-solid-svg-icons';
 import Heading from '../heading';
 import Button from './button';
-import ScoreHud, { colors } from '../pages/score_hud';
+import ScoreHud from '../pages/score_hud';
 import { PlayerTable, PlayerRole } from './player_table';
 import Instructions from './instructions';
 import { leaveGame } from '../../store/game_slice';
 import useTheme from './use_theme';
-import { getThemeText } from '../../theme';
+import { getThemeColor, getThemeText } from '../../theme';
 
 export const WrappedScoreHud = ScoreHud;
 
@@ -86,8 +86,8 @@ const styles = {
   chaosSegment: ({ active }) => css`
     height: 11px;
     width: 22px;
-    border: 1px solid ${colors.black};
-    background: ${active ? colors.grey : 'transparent'}
+    border: 1px solid #000;
+    background: ${active ? '#979797' : 'transparent'}
   `,
   chaosRow: css`
     display: flex;
@@ -102,23 +102,24 @@ const styles = {
   `
 };
 
-function getVariantColors(variant) {
+function getVariantColors(theme, variant) {
   if (variant === 'evilParty') {
     return {
-      border: colors.evilBorder,
-      background: colors.evil
+      border: getThemeColor(theme, 'evilBorder'),
+      background: getThemeColor(theme, 'evil')
     };
   }
   if (variant === 'goodParty') {
     return {
-      border: colors.goodBorder,
-      background: colors.good
+      border: getThemeColor(theme, 'goodBorder'),
+      background: getThemeColor(theme, 'good')
     };
   }
 }
 
 const Card = ({ variant, children, active }) => {
-  const colors = getVariantColors(variant);
+  const theme = useTheme();
+  const colors = getVariantColors(theme, variant);
 
   return (
     <div {...{
