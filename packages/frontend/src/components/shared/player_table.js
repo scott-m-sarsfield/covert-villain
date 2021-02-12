@@ -2,7 +2,6 @@ import React from 'react';
 import { css, cx } from '@emotion/css';
 import map from 'lodash/map';
 import types from 'prop-types';
-import { colors } from '../pages/score_hud';
 import { PartyAwareName, Name } from './atoms';
 import { getThemeStyles } from '../../theme';
 import useTheme from './use_theme';
@@ -46,14 +45,17 @@ const styles = {
     margin-left: 10px;
     font-size: 12px;
     line-height: 17px;
+    white-space: nowrap;
 `,
   left: css`
     display: flex;
     align-items: center;
     overflow: hidden;
+    flex: 1 1 auto;
 `,
   right: css`
     margin: 0 5px;
+    flex: 0 0 auto;
 `,
   vote: css`
     align-self: flex-end;
@@ -64,11 +66,11 @@ const styles = {
     text-align: center;
 `,
   voteApproved: css`
-    border-color: ${colors.black}
+    border-color: #000;
   `,
   voteRejected: css`
-    background: ${colors.black};
-    color: ${colors.white};
+    background: #000;
+    color: #fff;
 `
 };
 

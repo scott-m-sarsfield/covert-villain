@@ -4,18 +4,9 @@ import { css, cx } from '@emotion/css';
 import get from 'lodash/get';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSkull, faDove, faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
-
-export const colors = {
-  black: '#000000',
-  white: '#ffffff',
-  grey: '#979797',
-  lightGrey: '#d8d8d8',
-  evil: '#c84e4e',
-  evilBorder: '#7e0c0c',
-  good: '#74b5b5',
-  goodBorder: '#3761ad'
-};
+import { faDove, faHourglassHalf, faSkull } from '@fortawesome/free-solid-svg-icons';
+import useTheme from '../shared/use_theme';
+import { getThemeColor } from '../../theme';
 
 const styles = {
   wrapper: css`
@@ -30,12 +21,12 @@ const styles = {
   meterSection: css`
     height: 16px;
     width: 16px;
-    border: solid 1px ${colors.grey};
+    border: solid 1px #979797;
     border-radius: 8px;
   `,
   filled: (propColors) => css`
-    border-color: ${get(propColors, 'filledBorderColor', colors.black)};
-    background: ${get(propColors, 'filledBackgroundColor', colors.grey)};
+    border-color: ${get(propColors, 'filledBorderColor', '#000')};
+    background: ${get(propColors, 'filledBackgroundColor', '#979797')};
   `,
   meterWrapper: css`
     display: flex;
@@ -88,7 +79,7 @@ Meter.defaultProps = {
   filled: 0
 };
 
-const EvilMeter = ({ count }) => (
+const EvilMeter = ({ count, theme }) => (
   <Meter {...{
     label: (
       <FontAwesomeIcon icon={faSkull} />
@@ -96,29 +87,31 @@ const EvilMeter = ({ count }) => (
     total: 6,
     filled: count,
     colors: {
-      filledBorderColor: colors.evilBorder,
-      filledBackgroundColor: colors.evil
+      filledBorderColor: getThemeColor(theme, 'evilBorder'),
+      filledBackgroundColor: getThemeColor(theme, 'evil')
     }
   }} />
 );
 
 EvilMeter.propTypes = {
-  count: types.number
+  count: types.number,
+  theme: types.object
 };
 
-const GoodMeter = ({ count }) => (
+const GoodMeter = ({ count, theme }) => (
   <Meter {...{
     label: <FontAwesomeIcon icon={faDove} />,
     total: 5,
     filled: count,
     colors: {
-      filledBorderColor: colors.goodBorder,
-      filledBackgroundColor: colors.good
+      filledBorderColor: getThemeColor(theme, 'goodBorder'),
+      filledBackgroundColor: getThemeColor(theme, 'good')
     }
   }} />
 );
 GoodMeter.propTypes = {
-  count: types.number
+  count: types.number,
+  theme: types.object
 };
 
 const ChaosMeter = ({ count }) => (
@@ -141,12 +134,13 @@ function getCounts(game) {
 }
 
 const ScoreHud = ({ className }) => {
+  const theme = useTheme();
   const { evilCount, goodCount, chaosLevel } = useSelector((state) => getCounts(state.game.data));
   return (
     <div className={cx('cv-score-hud', styles.wrapper, className)}>
       <div className={styles.left}>
-        <EvilMeter count={evilCount}/>
-        <GoodMeter count={goodCount}/>
+        <EvilMeter count={evilCount} theme={theme}/>
+        <GoodMeter count={goodCount} theme={theme}/>
       </div>
       <ChaosMeter count={chaosLevel}/>
     </div>
