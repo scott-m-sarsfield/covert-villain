@@ -68,6 +68,10 @@ const Api = {
     Auth.clear();
   },
 
+  changeTheme(code, theme) {
+    return post(`/${code}/change-theme`, { theme });
+  },
+
   startGame(code) {
     return post(`/${code}/start`);
   },

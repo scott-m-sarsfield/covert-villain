@@ -68,10 +68,14 @@ const styles = {
   `
 };
 
-const SubmitButton = ({ children, disabled, className }) => {
+const SubmitButton = ({ children, disabled, className, onClick }) => {
   const loading = useSelector((state) => state.game.joining || state.game.executingAction);
   return (
-    <button disabled={disabled || loading} className={cx(styles.wrapper, { [styles.processing]: loading }, className)}>
+    <button
+      disabled={disabled || loading}
+      className={cx(styles.wrapper, { [styles.processing]: loading }, className)}
+      onClick={onClick}
+    >
       {
         loading ? (
           <React.Fragment>
@@ -88,7 +92,8 @@ const SubmitButton = ({ children, disabled, className }) => {
 SubmitButton.propTypes = {
   children: types.node,
   disabled: types.bool,
-  className: types.string
+  className: types.string,
+  onClick: types.func
 };
 
 export default SubmitButton;

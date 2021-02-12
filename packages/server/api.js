@@ -167,6 +167,31 @@ router.post('/games/:code/leave', authenticateJwt, authenticateRoom, async (req,
   });
 });
 
+router.post('/games/:code/change-theme', authenticateJwt, authenticateRoom, async (req, res) => {
+  await withGame(req, res, (game, user) => {
+    if (game.phase !== phases.LOBBY) {
+      return {
+        error: 'must be in the lobby to change theme'
+      };
+    }
+    if (game.host !== user.uuid) {
+      return {
+        error: 'you must be the host to start the game'
+      };
+    }
+
+    const { theme } = req.body;
+
+    if (!includes(['secretHitler', 'elusiveEmperor', 'privatePony'], theme)) {
+      return {
+        error: 'theme is not supported'
+      };
+    }
+
+    return Actions.changeTheme(game, theme);
+  });
+});
+
 router.post('/games/:code/start', authenticateJwt, authenticateRoom, async (req, res) => {
   await withGame(req, res, (game, user) => {
     if (game.phase !== phases.LOBBY) {
