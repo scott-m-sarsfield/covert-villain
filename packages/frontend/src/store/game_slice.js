@@ -14,6 +14,7 @@ const gamesSlice = createSlice({
     notificationCursor: 0,
     executingAction: false,
     overviewOpen: false,
+    settingsOpen: false,
     errorMessage: null
   },
   reducers: {
@@ -68,6 +69,9 @@ const gamesSlice = createSlice({
     },
     toggleOverview(state) {
       state.overviewOpen = !state.overviewOpen;
+    },
+    toggleSettings(state) {
+      state.settingsOpen = !state.settingsOpen;
     }
   }
 });
@@ -84,6 +88,7 @@ const {
   loadScenario,
   readNotification,
   toggleOverview,
+  toggleSettings,
   dismissError
 } = gamesSlice.actions;
 
@@ -148,6 +153,7 @@ const investigate = callApiWithCode((code, uuid) => Api.investigate(code, uuid))
 const choosePresident = callApiWithCode((code, uuid) => Api.choosePresident(code, uuid));
 const approveVeto = callApiWithCode((code, approved) => Api.approveVeto(code, approved));
 const goToLobby = callApiWithCode((code) => Api.goToLobby(code));
+const changeTheme = callApiWithCode((code, theme) => Api.changeTheme(code, theme));
 
 export {
   joinGame,
@@ -169,7 +175,9 @@ export {
   toggleOverview,
   approveVeto,
   dismissError,
-  goToLobby
+  goToLobby,
+  changeTheme,
+  toggleSettings
 };
 
 export default gamesSlice.reducer;

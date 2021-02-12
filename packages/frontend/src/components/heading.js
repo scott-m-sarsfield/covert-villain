@@ -3,8 +3,8 @@ import { css, cx } from '@emotion/css';
 import types from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChessRook, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { toggleOverview } from '../store/game_slice';
+import { faChessRook, faCog, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { toggleOverview, toggleSettings } from '../store/game_slice';
 import useTheme from './shared/use_theme';
 import { getThemeStyles, getThemeText } from '../theme';
 
@@ -40,16 +40,30 @@ const styles = {
 `
 };
 
-const Heading = ({ hasSettings, className }) => {
+const Heading = ({ hasSettings, hasOverview, className }) => {
   const dispatch = useDispatch();
   const overviewOpen = useSelector((state) => state.game.overviewOpen);
+  const settingsOpen = useSelector((state) => state.game.settingsOpen);
   const theme = useTheme();
 
   return (
     <div {...{ className: cx(styles.wrapper, getThemeStyles(theme, 'heading'), className) }}>
       <h2 className={cx(styles.header, getThemeStyles(theme, 'header'))}>{getThemeText(theme, 'title')}</h2>
       {
-        hasSettings ? (
+        hasSettings && (
+          <button className={styles.settingsButton} onClick={() => dispatch(toggleSettings())}>
+            {
+              settingsOpen ? (
+                <FontAwesomeIcon icon={faTimes} />
+              ) : (
+                <FontAwesomeIcon icon={faCog} />
+              )
+            }
+          </button>
+        )
+      }
+      {
+        hasOverview && (
           <button className={styles.settingsButton} onClick={() => dispatch(toggleOverview())}>
             {
               overviewOpen ? (
@@ -59,7 +73,7 @@ const Heading = ({ hasSettings, className }) => {
               )
             }
           </button>
-        ) : null
+        )
       }
     </div>
   );
@@ -67,6 +81,7 @@ const Heading = ({ hasSettings, className }) => {
 
 Heading.propTypes = {
   hasSettings: types.bool,
+  hasOverview: types.bool,
   className: types.string
 };
 

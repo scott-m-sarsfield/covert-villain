@@ -13,6 +13,7 @@ const { splice } = require('./util');
 
 const initialGame = () => ({
   phase: phases.LOBBY,
+  theme: 'elusiveEmperor',
   notifications: [],
   host: null,
   players: [],
@@ -117,6 +118,13 @@ const Actions = {
     }
 
     return game;
+  },
+
+  changeTheme(game, theme) {
+    return {
+      ...game,
+      theme
+    };
   },
 
   startGame(game) {

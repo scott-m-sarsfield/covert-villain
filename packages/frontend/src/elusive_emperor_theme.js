@@ -14,6 +14,9 @@ const elusiveEmperorTheme = {
     no: 'den (NO)',
     villain: 'Palpatine'
   },
+  colors: {
+    neutralText: '#000'
+  },
   styles: {
     body: css`
       background: rgb(43, 43, 43);
