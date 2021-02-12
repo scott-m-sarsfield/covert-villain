@@ -8,6 +8,7 @@ import { vote } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
 import useTheme from '../shared/use_theme';
+import { getThemeText } from '../../theme';
 
 const ElectionPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
@@ -36,9 +37,9 @@ const ElectionPage = () => {
             </React.Fragment>
           ) : null
         }
-        {theme.president} <PartyAwareName uuid={game.presidentNominee} />
+        {getThemeText(theme, 'president')} <PartyAwareName uuid={game.presidentNominee} />
         <br />
-        {theme.chancellor} <PartyAwareName uuid={game.chancellorNominee} />
+        {getThemeText(theme, 'chancellor')} <PartyAwareName uuid={game.chancellorNominee} />
       </Prompt>
       {
         canVote ? (

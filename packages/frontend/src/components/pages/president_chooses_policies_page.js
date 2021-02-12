@@ -7,6 +7,7 @@ import { discardPolicy } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
 import useTheme from '../shared/use_theme';
+import { getThemeText } from '../../theme';
 
 const PresidentChoosesPoliciesPage = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const PresidentChoosesPoliciesPage = () => {
             {
               cards.map((card) => (
                 <Option key={card} {...{
-                  label: theme[card < 11 ? 'evilParty' : 'goodParty'],
+                  label: getThemeText(theme, card < 11 ? 'evilParty' : 'goodParty'),
                   value: card,
                   selected: selected[card],
                   onSelect: (card) => setSelected({ ...selected, [card]: !selected[card] }),
@@ -56,7 +57,7 @@ const PresidentChoosesPoliciesPage = () => {
       {
         !isPresident && (
           <Message>
-            {theme.president} <PartyAwareName uuid={game.president} /> is choosing two policies.
+            {getThemeText(theme, 'president')} <PartyAwareName uuid={game.president} /> is choosing two policies.
           </Message>
         )
       }

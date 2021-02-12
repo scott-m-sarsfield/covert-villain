@@ -4,7 +4,7 @@ import map from 'lodash/map';
 import types from 'prop-types';
 import { colors } from '../pages/score_hud';
 import { PartyAwareName, Name } from './atoms';
-import { getThemeClass } from '../../theme';
+import { getThemeStyles } from '../../theme';
 import useTheme from './use_theme';
 
 const styles = {
@@ -77,7 +77,7 @@ PlayerList.propTypes = {
   children: types.node
 };
 
-const PlayerWrapper = ({ children, theme }) => (<li className={cx(styles.playerWrapper, getThemeClass(theme, 'player'))}>{children}</li>);
+const PlayerWrapper = ({ children, theme }) => (<li className={cx(styles.playerWrapper, getThemeStyles(theme, 'player'))}>{children}</li>);
 PlayerWrapper.propTypes = {
   children: types.node,
   theme: types.object
@@ -106,7 +106,7 @@ export const Vote = ({ children, theme, approved }) => (
         [styles.voteApproved]: approved,
         [styles.voteRejected]: !approved
       },
-      getThemeClass(theme, 'vote')
+      getThemeStyles(theme, 'vote')
     )
   }} >
     {children}

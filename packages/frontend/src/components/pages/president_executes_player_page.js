@@ -7,6 +7,7 @@ import { executePlayer } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
 import useTheme from '../shared/use_theme';
+import { getThemeText } from '../../theme';
 
 const PresidentExecutesPlayerPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
@@ -54,7 +55,7 @@ const PresidentExecutesPlayerPage = () => {
       {
         !isPresidentNominee && (
           <Message>
-            {theme.president} <PartyAwareName uuid={game.president} /> is executing a player...
+            {getThemeText(theme, 'president')} <PartyAwareName uuid={game.president} /> is executing a player...
           </Message>
         )
       }

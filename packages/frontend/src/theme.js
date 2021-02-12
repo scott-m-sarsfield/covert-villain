@@ -1,9 +1,18 @@
-import { css, cx } from '@emotion/css';
 import isFunction from 'lodash/isFunction';
+import get from 'lodash/get';
+import elusiveEmperorTheme from './elusive_emperor_theme';
 
-const themes = {
-  secretHitler: {
-    id: 'secretHitler',
+const themes = {};
+
+function registerTheme(key, theme) {
+  themes[key] = {
+    id: key,
+    ...theme
+  };
+}
+
+registerTheme('secretHitler', {
+  text: {
     title: 'Secret Hitler',
     president: 'President',
     presidentialCandidate: 'Presidential Candidate',
@@ -15,115 +24,33 @@ const themes = {
     yes: 'ja! (YES)',
     no: 'nein (NO)',
     villain: 'Hitler'
-  },
-  elusiveEmperor: {
-    id: 'elusiveEmperor',
-    title: 'Elusive Emperor',
-    president: 'Vice Chair',
-    presidentialCandidate: 'Vice Chair Nominee',
-    chancellor: 'Supreme Chancellor',
-    evilRole: 'Loyalist',
-    evilParty: 'Loyalist',
-    goodRole: 'Delegate',
-    goodParty: 'Delegation',
-    yes: 'chak! (YES)',
-    no: 'den (NO)',
-    villain: 'Palpatine'
   }
-};
+});
 
-const elusiveEmperorStyles = {
-  body: css`
-    background: rgb(43, 43, 43);
-    color: white;
-    font-family: 'Jura', sans-serif;
-  
-    * {
-      font-family: 'Jura', sans-serif;
-    }
- `,
-  button: css`
-    border: none;
-    background: transparent;
-    color: white;
-`,
-  heading: css`
-    background: rgb(60,60,60);
-    color: white;
-    
-    svg {
-      color: white;
-    }
-`,
-  header: css` 
-    color: white;
-`,
-  joinInput: css`
-    line-height: 28px;
-    border: none;
-    background: rgb(60,60,60);
-    color: white;
-    outline: none;
-`,
-  option: ({ colors, selected }) => {
-    const sharedStyles = css`
-    justify-content: center;
-    color: ${colors.text};
-    `;
+registerTheme('elusiveEmperor', elusiveEmperorTheme);
 
-    const selectedStyles = css`
-      background: ${colors.background};
-    `;
+export function getThemeStyles(theme, component, props) {
+  const styles = get(themes, [theme.id, 'styles', component]);
 
-    const notSelectedStyles = css`
-      background: transparent;
-      color: ${colors.background};
-      border-color: ${colors.background};
-    `;
-
-    return cx(
-      sharedStyles,
-      {
-        [selectedStyles]: selected,
-        [notSelectedStyles]: !selected
-      }
-    );
-  },
-  optionCheckbox: css`
-    display: none;
-  `,
-  player: css`
-    border-width: 0 0px 1px 0px;
-    background: transparent;
-`,
-  vote: css`
-    text-align: right;
-    font-size: smaller;
-    border: none;
-    background: none;
-    
-    :before {
-      content: '['
-    }
-    
-    :after {
-      content: ']';
-    }
-`
-};
-
-export function getThemeClass(theme, component, props) {
-  if (theme.id === 'elusiveEmperor') {
-    const styles = elusiveEmperorStyles[component];
-
-    if (isFunction(styles)) {
-      return styles(props);
-    }
-
-    return styles;
+  if (!styles) {
+    return null;
   }
 
-  return null;
+  if (isFunction(styles)) {
+    return styles(props);
+  }
+
+  return styles;
+}
+
+export function getThemeText(theme, key) {
+  const text = get(themes, [theme.id, 'text', key]);
+
+  if (!text) {
+    console.error('No text found for', key, 'in', theme.id); /* eslint-disable-line */
+  }
+
+  return text;
 }
 
 export default themes;

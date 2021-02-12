@@ -7,6 +7,7 @@ import { investigate } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
 import useTheme from '../shared/use_theme';
+import { getThemeText } from '../../theme';
 
 const PresidentInvestigatesLoyaltyPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
@@ -54,7 +55,7 @@ const PresidentInvestigatesLoyaltyPage = () => {
       {
         !isPresident && (
           <Message>
-            {theme.president} <PartyAwareName uuid={game.president} /> is choosing someone to investigate...
+            {getThemeText(theme, 'president')} <PartyAwareName uuid={game.president} /> is choosing someone to investigate...
           </Message>
         )
       }

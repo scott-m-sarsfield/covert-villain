@@ -63,7 +63,7 @@ const tenPlayerFailedElection = {
       type: 'election_results',
       data: {
         failed: true,
-        votes: buildVotes(players, [true, false, false, true, false, true, false, true, false, false])
+        votes: buildVotes(buildPlayers(10).players, [true, false, false, true, false, true, false, true, false, false])
       }
     }
   ]
