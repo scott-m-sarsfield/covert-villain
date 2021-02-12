@@ -1,6 +1,6 @@
 import types from 'prop-types';
 import React from 'react';
-import styled, { css } from 'styled-components';
+import { css, cx } from '@emotion/css';
 import { useDispatch, useSelector } from 'react-redux';
 import range from 'lodash/range';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,102 +13,141 @@ import Instructions from './instructions';
 import { leaveGame } from '../../store/game_slice';
 import useTheme from './use_theme';
 
-export const WrappedScoreHud = styled(ScoreHud)``;
-const LayoutWrapper = styled.div`
-  position: relative;
-  padding: 30px 15px;
-  box-sizing: border-box;
-  
-  ${({ withSubmit }) => withSubmit && css`
+export const WrappedScoreHud = ScoreHud;
+
+const styles = {
+  fullWrapper: css`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+  `,
+  layoutWrapper: css`
+    position: relative;
+    padding: 30px 15px;
+    box-sizing: border-box;
+    flex: 1 0 auto;
+    
+    .cv-button {
+      margin-top: 30px;
+    }
+    
+    .cv-score-hud {
+      margin: -20px -10px;
+    }
+  `,
+  layoutWrapperWithSubmit: css`
     padding-bottom: 80px;
-  `}
-  
-  ${Button} {
-    margin-top: 30px;
-  }
-  
-  ${WrappedScoreHud} {
-    margin: -20px -10px;
-  }
-`;
-
-const OverviewWrapper = styled.div`
-  padding: 15px 30px;
-  text-align:center;
-  
-  ${Button} {
-    margin-top: 30px;
-  }
-`;
-const GameCode = styled.h3`
-  font-size: 21px;
-  letter-spacing: 2px;
-  line-height: 40px;
-  margin: 0 0 15px 0;
-  padding: 0;
-`;
-
-const Card = styled.div.attrs((props) => {
-  if (props.variant === 'evilParty') {
-    return {
-      colors: {
-        border: colors.evilBorder,
-        background: colors.evil
-      }
-    };
-  }
-  if (props.variant === 'goodParty') {
-    return {
-      colors: {
-        border: colors.goodBorder,
-        background: colors.good
-      }
-    };
-  }
-})`
-  height: 48px;
-  width: 32px;
-  border: 1px solid ${(props) => props.colors.border};
-  background: ${(props) => props.colors.background};
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  border-radius: 1px;
-  opacity: 0.3;
-  
-  ${(props) => props.active && css`
+  `,
+  heading: css`
+    flex: 0 0 auto;
+  `,
+  overviewWrapper: css`
+    padding: 15px 30px;
+    text-align:center;
+    
+    .cv-button {
+      margin-top: 30px;
+    }
+  `,
+  gameCode: css`
+    font-size: 21px;
+    letter-spacing: 2px;
+    line-height: 40px;
+    margin: 0 0 15px 0;
+    padding: 0;
+  `,
+  card: ({ colors }) => css`
+    height: 48px;
+    width: 32px;
+    border: 1px solid ${colors.border};
+    background: ${colors.background};
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border-radius: 1px;
+    opacity: 0.3;
+  `,
+  cardActive: css`
     opacity: 1;
-  `}
-`;
+  `,
+  cardRow: css`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    
+    .cv-card + .cv-card {
+      margin-left: 15px;
+    }
+  `,
+  chaosSegment: ({ active }) => css`
+    height: 11px;
+    width: 22px;
+    border: 1px solid ${colors.black};
+    background: ${active ? colors.grey : 'transparent'}
+  `,
+  chaosRow: css`
+    display: flex;
+    justify-content: center;
+    
+    .cv-chaos-segment + .cv-chaos-segment {
+      margin-left: 20px;
+    }
+  `,
+  playersHeader: css`
+    margin-top: 30px;
+  `
+};
 
-const CardRow = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 15px;
-  
-  ${Card} + ${Card} {
-    margin-left: 15px;
+function getVariantColors(variant) {
+  if (variant === 'evilParty') {
+    return {
+      border: colors.evilBorder,
+      background: colors.evil
+    };
   }
-`;
-const ChaosSegment = styled.div`
-  height: 11px;
-  width: 22px;
-  border: 1px solid ${colors.black};
-  background: ${(props) => props.active ? colors.grey : 'transparent'}
-`;
-const ChaosRow = styled.div`
-  display: flex;
-  justify-content: center;
-  
-  ${ChaosSegment} + ${ChaosSegment} {
-    margin-left: 20px;
+  if (variant === 'goodParty') {
+    return {
+      border: colors.goodBorder,
+      background: colors.good
+    };
   }
-`;
-const PlayersHeader = styled(Instructions)`
-  margin-top: 30px;
-`;
+}
+
+const Card = ({ variant, children, active }) => {
+  const colors = getVariantColors(variant);
+
+  return (
+    <div {...{
+      className: cx('cv-card', styles.card({ colors }), { [styles.cardActive]: active })
+    }}>
+      {children}
+    </div>
+  );
+};
+
+Card.propTypes = {
+  variant: types.string,
+  children: types.node,
+  active: types.bool
+};
+
+const CardRow = ({ children }) => (<div className={styles.cardRow}>{children}</div>);
+CardRow.propTypes = {
+  children: types.node
+};
+
+const ChaosSegment = ({ active }) => (<div className={cx('cv-chaos-segment', styles.chaosSegment({ active }))} />);
+ChaosSegment.propTypes = {
+  active: types.bool
+};
+
+const PlayersHeader = (props) => (<Instructions {...{ ...props, className: cx(styles.playersHeader, props.className) }} />);
+PlayersHeader.propTypes = {
+  className: types.string
+};
 
 const actionIcons = {
   policy_peek: faEye,
@@ -122,8 +161,8 @@ const OverviewContent = () => {
   const game = useSelector((state) => state.game.data);
   const theme = useTheme();
   return (
-    <OverviewWrapper>
-      <GameCode>{game.code}</GameCode>
+    <div className={styles.overviewWrapper}>
+      <div className={styles.gameCode}>{game.code}</div>
       <CardRow>
         {
           game.evilBoard.map((action, i) => (
@@ -140,61 +179,45 @@ const OverviewContent = () => {
           ))
         }
       </CardRow>
-      <ChaosRow>
+      <div className={styles.chaosRow}>
         {
           range(3).map((i) => (
             <ChaosSegment key={i} active={game.chaos > i}/>
           ))
         }
-      </ChaosRow>
+      </div>
       <PlayersHeader>Players</PlayersHeader>
       <PlayerTable players={game.players} renderRightContent={({ role }) => role && (
         <PlayerRole>{`${theme[role]}`}</PlayerRole>
       )}/>
       <Button onClick={() => dispatch(leaveGame())}>Leave Game</Button>
-    </OverviewWrapper>
+    </div>
   );
 };
 
-const WrappedHeading = styled(Heading)``;
-
-const FullWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: auto;
-  
-  ${WrappedHeading} {
-    flex: 0 0 auto;
-  }
-  
-  ${LayoutWrapper} {
-    flex: 1 0 auto;
-  }
-`;
-
-export const Layout = ({ children, ...otherProps }) => {
+export const Layout = ({ children, withSubmit, ...otherProps }) => {
   const overviewOpen = useSelector((state) => state.game.overviewOpen);
   const game = useSelector((state) => state.game.data);
 
   const canShowOverview = game.phase !== 'lobby';
 
   return (
-    <FullWrapper>
-      <WrappedHeading hasSettings={canShowOverview} />
+    <div className={styles.fullWrapper}>
+      <Heading hasSettings={canShowOverview} className={styles.heading} />
       {
         canShowOverview && overviewOpen ? (
           <OverviewContent />
         ) : (
-          <LayoutWrapper {...otherProps}>
+          <div {...{ ...otherProps, className: cx(styles.layoutWrapper, { [styles.layoutWrapperWithSubmit]: withSubmit }) }}>
             {children}
-          </LayoutWrapper>
+          </div>
         )
       }
-    </FullWrapper>
+    </div>
   );
 };
 
 Layout.propTypes = {
-  children: types.node
+  children: types.node,
+  withSubmit: types.bool
 };

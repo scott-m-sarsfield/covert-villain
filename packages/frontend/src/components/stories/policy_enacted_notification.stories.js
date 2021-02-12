@@ -1,7 +1,6 @@
 import React from 'react';
 import SimulatedGame, { buildGame } from './simulated_game';
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default ({ title: 'Pages/Policy Enacted Notification' });
 
 const evilPolicyEnactedGame = buildGame({

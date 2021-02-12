@@ -1,6 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
-import styled, { css, keyframes } from 'styled-components';
+import { cx, css, keyframes } from '@emotion/css';
 import { useSelector } from 'react-redux';
 
 const upAndDown = keyframes`
@@ -25,73 +25,70 @@ const upAndDown = keyframes`
   }
 `;
 
-const Animated = styled.div`
-  display: inline-block;
-  position: relative;
-  bottom: 15px;
-  font-size: 40px;
-  line-height: 30px;
-  animation: ${upAndDown} 0.6s linear infinite;
-`;
-
-const DotOne = styled(Animated)`
-  animation-delay: 0s;
-`;
-
-const DotTwo = styled(Animated)`
-  animation-delay: 0.1s;
-`;
-
-const DotThree = styled(Animated)`
-  animation-delay: 0.2s;
-`;
-
-const SubmitButtonWrapper = styled.button`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background: rgba(0,0,0, 0.75);
-  border: none;
-  outline: none;
-  color: #fff;
-  box-shadow: rgba(0,0,0,0.5) 0 -2px 4px;
-  width: 100%;
-  font-size: 21px;
-  line-height: 30px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 20px 0;
-  height: 70px;
-  
-  &:disabled {
-    opacity: 0.5;
-    ${(props) => props.processing && css`
+const styles = {
+  animated: css`
+    display: inline-block;
+    position: relative;
+    bottom: 15px;
+    font-size: 40px;
+    line-height: 30px;
+    animation: ${upAndDown} 600ms linear infinite;
+`,
+  dotTwo: css`
+    animation-delay: 100ms;
+`,
+  dotThree: css`
+    animation-delay: 200ms;
+`,
+  wrapper: css`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0, 0.75);
+    border: none;
+    outline: none;
+    color: #fff;
+    box-shadow: rgba(0,0,0,0.5) 0 -2px 4px;
+    width: 100%;
+    font-size: 21px;
+    line-height: 30px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 20px 0;
+    height: 70px;
+    
+    &:disabled {
+      opacity: 0.5;
+    }
+`,
+  processing: css`
+    &:disabled {
       opacity: 1;
-    `}
-  }
-`;
+    }
+  `
+};
 
-const SubmitButton = ({ children, disabled, ...otherProps }) => {
+const SubmitButton = ({ children, disabled, className }) => {
   const loading = useSelector((state) => state.game.joining || state.game.executingAction);
   return (
-    <SubmitButtonWrapper disabled={disabled || loading} processing={loading} {...otherProps}>
+    <button disabled={disabled || loading} className={cx(styles.wrapper, { [styles.processing]: loading }, className)}>
       {
         loading ? (
           <React.Fragment>
-            <DotOne>.</DotOne>
-            <DotTwo>.</DotTwo>
-            <DotThree>.</DotThree>
+            <div className={styles.animated}>.</div>
+            <div className={cx(styles.animated, styles.dotTwo)}>.</div>
+            <div className={cx(styles.animated, styles.dotThree)}>.</div>
           </React.Fragment>
         ) : children
       }
-    </SubmitButtonWrapper>
+    </button>
   );
 };
 
 SubmitButton.propTypes = {
-  loading: types.bool,
   children: types.node,
-  disabled: types.bool
+  disabled: types.bool,
+  className: types.string
 };
 
-export default styled(SubmitButton)``;
+export default SubmitButton;

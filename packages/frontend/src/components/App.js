@@ -1,10 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import { css, cx } from '@emotion/css';
 import types from 'prop-types';
 import JoinGamePage from './pages/join_game_page';
 import useGameSession from './use_game_session';
-import useConsoleUtility from './debug_window';
 import NotificationPage from './pages/notification_page';
 import PresidentChoosesChancellorPage from './pages/president_chooses_chancellor_page';
 import ElectionPage from './pages/election_page';
@@ -17,24 +16,59 @@ import PresidentApprovesVetoPage from './pages/president_approves_veto_page';
 import { dismissError } from '../store/game_slice';
 import PresidentInvestigatesLoyaltyPage from './pages/president_investigates_loyalty_page';
 import SpecialElectionPage from './pages/special_election_page';
-import { addElusiveEmperorStyles } from '../theme';
+import { getThemeClass } from '../theme';
 import useTheme from './shared/use_theme';
 
-const Body = styled.div`
-  background: beige;
-  height: 100%;
-  min-height: 100vh;
-  min-height: fill-available;
-  font-family: 'Potta One', sans-serif;
-  letter-spacing: 2px;
-  
-  * {
+const styles = {
+  body: css`
+    background: beige;
+    height: 100%;
+    min-height: 100vh;
+    min-height: fill-available;
     font-family: 'Potta One', sans-serif;
     letter-spacing: 2px;
-  }
-  
-  ${addElusiveEmperorStyles('body')}
-`;
+    
+    * {
+      font-family: 'Potta One', sans-serif;
+      letter-spacing: 2px;
+    }
+`,
+  errorPopup: css`
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    bottom: 15px;
+    right: 15px;
+    z-index: 2;
+    background: white;
+    border: solid 2px black;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: black;
+`,
+  errorHeading: css`
+    text-align: center;
+`,
+  errorMessage: css`
+    padding: 0 30px;
+    
+    p {
+      margin-top: 60px;
+    }
+`,
+  dismissErrorButton: css`
+    appearance: none;
+    border: none;
+    text-transform: uppercase;
+    background: none;
+    font-size: 30px;
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+`
+};
 
 function GameScreens({ game, notificationCursor }) {
   const { phase, notifications } = game;
@@ -118,47 +152,8 @@ GameScreens.propTypes = {
   notificationCursor: types.number
 };
 
-const ErrorPopup = styled.div`
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  bottom: 15px;
-  right: 15px;
-  z-index: 2;
-  background: white;
-  border: solid 2px black;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: black;
-`;
-
-const ErrorHeading = styled.h3`
-  text-align: center;
-`;
-const ErrorMessage = styled.div`
-  padding: 0 30px;
-  
-  p {
-    margin-top: 60px;
-  }
-`;
-
-const DismissErrorButton = styled.button`
-  appearance: none;
-  border: none;
-  text-transform: uppercase;
-  background: none;
-  font-size: 30px;
-  width: 100%;
-  padding: 30px;
-  box-sizing: border-box;
-`;
-
 function App() {
   useGameSession();
-  useConsoleUtility();
   const dispatch = useDispatch();
   const {
     joining,
@@ -169,15 +164,15 @@ function App() {
   const theme = useTheme();
 
   return (
-    <Body theme={theme}>
+    <div className={cx(styles.body, getThemeClass(theme, 'body'))}>
       {errorMessage && (
-        <ErrorPopup>
-          <ErrorMessage>
-            <ErrorHeading>Error</ErrorHeading>
+        <div className={styles.errorPopup}>
+          <div className={styles.errorMessage}>
+            <h3 className={styles.errorHeading}>Error</h3>
             <p>{errorMessage}</p>
-          </ErrorMessage>
-          <DismissErrorButton onClick={() => dispatch(dismissError())}>Ok</DismissErrorButton>
-        </ErrorPopup>
+          </div>
+          <button className={styles.dismissErrorButton} onClick={() => dispatch(dismissError())}>Ok</button>
+        </div>
       )}
       {
         !game && (
@@ -189,7 +184,7 @@ function App() {
           <GameScreens game={game} notificationCursor={notificationCursor}/>
         )
       }
-    </Body>
+    </div>
   );
 }
 

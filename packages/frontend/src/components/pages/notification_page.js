@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { css } from '@emotion/css';
 import { useDispatch, useSelector } from 'react-redux';
 import SubmitButton from '../shared/submit_button';
 import { readNotification } from '../../store/game_slice';
@@ -12,36 +12,30 @@ import Heading from '../heading';
 import VetoNotificationContent from './veto_notification_content';
 import InvestigationNotificationContent from './investigation_notification_content';
 
-const WrappedHeading = styled(Heading)``;
-
-const Content = styled.div`
-  padding: 0 30px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Wrapper = styled.div`
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 100vh;
-  min-height: fill-available;
-  overflow: auto;
-  
-  ${WrappedHeading} {
-    flex: 0 0 auto;
-  }
-  
-  ${Content} {
+const styles = {
+  content: css`
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
     flex: 1 0 auto;
-  }
-  
-  ${SubmitButton} {
+`,
+  heading: css`
+    flex: 0 0 auto;
+`,
+  wrapper: css`
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 100vh;
+    min-height: fill-available;
+    overflow: auto;
+`,
+  submitButton: css`
     position: relative;
     flex: 0 0 auto;
-  }
-`;
+`
+};
 
 const NotificationPage = () => {
   const notification = useSelector((state) => state.game.data.notifications[state.game.notificationCursor]);
@@ -79,13 +73,15 @@ const NotificationPage = () => {
   }
 
   return (
-    <Wrapper>
-      <WrappedHeading />
-      <Content>
+    <div className={styles.wrapper}>
+      <Heading className={styles.heading} />
+      <div className={styles.content}>
         {content}
-      </Content>
-      <SubmitButton onClick={onAcknowledge}>Ok</SubmitButton>
-    </Wrapper>
+      </div>
+      <SubmitButton onClick={onAcknowledge} className={styles.submitButton}>
+        Ok
+      </SubmitButton>
+    </div>
 
   );
 };

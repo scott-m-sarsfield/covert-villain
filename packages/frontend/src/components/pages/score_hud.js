@@ -1,6 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
-import styled, { css } from 'styled-components';
+import { css, cx } from '@emotion/css';
 import get from 'lodash/get';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,49 +17,64 @@ export const colors = {
   goodBorder: '#3761ad'
 };
 
-const MeterSection = styled.div.attrs((props) => ({
-  filledBorderColor: get(props, 'colors.filledBorderColor', colors.black),
-  filledBackgroundColor: get(props, 'colors.filledBackgroundColor', colors.grey)
-}))`
-  height: 16px;
-  width: 16px;
-  border: solid 1px ${colors.grey};
-  border-radius: 8px;
-  
-  ${({ filled, filledBorderColor, filledBackgroundColor }) => filled && css`
-      border-color: ${filledBorderColor};
-      background: ${filledBackgroundColor};
-    `
-}
-`;
+const styles = {
+  wrapper: css`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  `,
+  left: css`
+    display: flex;
+    flex-direction: column;
+  `,
+  meterSection: css`
+    height: 16px;
+    width: 16px;
+    border: solid 1px ${colors.grey};
+    border-radius: 8px;
+  `,
+  filled: (propColors) => css`
+    border-color: ${get(propColors, 'filledBorderColor', colors.black)};
+    background: ${get(propColors, 'filledBackgroundColor', colors.grey)};
+  `,
+  meterWrapper: css`
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    line-height: 21px;
+    margin-bottom: 5px;
+    
+    span {
+      margin-right: 5px;
+    }
+    
+    .cv-meter-section + .cv-meter-section {
+      margin-left: 3px;
+    }
+  `
+};
 
-const MeterWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  line-height: 21px;
-  margin-bottom: 5px;
-  
-  span {
-    margin-right: 5px;
-  }
-  
-  ${MeterSection} + ${MeterSection} {
-    margin-left: 3px;
-  }
-`;
+const MeterSection = ({ className, colors, filled }) => (
+  <div className={cx('cv-meter-section', styles.meterSection, { [styles.filled(colors)]: filled }, className)} />
+);
+
+MeterSection.propTypes = {
+  className: types.string,
+  colors: types.object,
+  filled: types.bool
+};
 
 const Meter = ({ label, total, filled, colors }) => (
-  <MeterWrapper>
+  <div className={styles.meterWrapper}>
     <span>{label}</span>
     {
       Array(total).fill(null).map(
         (_, i) => (
-          <MeterSection key={i} filled={i < filled} colors={colors}/>
+          <MeterSection key={i} filled={i < filled} colors={colors} />
         )
       )
     }
-  </MeterWrapper>
+  </div>
 );
 
 Meter.propTypes = {
@@ -117,16 +132,6 @@ ChaosMeter.propTypes = {
   count: types.number
 };
 
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-`;
-const Left = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 function getCounts(game) {
   return {
     evilCount: get(game, 'cards.evilParty', []).length,
@@ -138,13 +143,13 @@ function getCounts(game) {
 const ScoreHud = ({ className }) => {
   const { evilCount, goodCount, chaosLevel } = useSelector((state) => getCounts(state.game.data));
   return (
-    <Wrapper className={className}>
-      <Left>
+    <div className={cx('cv-score-hud', styles.wrapper, className)}>
+      <div className={styles.left}>
         <EvilMeter count={evilCount}/>
         <GoodMeter count={goodCount}/>
-      </Left>
+      </div>
       <ChaosMeter count={chaosLevel}/>
-    </Wrapper>
+    </div>
   );
 };
 

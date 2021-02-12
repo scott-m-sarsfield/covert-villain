@@ -1,27 +1,40 @@
 import React from 'react';
-import styled from 'styled-components';
+import types from 'prop-types';
+import { css, cx } from '@emotion/css';
 import useTheme from './use_theme';
-import { addElusiveEmperorStyles } from '../../theme';
+import { getThemeClass } from '../../theme';
 
-const Button = styled.button`
-  width: 100%;
-  padding: 10px 0;
-  border: solid 1px #979797;
-  background: #d8d8d8;
-  border-radius: 4px;
-  font-size: 21px;
-  line-height: 30px;
-  letter-spacing: 2px;
-  
-  ${addElusiveEmperorStyles('button')}
-`;
+const styles = {
+  button: css`
+    width: 100%;
+    padding: 10px 0;
+    border: solid 1px #979797;
+    background: #d8d8d8;
+    border-radius: 4px;
+    font-size: 21px;
+    line-height: 30px;
+    letter-spacing: 2px;
+  `
+};
 
-const WrappedButton = (props) => {
+const Button = (props) => {
   const theme = useTheme();
 
   return (
-    <Button {...{ ...props, theme }} />
+    <button {...{
+      ...props,
+      className: cx(
+        'cv-button',
+        styles.button,
+        getThemeClass(theme, 'button', props),
+        props.className
+      )
+    }} />
   );
 };
 
-export default styled(WrappedButton)``;
+Button.propTypes = {
+  className: types.string
+};
+
+export default Button;

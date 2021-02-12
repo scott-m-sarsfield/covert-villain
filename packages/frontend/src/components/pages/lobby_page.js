@@ -1,6 +1,6 @@
 import React from 'react';
 import get from 'lodash/get';
-import styled from 'styled-components';
+import { css } from '@emotion/css';
 import { useDispatch, useSelector } from 'react-redux';
 import SubmitButton from '../shared/submit_button';
 import { leaveGame, startGame } from '../../store/game_slice';
@@ -8,14 +8,16 @@ import Button from '../shared/button';
 import { PlayerRole, PlayerTable } from '../shared/player_table';
 import { Layout } from '../shared/layout';
 
-const GameCode = styled.h3`
-  font-size: 21px;
-  line-height: 40px;
-  letter-spacing: 2px;
-  margin: 0 0 15px 0;
-  padding: 0;
-  text-align: center;
-`;
+const styles = {
+  gameCode: css`
+    font-size: 21px;
+    line-height: 40px;
+    letter-spacing: 2px;
+    margin: 0 0 15px 0;
+    padding: 0;
+    text-align: center;
+  `
+};
 
 const LobbyPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
@@ -33,7 +35,7 @@ const LobbyPage = () => {
 
   return (
     <Layout withSubmit={isHost}>
-      <GameCode>{code}</GameCode>
+      <h3 className={styles.gameCode}>{code}</h3>
       <PlayerTable players={players} ignoreStatus renderRightContent={({ uuid }) => (
         <PlayerRole>{uuid === game.host && 'Host'}</PlayerRole>
       )}/>

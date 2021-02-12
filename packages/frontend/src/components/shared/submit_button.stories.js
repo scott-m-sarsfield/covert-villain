@@ -1,13 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
+import { css } from '@emotion/css';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import SubmitButton from './submit_button';
 
-const Wrapper = styled.div`
-  height: 100vh;
-  width: 100%;
-`;
+const styles = {
+  wrapper: css`
+    height: 100vh;
+    width: 100%;
+  `
+};
 
 const ReduxWrapper = ({ children, state }) => {
   const store = createStore((store) => store, {
@@ -16,9 +18,9 @@ const ReduxWrapper = ({ children, state }) => {
 
   return (
     <Provider store={store}>
-      <Wrapper>
+      <div className={styles.wrapper}>
         {children}
-      </Wrapper>
+      </div>
     </Provider>
   );
 };

@@ -1,4 +1,4 @@
-import { css } from 'styled-components';
+import { css, cx } from '@emotion/css';
 import isFunction from 'lodash/isFunction';
 
 const themes = {
@@ -65,22 +65,33 @@ const elusiveEmperorStyles = {
     color: white;
     outline: none;
 `,
-  option: ({ OptionCheckbox }) => css`
+  option: ({ colors, selected }) => {
+    const sharedStyles = css`
     justify-content: center;
-    color: ${(props) => props.colors.text};
-  
-    ${(props) => props.selected ? css`
-      background: ${(props) => props.colors.background};
-    ` : css`
+    color: ${colors.text};
+    `;
+
+    const selectedStyles = css`
+      background: ${colors.background};
+    `;
+
+    const notSelectedStyles = css`
       background: transparent;
-      color: ${(props) => props.colors.background};
-      border-color: ${(props) => props.colors.background};
-    `}
-    
-    ${OptionCheckbox} {
-      display: none;
-    }
-`,
+      color: ${colors.background};
+      border-color: ${colors.background};
+    `;
+
+    return cx(
+      sharedStyles,
+      {
+        [selectedStyles]: selected,
+        [notSelectedStyles]: !selected
+      }
+    );
+  },
+  optionCheckbox: css`
+    display: none;
+  `,
   player: css`
     border-width: 0 0px 1px 0px;
     background: transparent;
@@ -101,20 +112,18 @@ const elusiveEmperorStyles = {
 `
 };
 
-export function addElusiveEmperorStyles(component, childComponents) {
-  return (props) => {
-    if (props.theme.id === 'elusiveEmperor') {
-      const styles = elusiveEmperorStyles[component];
+export function getThemeClass(theme, component, props) {
+  if (theme.id === 'elusiveEmperor') {
+    const styles = elusiveEmperorStyles[component];
 
-      if (isFunction(styles)) {
-        return styles(childComponents);
-      }
-
-      return styles;
+    if (isFunction(styles)) {
+      return styles(props);
     }
 
-    return '';
-  };
+    return styles;
+  }
+
+  return null;
 }
 
 export default themes;

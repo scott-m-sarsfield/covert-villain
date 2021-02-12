@@ -1,10 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
+import types from 'prop-types';
+import { css, cx } from '@emotion/css';
 import { useSelector } from 'react-redux';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import Instructions, { Details } from '../shared/instructions';
 import useTheme from '../shared/use_theme';
+import { colors } from './score_hud';
 
 function getPlayer(state) {
   const uuid = state.game.user.uuid;
@@ -20,51 +22,74 @@ function getVillainKnowsEvils(state) {
   return state.game.data.players.length < 7;
 }
 
-const Role = styled.h2`
-  font-size: 30px;
-  line-height: 40px;
-  text-align: center;
-  text-transform: capitalize;
-  margin: 0;
-  padding: 0;
-  
-  ${({ role }) => role === 'goodRole' ? `
-      color: #74b5d5;
-    ` : `
-      color: #c84e4e;
-    `}
-`;
-
-const EvilList = styled.div`
-  margin-top: 30px;
-  text-align: center;
-  font-size: 16px;
-  line-height: 21px;
-  
-  ul {
-    list-style-type: none;
-    margin: 15px 0 0 0;
+const styles = {
+  role: css`
+    font-size: 30px;
+    line-height: 40px;
+    text-align: center;
+    text-transform: capitalize;
+    margin: 0;
     padding: 0;
+`,
+  goodRole: css`
+    color: ${colors.good}
+`,
+  evilRole: css`
+    color: ${colors.evil}
+`,
+  evilList: css`
+    margin-top: 30px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 21px;
     
-    li {
-      margin: 0;
-      color: #c84e4e;
+    ul {
+      list-style-type: none;
+      margin: 15px 0 0 0;
+      padding: 0;
+      
+      li {
+        margin: 0;
+        color: #c84e4e;
+      }
     }
-  }
-`;
+`,
+  additionalInfo: css`
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`,
+  villainAnnotation: css`
+    font-size: smaller;
+    line-height: 21px;
+    margin-left: 5px;
+`
+};
 
-const AdditionalInfo = styled.div`
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
+const Role = ({ className, role, children }) => (
+  <h2 className={cx(
+    styles.role,
+    {
+      [styles.goodRole]: role === 'goodRole',
+      [styles.evilRole]: role !== 'goodRole'
+    },
+    className
+  )}>
+    {children}
+  </h2>
+);
+Role.propTypes = {
+  className: types.string,
+  children: types.node,
+  role: types.string
+};
 
-const VillainAnnotation = styled.span`
-  font-size: smaller;
-  line-height: 21px;
-  margin-left: 5px;
-`;
+const EvilList = ({ className, children }) => (<div className={cx(styles.evilList, className)}>{children}</div>);
+EvilList.propTypes = {
+  className: types.string,
+  children: types.node
+};
 
 const PartyAssignmentNotificationContent = () => {
   const { role, evils, villainKnowsEvils } = useSelector((state) => ({
@@ -78,7 +103,7 @@ const PartyAssignmentNotificationContent = () => {
     <React.Fragment>
       <Instructions>Your Role:</Instructions>
       <Role role={role}>{theme[role]}</Role>
-      <AdditionalInfo>
+      <div className={styles.additionalInfo}>
         {
           role === 'evilRole' && (
             <EvilList>
@@ -88,7 +113,9 @@ const PartyAssignmentNotificationContent = () => {
                   evils.map((player, i) => (
                     <li key={i}>
                       {player.name}
-                      <VillainAnnotation>{player.role === 'villain' && `(${theme.villain})`}</VillainAnnotation>
+                      <span className={styles.villainAnnotation}>
+                        {player.role === 'villain' && `(${theme.villain})`}
+                      </span>
                     </li>
                   ))
                 }
@@ -105,7 +132,9 @@ const PartyAssignmentNotificationContent = () => {
                   evils.map((player, i) => (
                     <li key={i}>
                       {player.name}
-                      <VillainAnnotation>{player.role === 'villain' && `(${theme.villain})`}</VillainAnnotation>
+                      <span className={styles.villainAnnotation}>
+                        {player.role === 'villain' && `(${theme.villain})`}
+                      </span>
                     </li>
                   ))
                 }
@@ -123,7 +152,7 @@ const PartyAssignmentNotificationContent = () => {
             <Details>Enact 5 {theme.goodParty} Policies to Win.</Details>
           )
         }
-      </AdditionalInfo>
+      </div>
 
     </React.Fragment>
   );
