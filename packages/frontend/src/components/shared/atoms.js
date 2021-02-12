@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
+import { css, cx } from '@emotion/css';
 import find from 'lodash/find';
 import get from 'lodash/get';
 import types from 'prop-types';
@@ -7,33 +7,68 @@ import React from 'react';
 import { colors } from '../pages/score_hud';
 import Instructions, { Details } from './instructions';
 
-export const PartyText = styled.span.attrs((props) => {
-  switch (props.party) {
+function getPartyColor(party) {
+  switch (party) {
     case 'evilParty':
-      return {
-        color: colors.evil
-      };
+      return colors.evil;
     case 'goodParty':
-      return {
-        color: colors.good
-      };
+      return colors.good;
     default:
-      return {
-        color: 'inherit'
-      };
+      return 'inherit';
   }
-})`
-  color: ${(props) => props.color};
-`;
+}
 
-const PartyName = styled(PartyText)`
-  word-break: break-word;
-  
-  ${(props) => props.dead && css`
+const styles = {
+  partyText: ({ color }) => css`
+    color: ${color};
+  `,
+  partyName: css`
+    word-break: break-word;
+  `,
+  partyNameDead: css`
     text-decoration: double line-through;
     opacity: 0.5;
-  `}
-`;
+  `,
+  message: css`
+    margin-top: 60px;
+  `,
+  prompt: css`
+    margin: 45px 0 30px;  
+  `
+};
+
+export const PartyText = ({ className, party, children }) => {
+  const color = getPartyColor(party);
+  return (
+    <span className={cx('cv-party-text', styles.partyText({ color }), className)}>
+      {children}
+    </span>
+  );
+};
+
+PartyText.propTypes = {
+  className: types.string,
+  party: types.string,
+  children: types.node
+};
+
+const PartyName = (props) => (
+  <PartyText {...{
+    ...props,
+    className: cx(
+      styles.partyName,
+      {
+        [styles.partyNameDead]: props.dead
+      },
+      props.className
+    )
+  }} />
+);
+
+PartyName.propTypes = {
+  dead: types.bool,
+  className: types.string
+};
 
 export const Name = ({ uuid }) => {
   const { name } = useSelector((state) => find(
@@ -64,10 +99,14 @@ PartyAwareName.propTypes = {
   renderName: types.func
 };
 
-export const Message = styled(Details)`
-  margin-top: 60px;
-`;
+export const Message = (props) => (<Details {...{ ...props, className: cx(styles.message, props.className) }} />);
 
-export const Prompt = styled(Instructions)`
-  margin: 45px 0 30px;
-`;
+Message.propTypes = {
+  className: types.string
+};
+
+export const Prompt = (props) => (<Instructions {...{ ...props, className: cx(styles.prompt, props.className) }} />);
+
+Prompt.propTypes = {
+  className: types.string
+};

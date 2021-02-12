@@ -1,59 +1,55 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
+import { css, cx } from '@emotion/css';
 import types from 'prop-types';
 import { joinGame } from '../../store/game_slice';
 import SubmitButton from '../shared/submit_button';
 import Heading from '../heading';
-import { addElusiveEmperorStyles } from '../../theme';
+import { getThemeClass } from '../../theme';
 import useTheme from '../shared/use_theme';
 
-const Content = styled.div`
-  padding: 60px 30px 0;
-`;
-
-const InputRowLabel = styled.span`
-  display: block;
-  font-size: 16px;
-  line-height: 24px;
-  margin: 0 15px 5px 0;
-`;
-
-const JoinInput = styled.input`
-  font-size: 16px;
-  padding: 3px 8px;
-  margin-bottom: 30px;
-  width: 100%;
-  box-sizing: border-box;
-  border-radius: 4px;
-  border: 1px solid #979797;
-  
-  ${addElusiveEmperorStyles('joinInput')}
-`;
-
-const CharCount = styled.div`
-  text-align: right;
-  position: relative;
-  top: -25px;
-`;
-
-const JoinCodeInput = styled(JoinInput)`
-  text-transform: uppercase;
-`;
+const styles = {
+  content: css`
+    padding: 60px 30px 0;
+  `,
+  inputRowLabel: css`
+    display: block;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 15px 5px 0;
+  `,
+  joinInput: css`
+    font-size: 16px;
+    padding: 3px 8px;
+    margin-bottom: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #979797;
+  `,
+  joinCodeInput: css`
+    text-transform: uppercase;
+  `,
+  charCount: css`
+    text-align: right;
+    position: relative;
+    top: -25px;
+  `
+};
 
 const CodeRow = ({ label, value, onChange, theme }) => (
   <div>
-    <InputRowLabel>{label}</InputRowLabel>
-    <JoinCodeInput {...{
+    <span className={styles.inputRowLabel}>{label}</span>
+    <input {...{
       type: 'text',
+      className: cx(styles.joinInput, getThemeClass(theme, 'joinInput'), styles.joinCodeInput),
       value,
       placeholder: label,
       onChange,
-      theme,
-      autocapitalize: 'characters',
+      autoCapitalize: 'characters',
       maxLength: 10
     }}/>
-    <CharCount>{10 - value.length}</CharCount>
+    <div className={styles.charCount}>{10 - value.length}</div>
   </div>
 );
 
@@ -66,16 +62,16 @@ CodeRow.propTypes = {
 
 const NameRow = ({ label, value, onChange, theme }) => (
   <div>
-    <InputRowLabel>{label}</InputRowLabel>
-    <JoinInput {...{
+    <span className={styles.inputRowLabel}>{label}</span>
+    <input {...{
       type: 'text',
+      className: cx(styles.joinInput, getThemeClass(theme, 'joinInput')),
       value,
       placeholder: label,
       onChange,
-      theme,
       maxLength: 15
     }}/>
-    <CharCount>{15 - value.length}</CharCount>
+    <div className={styles.charCount}>{15 - value.length}</div>
   </div>
 );
 
@@ -113,7 +109,7 @@ const JoinGamePage = () => {
   return (
     <div>
       <Heading />
-      <Content>
+      <div className={styles.content}>
         <CodeRow {...{
           label: 'Code',
           value: code,
@@ -127,7 +123,7 @@ const JoinGamePage = () => {
           onChange: onChangeName,
           theme
         }} />
-      </Content>
+      </div>
       <SubmitButton onClick={onJoin} disabled={!code || !name}>Join</SubmitButton>
     </div>
   );

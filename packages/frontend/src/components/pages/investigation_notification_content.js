@@ -2,25 +2,28 @@ import React from 'react';
 import types from 'prop-types';
 import { useSelector } from 'react-redux';
 import find from 'lodash/find';
-import styled from 'styled-components';
+import { css, cx } from '@emotion/css';
 import Instructions from '../shared/instructions';
 import { PartyAwareName } from '../shared/atoms';
 import useTheme from '../shared/use_theme';
+import { colors } from './score_hud';
 
-const Party = styled.h2`
-  font-size: 30px;
+const styles = {
+  party: css`
+font-size: 30px;
   line-height: 40px;
   text-align: center;
   text-transform: capitalize;
   margin: 0;
   padding: 0;
-  
-  ${({ party }) => party === 'goodParty' ? `
-      color: #74b5d5;
-    ` : `
-      color: #c84e4e;
-    `}
-`;
+`,
+  goodParty: css`
+    color: ${colors.good}
+`,
+  evilParty: css`
+    color: ${colors.evil}
+`
+};
 
 const InvestigationNotificationContent = ({ data }) => {
   const { user, data: game } = useSelector((state) => state.game);
@@ -35,7 +38,13 @@ const InvestigationNotificationContent = ({ data }) => {
       <Instructions>
         <PartyAwareName uuid={playerUuid} renderName={(name) => `${name}'s`}/> Party:
       </Instructions>
-      <Party party={player.party}>{theme[player.party]}</Party>
+      <h2 className={cx(
+        styles.party, {
+          [styles.goodParty]: player.party === 'goodParty',
+          [styles.evilParty]: player.party !== 'goodParty'
+        })}>
+        {theme[player.party]}
+      </h2>
     </>
   ) : (
     <>
