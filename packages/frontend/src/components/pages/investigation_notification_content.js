@@ -7,6 +7,7 @@ import Instructions from '../shared/instructions';
 import { PartyAwareName } from '../shared/atoms';
 import useTheme from '../shared/use_theme';
 import { colors } from './score_hud';
+import { getThemeText } from '../../theme';
 
 const styles = {
   party: css`
@@ -43,7 +44,7 @@ const InvestigationNotificationContent = ({ data }) => {
           [styles.goodParty]: player.party === 'goodParty',
           [styles.evilParty]: player.party !== 'goodParty'
         })}>
-        {theme[player.party]}
+        {getThemeText(theme, player.party)}
       </h2>
     </>
   ) : (

@@ -5,7 +5,7 @@ import types from 'prop-types';
 import { joinGame } from '../../store/game_slice';
 import SubmitButton from '../shared/submit_button';
 import Heading from '../heading';
-import { getThemeClass } from '../../theme';
+import { getThemeStyles } from '../../theme';
 import useTheme from '../shared/use_theme';
 
 const styles = {
@@ -42,7 +42,7 @@ const CodeRow = ({ label, value, onChange, theme }) => (
     <span className={styles.inputRowLabel}>{label}</span>
     <input {...{
       type: 'text',
-      className: cx(styles.joinInput, getThemeClass(theme, 'joinInput'), styles.joinCodeInput),
+      className: cx(styles.joinInput, getThemeStyles(theme, 'joinInput'), styles.joinCodeInput),
       value,
       placeholder: label,
       onChange,
@@ -65,7 +65,7 @@ const NameRow = ({ label, value, onChange, theme }) => (
     <span className={styles.inputRowLabel}>{label}</span>
     <input {...{
       type: 'text',
-      className: cx(styles.joinInput, getThemeClass(theme, 'joinInput')),
+      className: cx(styles.joinInput, getThemeStyles(theme, 'joinInput')),
       value,
       placeholder: label,
       onChange,

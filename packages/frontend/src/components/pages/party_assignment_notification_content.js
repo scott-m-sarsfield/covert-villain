@@ -7,6 +7,7 @@ import filter from 'lodash/filter';
 import Instructions, { Details } from '../shared/instructions';
 import useTheme from '../shared/use_theme';
 import { colors } from './score_hud';
+import { getThemeText } from '../../theme';
 
 function getPlayer(state) {
   const uuid = state.game.user.uuid;
@@ -102,19 +103,19 @@ const PartyAssignmentNotificationContent = () => {
   return (
     <React.Fragment>
       <Instructions>Your Role:</Instructions>
-      <Role role={role}>{theme[role]}</Role>
+      <Role role={role}>{getThemeText(theme, role)}</Role>
       <div className={styles.additionalInfo}>
         {
           role === 'evilRole' && (
             <EvilList>
-              Your fellow {theme.evilRole}s are:
+              Your fellow {getThemeText(theme, 'evilRole')}s are:
               <ul>
                 {
                   evils.map((player, i) => (
                     <li key={i}>
                       {player.name}
                       <span className={styles.villainAnnotation}>
-                        {player.role === 'villain' && `(${theme.villain})`}
+                        {player.role === 'villain' && `(${getThemeText(theme, 'villain')})`}
                       </span>
                     </li>
                   ))
@@ -126,14 +127,14 @@ const PartyAssignmentNotificationContent = () => {
         {
           role === 'villain' && villainKnowsEvils && (
             <EvilList>
-            Your fellow {theme.evilRole}s are:
+            Your fellow {getThemeText(theme, 'evilRole')}s are:
               <ul>
                 {
                   evils.map((player, i) => (
                     <li key={i}>
                       {player.name}
                       <span className={styles.villainAnnotation}>
-                        {player.role === 'villain' && `(${theme.villain})`}
+                        {player.role === 'villain' && `(${getThemeText(theme, 'villain')})`}
                       </span>
                     </li>
                   ))
@@ -149,7 +150,7 @@ const PartyAssignmentNotificationContent = () => {
         }
         {
           role === 'goodRole' && (
-            <Details>Enact 5 {theme.goodParty} Policies to Win.</Details>
+            <Details>Enact 5 {getThemeText(theme, 'goodParty')} Policies to Win.</Details>
           )
         }
       </div>

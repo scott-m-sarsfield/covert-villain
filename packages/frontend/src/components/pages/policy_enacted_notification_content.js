@@ -3,6 +3,7 @@ import types from 'prop-types';
 import Instructions from '../shared/instructions';
 import { PartyText } from '../shared/atoms';
 import useTheme from '../shared/use_theme';
+import { getThemeText } from '../../theme';
 
 const PolicyEnactedNotificationContent = ({ data }) => {
   const theme = useTheme();
@@ -14,8 +15,8 @@ const PolicyEnactedNotificationContent = ({ data }) => {
   return (
     <React.Fragment>
       <Instructions>
-        {evil && <PartyText party="evilParty">{theme.evilParty} Policy</PartyText>}
-        {!evil && <PartyText party="goodParty">{theme.goodParty} Policy</PartyText>}
+        {evil && <PartyText party="evilParty">{getThemeText(theme, 'evilParty')} Policy</PartyText>}
+        {!evil && <PartyText party="goodParty">{getThemeText(theme, 'goodParty')} Policy</PartyText>}
         <br />
         Enacted!
       </Instructions>

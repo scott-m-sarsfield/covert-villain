@@ -2,7 +2,7 @@ import React from 'react';
 import types from 'prop-types';
 import { css, cx } from '@emotion/css';
 import useTheme from './use_theme';
-import { getThemeClass } from '../../theme';
+import { getThemeStyles } from '../../theme';
 
 const styles = {
   button: css`
@@ -26,7 +26,7 @@ const Button = (props) => {
       className: cx(
         'cv-button',
         styles.button,
-        getThemeClass(theme, 'button', props),
+        getThemeStyles(theme, 'button', props),
         props.className
       )
     }} />

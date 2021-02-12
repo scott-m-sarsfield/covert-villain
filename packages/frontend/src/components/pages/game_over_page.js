@@ -11,6 +11,7 @@ import { PartyText } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
 import LobbyPage from './lobby_page';
 import useTheme from '../shared/use_theme';
+import { getThemeText } from '../../theme';
 
 const GameOverPage = () => {
   const { data: game } = useSelector((state) => state.game);
@@ -35,31 +36,31 @@ const GameOverPage = () => {
       <Instructions>
         {
           (goodPoliciesEnacted || villainKilled) && (
-            <PartyText party="goodParty">{theme.goodRole}s Win!</PartyText>
+            <PartyText party="goodParty">{getThemeText(theme, 'goodRole')}s Win!</PartyText>
           )
         }
         {
           (evilPoliciesEnacted || villainElected) && (
-            <PartyText party="evilParty">{theme.evilRole}s Win!</PartyText>
+            <PartyText party="evilParty">{getThemeText(theme, 'evilRole')}s Win!</PartyText>
           )
         }
       </Instructions>
       <Details>
         {
-          goodPoliciesEnacted && <span>5 {theme.goodParty} policies enacted</span>
+          goodPoliciesEnacted && <span>5 {getThemeText(theme, 'goodParty')} policies enacted</span>
         }
         {
-          villainKilled && <span>{theme.villain} killed</span>
+          villainKilled && <span>{getThemeText(theme, 'villain')} killed</span>
         }
         {
-          evilPoliciesEnacted && <span>6 {theme.evilParty} policies enacted</span>
+          evilPoliciesEnacted && <span>6 {getThemeText(theme, 'evilParty')} policies enacted</span>
         }
         {
-          villainElected && <span>{theme.villain} elected {theme.chancellor}</span>
+          villainElected && <span>{getThemeText(theme, 'villain')} elected {getThemeText(theme, 'chancellor')}</span>
         }
       </Details>
       <PlayerTable players={players} renderRightContent={({ role }) => role && (
-        <PlayerRole>{`${theme[role]}`}</PlayerRole>
+        <PlayerRole>{`${getThemeText(theme, role)}`}</PlayerRole>
       )}/>
       <Button onClick={onLeave}>Leave</Button>
 

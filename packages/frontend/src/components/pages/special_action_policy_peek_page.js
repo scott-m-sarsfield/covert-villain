@@ -7,6 +7,7 @@ import { endPolicyPeek } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
 import { Layout, WrappedScoreHud } from '../shared/layout';
 import useTheme from '../shared/use_theme';
+import { getThemeText } from '../../theme';
 
 const SpecialActionPolicyPeekPage = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const SpecialActionPolicyPeekPage = () => {
             {
               cards.map((card) => (
                 <Option key={card} {...{
-                  label: theme[card < 11 ? 'evilParty' : 'goodParty'],
+                  label: getThemeText(theme, card < 11 ? 'evilParty' : 'goodParty'),
                   value: card,
                   variant: card < 11 ? 'evilParty' : 'goodParty',
                   disabled: true,
@@ -52,7 +53,7 @@ const SpecialActionPolicyPeekPage = () => {
       {
         !isPresident && (
           <Message>
-            {theme.president} <PartyAwareName uuid={game.president} /> is peeking at the top 3 policies in the deck.
+            {getThemeText(theme, 'president')} <PartyAwareName uuid={game.president} /> is peeking at the top 3 policies in the deck.
           </Message>
         )
       }

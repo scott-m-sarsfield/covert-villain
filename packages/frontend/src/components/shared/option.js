@@ -3,7 +3,7 @@ import types from 'prop-types';
 import { css, cx } from '@emotion/css';
 import { colors } from '../pages/score_hud';
 import Check from './check';
-import { getThemeClass } from '../../theme';
+import { getThemeStyles } from '../../theme';
 import useTheme from './use_theme';
 
 const optionColors = {
@@ -74,11 +74,11 @@ const Option = ({ label, selected, value, onSelect, variant, disabled }) => {
     <button {...{
       className: cx(
         styles.optionWrapper({ colors }),
-        getThemeClass(theme, 'option', { colors, selected })),
+        getThemeStyles(theme, 'option', { colors, selected })),
       onClick: () => onSelect(value),
       disabled
     }}>
-      <div className={cx(styles.optionCheckbox({ colors }), getThemeClass(theme, 'optionCheckbox'))}>
+      <div className={cx(styles.optionCheckbox({ colors }), getThemeStyles(theme, 'optionCheckbox'))}>
         {selected && (<Check className={styles.check} />)}
       </div>
       {label}

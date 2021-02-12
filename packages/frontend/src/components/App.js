@@ -16,7 +16,7 @@ import PresidentApprovesVetoPage from './pages/president_approves_veto_page';
 import { dismissError } from '../store/game_slice';
 import PresidentInvestigatesLoyaltyPage from './pages/president_investigates_loyalty_page';
 import SpecialElectionPage from './pages/special_election_page';
-import { getThemeClass } from '../theme';
+import { getThemeStyles } from '../theme';
 import useTheme from './shared/use_theme';
 
 const styles = {
@@ -164,7 +164,7 @@ function App() {
   const theme = useTheme();
 
   return (
-    <div className={cx(styles.body, getThemeClass(theme, 'body'))}>
+    <div className={cx(styles.body, getThemeStyles(theme, 'body'))}>
       {errorMessage && (
         <div className={styles.errorPopup}>
           <div className={styles.errorMessage}>

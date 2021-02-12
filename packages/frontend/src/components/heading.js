@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessRook, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { toggleOverview } from '../store/game_slice';
 import useTheme from './shared/use_theme';
-import { getThemeClass } from '../theme';
+import { getThemeStyles, getThemeText } from '../theme';
 
 const styles = {
   wrapper: css`
@@ -46,8 +46,8 @@ const Heading = ({ hasSettings, className }) => {
   const theme = useTheme();
 
   return (
-    <div {...{ className: cx(styles.wrapper, getThemeClass(theme, 'heading'), className) }}>
-      <h2 className={cx(styles.header, getThemeClass(theme, 'header'))}>{theme.title}</h2>
+    <div {...{ className: cx(styles.wrapper, getThemeStyles(theme, 'heading'), className) }}>
+      <h2 className={cx(styles.header, getThemeStyles(theme, 'header'))}>{getThemeText(theme, 'title')}</h2>
       {
         hasSettings ? (
           <button className={styles.settingsButton} onClick={() => dispatch(toggleOverview())}>

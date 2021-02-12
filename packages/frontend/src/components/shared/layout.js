@@ -12,6 +12,7 @@ import { PlayerTable, PlayerRole } from './player_table';
 import Instructions from './instructions';
 import { leaveGame } from '../../store/game_slice';
 import useTheme from './use_theme';
+import { getThemeText } from '../../theme';
 
 export const WrappedScoreHud = ScoreHud;
 
@@ -188,7 +189,7 @@ const OverviewContent = () => {
       </div>
       <PlayersHeader>Players</PlayersHeader>
       <PlayerTable players={game.players} renderRightContent={({ role }) => role && (
-        <PlayerRole>{`${theme[role]}`}</PlayerRole>
+        <PlayerRole>{`${getThemeText(theme, role)}`}</PlayerRole>
       )}/>
       <Button onClick={() => dispatch(leaveGame())}>Leave Game</Button>
     </div>
