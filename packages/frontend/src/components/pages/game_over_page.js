@@ -3,8 +3,7 @@ import get from 'lodash/get';
 import find from 'lodash/find';
 import { useDispatch, useSelector } from 'react-redux';
 import SubmitButton from '../shared/submit_button';
-import { goToLobby, leaveGame } from '../../store/game_slice';
-import Button from '../shared/button';
+import { goToLobby } from '../../store/game_slice';
 import { PlayerRole, PlayerTable } from '../shared/player_table';
 import Instructions, { Details } from '../shared/instructions';
 import { PartyText } from '../shared/atoms';
@@ -27,12 +26,12 @@ const GameOverPage = () => {
 
   const dispatch = useDispatch();
 
-  const onLeave = () => dispatch(leaveGame());
   const onLobby = () => dispatch(goToLobby());
 
   return (
     <Layout withSubmit>
       <WrappedScoreHud />
+
       <Instructions>
         {
           (goodPoliciesEnacted || villainKilled) && (
@@ -45,6 +44,7 @@ const GameOverPage = () => {
           )
         }
       </Instructions>
+
       <Details>
         {
           goodPoliciesEnacted && <span>5 {getThemeText(theme, 'goodParty')} policies enacted</span>
@@ -59,10 +59,10 @@ const GameOverPage = () => {
           villainElected && <span>{getThemeText(theme, 'villain')} elected {getThemeText(theme, 'chancellor')}</span>
         }
       </Details>
+
       <PlayerTable players={players} renderRightContent={({ role }) => role && (
         <PlayerRole>{`${getThemeText(theme, role)}`}</PlayerRole>
       )}/>
-      <Button onClick={onLeave}>Leave</Button>
 
       <SubmitButton onClick={onLobby}>Go to lobby</SubmitButton>
     </Layout>
