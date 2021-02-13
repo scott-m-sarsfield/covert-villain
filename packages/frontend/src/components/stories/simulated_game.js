@@ -1,13 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import get from 'lodash/get';
 import { Provider } from 'react-redux';
-import React from 'react';
+import React, { useContext } from 'react';
 import find from 'lodash/find';
 import pick from 'lodash/pick';
 import compact from 'lodash/compact';
 import filter from 'lodash/filter';
 import map from 'lodash/map';
 import App from '../App';
+import ThemeContext from '../../theme_context';
 
 function buildPlayer(overwrites) {
   return {
@@ -164,7 +165,7 @@ function knowsParty(currentPlayer, player) {
   return false;
 }
 
-function getGameState(fullGameState, uuid) {
+function getGameState(fullGameState, uuid, theme) {
   if (!fullGameState) {
     return fullGameState;
   }
@@ -172,11 +173,15 @@ function getGameState(fullGameState, uuid) {
   const currentPlayer = find(fullGameState.players, { uuid });
 
   if (currentPlayer.party === 'evilParty') {
-    return fullGameState;
+    return {
+      ...fullGameState,
+      theme
+    };
   }
 
   return {
     ...fullGameState,
+    theme,
     players: fullGameState.players.map((player) => pick(player, compact([
       'uuid',
       'name',
@@ -189,6 +194,7 @@ function getGameState(fullGameState, uuid) {
 }
 
 const SimulatedGame = ({ uuid, gameState, notification, overviewOpen, errorMessage }) => {
+  const theme = useContext(ThemeContext);
   const store = configureStore({
     reducer: (store) => store,
     preloadedState: {
@@ -197,13 +203,10 @@ const SimulatedGame = ({ uuid, gameState, notification, overviewOpen, errorMessa
           uuid: uuid,
           roomCode: get(gameState, 'code')
         },
-        data: getGameState(gameState, uuid),
+        data: getGameState(gameState, uuid, theme),
         notificationCursor: notification ? get(gameState, 'notifications.length') - 1 : get(gameState, 'notifications.length'),
         overviewOpen,
         errorMessage
-      },
-      theme: {
-        current: 'elusiveEmperor'
       }
     }
   });
