@@ -191,7 +191,8 @@ const Actions = {
       chancellor: null,
       chancellorNominee: null,
       chancellorOptions: [],
-      votes: {}
+      votes: {},
+      chaos: 0
     };
 
     return this.rotateToNextPresidentNominee(game);

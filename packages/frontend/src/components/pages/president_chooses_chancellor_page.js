@@ -55,7 +55,11 @@ const PresidentChoosesChancellorPage = () => {
       {
         !isPresidentNominee && (
           <Message>
-            {getThemeText(theme, 'presidentialCandidate')} <PartyAwareName uuid={game.presidentNominee} /> is choosing a {theme.chancellor}...
+            {getThemeText(theme, 'presidentialCandidate')}
+            {' '}
+            <PartyAwareName uuid={game.presidentNominee} />
+            {' '}
+            is choosing a {getThemeText(theme, 'chancellor')}...
           </Message>
         )
       }

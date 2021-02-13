@@ -123,6 +123,45 @@ describe('leaveGame', () => {
   });
 });
 
+describe('startGame', () => {
+  const game = {
+    chaos: 2,
+    players: [
+      {
+        uuid: '1',
+        name: 'Alpha',
+        lobby: true
+      },
+      {
+        uuid: '2',
+        name: 'Bravo',
+        lobby: true
+      },
+      {
+        uuid: '3',
+        name: 'Charlie',
+        lobby: true
+      },
+      {
+        uuid: '4',
+        name: 'Delta',
+        lobby: true
+      },
+      {
+        uuid: '5',
+        name: 'Echo',
+        lobby: true
+      }
+    ]
+  };
+
+  it('resets chaos to 0', () => {
+    const updatedGame = Actions.startGame(game);
+
+    expect(updatedGame.chaos).toEqual(0);
+  });
+});
+
 describe('drawPolicies', () => {
   it('draws a number of cards from the deck and puts them in the hand', () => {
     const game = {
