@@ -128,6 +128,10 @@ const actionIcons = {
   special_election: faVoteYea
 };
 
+function rulesURL() {
+  window.open('https://www.secrethitler.com/assets/Secret_Hitler_Rules.pdf');
+}
+
 const OverviewContent = () => {
   const dispatch = useDispatch();
   const game = useSelector((state) => state.game.data);
@@ -162,6 +166,7 @@ const OverviewContent = () => {
       <PlayerTable players={game.players} renderRightContent={({ role }) => role && (
         <PlayerRole>{`${getThemeText(theme, role)}`}</PlayerRole>
       )}/>
+      <Button onClick={rulesURL}>Rules</Button>
       <Button onClick={() => dispatch(leaveGame())}>Leave Game</Button>
     </div>
   );
