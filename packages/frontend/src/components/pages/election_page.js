@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 import find from 'lodash/find';
-import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { vote } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
@@ -14,12 +13,11 @@ const ElectionPage = () => {
   const { user, data: game } = useSelector((state) => state.game);
   const dispatch = useDispatch();
   const theme = useTheme();
-  const [approved, setApproved] = useState(null);
 
   const voted = get(game, ['votes', user.uuid, 'voted']);
   const { alive } = find(game.players, { uuid: user.uuid });
 
-  const onSubmit = () => {
+  const onSubmit = (approved) => () => {
     dispatch(vote(approved));
   };
 
@@ -31,10 +29,10 @@ const ElectionPage = () => {
       <Prompt>
         {
           canVote ? (
-            <React.Fragment>
+            <>
               Vote!
               <br/>
-            </React.Fragment>
+            </>
           ) : null
         }
         {getThemeText(theme, 'president')} <PartyAwareName uuid={game.presidentNominee} />
@@ -43,30 +41,20 @@ const ElectionPage = () => {
       </Prompt>
       {
         canVote ? (
-          <React.Fragment>
+          <>
             <Option {...{
               label: 'Yes',
               value: true,
-              selected: approved === true,
-              onSelect: setApproved
+              onSelect: onSubmit(true)
             }} />
             <Option {...{
               label: 'No',
               value: false,
-              selected: approved === false,
-              onSelect: setApproved
+              onSelect: onSubmit(false)
             }} />
-            <SubmitButton
-              onClick={onSubmit}
-              disabled={approved === null}
-            >
-              Vote
-            </SubmitButton>
-          </React.Fragment>
+          </>
         ) : (
-          <Message>
-            Waiting for other votes...
-          </Message>
+          <Message>Waiting for other votes...</Message>
         )
       }
     </Layout>
