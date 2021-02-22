@@ -24,7 +24,7 @@ Install via `homebrew`
 brew install postgresql@12
 ```
 
-Make sure `Postgres` is in your PATH
+Make sure `postgres` is in your PATH
 
 ``` sh
 # .zshrc
@@ -37,13 +37,13 @@ Initialize the database
 initdb -D /usr/local/var/postgres
 ```
 
-Start the `Postgres` service
+Start the `postgres` service
 
 ``` sh
 brew services start postgresql@12
 ```
 
-Add the `Postgres` user
+Add the `postgres` user
 
 ``` sh
 createuser -s postgres
