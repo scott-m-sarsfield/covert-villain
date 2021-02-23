@@ -21,7 +21,13 @@ const PresidentChoosesPoliciesPage = () => {
 
   const cardsToDiscard = filter(cards, (card) => !selected[card]);
 
-  const onSubmit = () => {
+  const handleSelect = (card) => {
+    if (cardsToDiscard.length > 1 || selected[card]) {
+      setSelected({ ...selected, [card]: !selected[card] });
+    }
+  };
+
+  const handleSubmit = () => {
     dispatch(discardPolicy(cardsToDiscard[0]));
   };
 
@@ -31,22 +37,20 @@ const PresidentChoosesPoliciesPage = () => {
       {
         isPresident && (
           <>
-            <Prompt>
-              Choose 2 Policies
-            </Prompt>
+            <Prompt>Choose 2 Policies</Prompt>
             {
               cards.map((card) => (
                 <Option key={card} {...{
                   label: getThemeText(theme, card < 11 ? 'evilParty' : 'goodParty'),
                   value: card,
                   selected: selected[card],
-                  onSelect: (card) => setSelected({ ...selected, [card]: !selected[card] }),
+                  onSelect: handleSelect,
                   variant: card < 11 ? 'evilParty' : 'goodParty'
                 }}/>
               ))
             }
             <SubmitButton
-              onClick={onSubmit}
+              onClick={handleSubmit}
               disabled={cardsToDiscard.length !== 1}
             >
               Submit

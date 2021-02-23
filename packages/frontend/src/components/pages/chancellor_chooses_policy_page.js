@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import SubmitButton from '../shared/submit_button';
 import Option from '../shared/option';
 import { enactPolicy } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
@@ -12,13 +11,12 @@ const ChancellorChoosesPolicyPage = () => {
   const dispatch = useDispatch();
   const { user, data: game } = useSelector((state) => state.game);
   const theme = useTheme();
-  const [selected, setSelected] = useState(null);
 
   const cards = game.cards.hand || [];
 
   const isChancellor = user.uuid === game.chancellor;
 
-  const onSubmit = () => {
+  const handleSubmit = (selected) => () => {
     dispatch(enactPolicy(selected));
   };
 
@@ -27,17 +25,14 @@ const ChancellorChoosesPolicyPage = () => {
       <WrappedScoreHud/>
       {
         isChancellor && (
-          <React.Fragment>
-            <Prompt>
-              Choose Policy
-            </Prompt>
+          <>
+            <Prompt>Choose Policy</Prompt>
             {
               cards.map((card) => (
                 <Option key={card} {...{
                   label: card < 11 ? getThemeText(theme, 'evilParty') : getThemeText(theme, 'goodParty'),
                   value: card,
-                  selected: selected === card,
-                  onSelect: setSelected,
+                  onSelect: handleSubmit(card),
                   variant: card < 11 ? 'evilParty' : 'goodParty'
                 }}/>
               ))
@@ -47,18 +42,11 @@ const ChancellorChoosesPolicyPage = () => {
                 <Option {...{
                   label: 'Veto',
                   value: 911,
-                  selected: selected === 911,
-                  onSelect: setSelected
+                  onSelect: handleSubmit(911)
                 }} />
               )
             }
-            <SubmitButton
-              onClick={onSubmit}
-              disabled={!selected}
-            >
-              Submit
-            </SubmitButton>
-          </React.Fragment>
+          </>
         )
       }
       {
