@@ -3,6 +3,7 @@ import React from 'react';
 import { css, cx } from '@emotion/css';
 import { useDispatch, useSelector } from 'react-redux';
 import range from 'lodash/range';
+import startCase from 'lodash/startCase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faSearch, faSkullCrossbones, faVoteYea } from '@fortawesome/free-solid-svg-icons';
 import Button from './button';
@@ -142,8 +143,8 @@ const OverviewContent = () => {
       <CardRow>
         {
           game.evilBoard.map((action, i) => (
-            <Card variant="evilParty" key={i} active={!!game.cards.evilParty[i]}>
-              {action && <FontAwesomeIcon icon={actionIcons[action]} />}
+            <Card variant="evilParty" key={i} active={!!game.cards.evilParty[i]} title={startCase(action)}>
+              {action && <FontAwesomeIcon icon={actionIcons[action]} title={startCase(action)} />}
             </Card>
           ))
         }
