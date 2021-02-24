@@ -5,6 +5,7 @@ import types from 'prop-types';
 import { PartyAwareName, Name } from './atoms';
 import { getThemeStyles } from '../../theme';
 import useTheme from './use_theme';
+import Typography from '../typography';
 
 const styles = {
   playerList: css`
@@ -95,7 +96,13 @@ PlayerName.propTypes = {
   children: types.node
 };
 
-export const PlayerRole = ({ children }) => (<div className={styles.playerRole}>{children}</div>);
+export const PlayerRole = ({ children }) => (
+  <div className={styles.playerRole}>
+    <Typography>
+      {children}
+    </Typography>
+  </div>
+);
 PlayerRole.propTypes = {
   children: types.node
 };
@@ -111,7 +118,9 @@ export const Vote = ({ children, theme, approved }) => (
       getThemeStyles(theme, 'vote')
     )
   }} >
-    {children}
+    <Typography>
+      {children}
+    </Typography>
   </div>
 );
 Vote.propTypes = {
@@ -125,7 +134,11 @@ export const Player = ({ uuid, index, ignoreStatus, rightContent }) => {
   return (
     <PlayerWrapper theme={theme}>
       <div className={styles.left}>
-        <PlayerNumber>{numberLabels[index]}</PlayerNumber>
+        <PlayerNumber>
+          <Typography>
+            {numberLabels[index]}
+          </Typography>
+        </PlayerNumber>
         <PlayerName>
           {
             ignoreStatus ? (

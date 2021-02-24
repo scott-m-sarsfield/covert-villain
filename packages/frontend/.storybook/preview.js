@@ -26,7 +26,8 @@ export const globalTypes = {
       icon: 'lightning',
       items: [
         {value: 'elusiveEmperor', title: 'Elusive Emperor'},
-        {value: 'secretHitler', title: 'Secret Hitler'},
+        {value: 'secretHitlerA', title: 'Secret Hitler (A)'},
+        {value: 'secretHitlerB', title: 'Secret Hitler (B)'},
         {value: 'privatePony', title: 'Private Pony'}
       ],
     },

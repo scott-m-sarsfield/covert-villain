@@ -7,6 +7,7 @@ import React from 'react';
 import Instructions, { Details } from './instructions';
 import useTheme from './use_theme';
 import { getThemeColor, getThemeStyles } from '../../theme';
+import Typography from '../typography';
 
 function getPartyColor(theme, party) {
   switch (party) {
@@ -44,7 +45,9 @@ export const PartyText = ({ className, party, children }) => {
   const color = getPartyColor(theme, party);
   return (
     <span className={cx('cv-party-text', styles.partyText({ color }), className)}>
-      {children}
+      <Typography>
+        {children}
+      </Typography>
     </span>
   );
 };
@@ -78,7 +81,7 @@ export const Name = ({ uuid }) => {
     get(state, 'game.data.players'),
     { uuid }
   ));
-  return (<span>{name}</span>);
+  return (<Typography>{name}</Typography>);
 };
 
 Name.propTypes = {
@@ -94,13 +97,20 @@ export const PartyAwareName = ({ uuid, renderName = defaultRenderName }) => {
     { uuid }
   ));
   return (
-    <PartyName party={party} dead={!alive} className={getThemeStyles(theme, 'partyAwareName', { party })}>{renderName(name)}</PartyName>
+    <PartyName {...{
+      party,
+      dead: !alive,
+      className: getThemeStyles(theme, 'partyAwareName', { party })
+    }}>
+      {renderName(name)}
+    </PartyName>
   );
 };
 
 PartyAwareName.propTypes = {
   uuid: types.string.isRequired,
-  renderName: types.func
+  renderName: types.func,
+  skipTypography: types.bool
 };
 
 export const Message = (props) => (<Details {...{ ...props, className: cx(styles.message, props.className) }} />);

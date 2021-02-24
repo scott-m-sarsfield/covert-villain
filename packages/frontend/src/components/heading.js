@@ -7,6 +7,7 @@ import { faChessRook, faCog, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { toggleOverview, toggleSettings } from '../store/game_slice';
 import useTheme from './shared/use_theme';
 import { getThemeStyles, getThemeText } from '../theme';
+import Typography from './typography';
 
 const styles = {
   wrapper: css`
@@ -48,7 +49,11 @@ const Heading = ({ hasSettings, hasOverview, className }) => {
 
   return (
     <div {...{ className: cx(styles.wrapper, getThemeStyles(theme, 'heading'), className) }}>
-      <h2 className={cx(styles.header, getThemeStyles(theme, 'header'))}>{getThemeText(theme, 'title')}</h2>
+      <h2 className={cx(styles.header, getThemeStyles(theme, 'header'))}>
+        <Typography>
+          {getThemeText(theme, 'title')}
+        </Typography>
+      </h2>
       {
         hasSettings && (
           <button className={styles.settingsButton} onClick={() => dispatch(toggleSettings())}>

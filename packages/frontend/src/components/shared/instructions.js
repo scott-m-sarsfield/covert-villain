@@ -1,6 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import { css, cx } from '@emotion/css';
+import Typography from '../typography';
 
 const styles = {
   instructions: css`
@@ -17,13 +18,25 @@ const styles = {
 `
 };
 
-const Instructions = ({ className, children }) => (<h3 className={cx(styles.instructions, className)} >{children}</h3>);
+const Instructions = ({ className, children }) => (
+  <h3 className={cx(styles.instructions, className)} >
+    <Typography>
+      {children}
+    </Typography>
+  </h3>
+);
 Instructions.propTypes = {
   className: types.string,
   children: types.node
 };
 
-export const Details = ({ className, children }) => (<h4 className={cx(styles.details, className)}>{children}</h4>);
+export const Details = ({ className, children }) => (
+  <h4 className={cx(styles.details, className)}>
+    <Typography>
+      {children}
+    </Typography>
+  </h4>
+);
 Details.propTypes = {
   className: types.string,
   children: types.node
