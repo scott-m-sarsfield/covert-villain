@@ -50,14 +50,6 @@ const privatePonyTheme = {
     header: css` 
       color: white;
     `,
-    joinInput: css`
-      line-height: 28px;
-      border: none;
-      background: rgba(255,255,255,0.8);
-      border-radius: 0;
-      color: white;
-      outline: none;
-    `,
     option: null,
     optionCheckbox: css`
       flex: 0 0 auto;
