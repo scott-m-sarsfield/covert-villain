@@ -3,6 +3,7 @@ import types from 'prop-types';
 import { css, cx } from '@emotion/css';
 import useTheme from './use_theme';
 import { getThemeStyles } from '../../theme';
+import Typography from '../typography';
 
 const styles = {
   button: css`
@@ -19,6 +20,7 @@ const styles = {
 
 const Button = (props) => {
   const theme = useTheme();
+  const { children } = props;
 
   return (
     <button {...{
@@ -29,12 +31,17 @@ const Button = (props) => {
         getThemeStyles(theme, 'button', props),
         props.className
       )
-    }} />
+    }}>
+      <Typography>
+        {children}
+      </Typography>
+    </button>
   );
 };
 
 Button.propTypes = {
-  className: types.string
+  className: types.string,
+  children: types.node
 };
 
 export default Button;

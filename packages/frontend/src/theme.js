@@ -13,7 +13,7 @@ function registerTheme(key, theme) {
   };
 }
 
-registerTheme('secretHitler', {
+registerTheme('secretHitlerA', {
   text: {
     title: 'Secret Hitler',
     president: 'President',
@@ -34,6 +34,28 @@ registerTheme('secretHitler', {
       * {
         font-family: 'Potta One', sans-serif;
       }
+    `
+  }
+});
+
+registerTheme('secretHitlerB', {
+  text: {
+    title: 'Secret Hitler',
+    president: 'President',
+    presidentialCandidate: 'Presidential Candidate',
+    chancellor: 'Chancellor',
+    evilRole: 'Fascist',
+    evilParty: 'Fascist',
+    goodRole: 'Liberal',
+    goodParty: 'Liberal',
+    yes: 'ja! (YES)',
+    no: 'nein (NO)',
+    villain: 'Hitler'
+  },
+  styles: {
+    typography: css`
+      position: relative;
+      bottom: -0.2em;
     `
   }
 });

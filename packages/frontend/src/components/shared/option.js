@@ -4,6 +4,7 @@ import { css, cx } from '@emotion/css';
 import Check from './check';
 import { getThemeColor, getThemeStyles } from '../../theme';
 import useTheme from './use_theme';
+import Typography from '../typography';
 
 const styles = {
   optionWrapper: ({ colors }) => css`
@@ -21,6 +22,7 @@ const styles = {
     letter-spacing: 2px;
     color: ${colors.text};
     word-break: break-all;
+    text-align: left;
     
     &:not(:last-child){
       margin-bottom: 30px;
@@ -39,7 +41,8 @@ const styles = {
     height: 30px;
     width: 30px;
     margin-right: 20px;
-    border-color: ${colors.border}
+    border-color: ${colors.border};
+    flex: 0 0 auto;
   `,
   check: css`
     position: absolute;
@@ -84,7 +87,9 @@ const Option = ({ label, selected, value, onSelect, variant, disabled }) => {
       <div className={cx(styles.optionCheckbox({ colors }), getThemeStyles(theme, 'optionCheckbox'))}>
         {selected && (<Check className={styles.check} />)}
       </div>
-      {label}
+      <Typography>
+        {label}
+      </Typography>
     </button>
   );
 };

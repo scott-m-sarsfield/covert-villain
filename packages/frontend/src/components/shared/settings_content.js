@@ -20,8 +20,12 @@ const styles = {
 
 const options = [
   {
-    label: 'Secret Hitler',
-    value: 'secretHitler'
+    label: 'Secret Hitler (A)',
+    value: 'secretHitlerA'
+  },
+  {
+    label: 'Secret Hitler (B)',
+    value: 'secretHitlerB'
   },
   {
     label: 'Elusive Emperor',
