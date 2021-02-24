@@ -1,5 +1,6 @@
 import isFunction from 'lodash/isFunction';
 import get from 'lodash/get';
+import { css } from '@emotion/css';
 import elusiveEmperorTheme from './elusive_emperor_theme';
 import privatePonyTheme from './private_pony_theme';
 
@@ -25,6 +26,15 @@ registerTheme('secretHitler', {
     yes: 'ja! (YES)',
     no: 'nein (NO)',
     villain: 'Hitler'
+  },
+  styles: {
+    body: css`
+      font-family: 'Potta One', sans-serif;
+    
+      * {
+        font-family: 'Potta One', sans-serif;
+      }
+    `
   }
 });
 

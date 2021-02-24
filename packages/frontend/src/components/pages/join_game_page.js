@@ -4,13 +4,43 @@ import { css, cx } from '@emotion/css';
 import types from 'prop-types';
 import { joinGame } from '../../store/game_slice';
 import SubmitButton from '../shared/submit_button';
-import Heading from '../heading';
-import { getThemeStyles } from '../../theme';
 import useTheme from '../shared/use_theme';
 
 const styles = {
+  splashTitle: css`
+    text-align: center;
+    padding-top: 30px;
+    margin-bottom: 60px;
+    
+    h2 {
+      font-family: 'Special Elite', serif;
+      margin: 10px 0 0 0;
+      padding: 10px 0 0 12px;
+      background: black;
+      color: white;
+      letter-spacing: 0.25em;
+      font-size: 48px;
+      display: inline-block;
+      box-sizing: border-box;
+    }
+`,
+  wrapper: css`
+    padding: 0 0 70px 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  `,
   content: css`
-    padding: 60px 30px 0;
+    padding: 0 30px 70px 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 1 auto;
+    max-width: 800px;
+    width: 100%;
   `,
   inputRowLabel: css`
     display: block;
@@ -20,12 +50,13 @@ const styles = {
   `,
   joinInput: css`
     font-size: 16px;
-    padding: 3px 8px;
+    padding: 8px 8px 3px 8px;
     margin-bottom: 30px;
     width: 100%;
     box-sizing: border-box;
     border-radius: 4px;
     border: 1px solid #979797;
+    line-height: 1.5em;
   `,
   joinCodeInput: css`
     text-transform: uppercase;
@@ -37,12 +68,12 @@ const styles = {
   `
 };
 
-const CodeRow = ({ label, value, onChange, theme }) => (
+const CodeRow = ({ label, value, onChange }) => (
   <div>
     <span className={styles.inputRowLabel}>{label}</span>
     <input {...{
       type: 'text',
-      className: cx(styles.joinInput, getThemeStyles(theme, 'joinInput'), styles.joinCodeInput),
+      className: cx(styles.joinInput, styles.joinCodeInput),
       value,
       placeholder: label,
       onChange,
@@ -60,12 +91,12 @@ CodeRow.propTypes = {
   theme: types.object
 };
 
-const NameRow = ({ label, value, onChange, theme }) => (
+const NameRow = ({ label, value, onChange }) => (
   <div>
     <span className={styles.inputRowLabel}>{label}</span>
     <input {...{
       type: 'text',
-      className: cx(styles.joinInput, getThemeStyles(theme, 'joinInput')),
+      className: styles.joinInput,
       value,
       placeholder: label,
       onChange,
@@ -81,6 +112,14 @@ NameRow.propTypes = {
   onChange: types.func.isRequired,
   theme: types.object
 };
+
+const SplashTitle = () => (
+  <div className={styles.splashTitle}>
+    <h2>Covert</h2>
+    <br />
+    <h2>Villain</h2>
+  </div>
+);
 
 const JoinGamePage = () => {
   const dispatch = useDispatch();
@@ -107,9 +146,9 @@ const JoinGamePage = () => {
   };
 
   return (
-    <div>
-      <Heading />
+    <div className={styles.wrapper}>
       <div className={styles.content}>
+        <SplashTitle />
         <CodeRow {...{
           label: 'Code',
           value: code,

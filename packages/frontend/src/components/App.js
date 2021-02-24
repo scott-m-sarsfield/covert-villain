@@ -25,11 +25,11 @@ const styles = {
     height: 100%;
     min-height: 100vh;
     min-height: fill-available;
-    font-family: 'Potta One', sans-serif;
+    font-family: 'Special Elite', serif;
     letter-spacing: 2px;
     
     * {
-      font-family: 'Potta One', sans-serif;
+      font-family: 'Special Elite', serif;
       letter-spacing: 2px;
     }
 `,
@@ -164,7 +164,7 @@ function App() {
   const theme = useTheme();
 
   return (
-    <div className={cx(styles.body, getThemeStyles(theme, 'body'))}>
+    <div className={cx(styles.body, game && getThemeStyles(theme, 'body'))}>
       {errorMessage && (
         <div className={styles.errorPopup}>
           <div className={styles.errorMessage}>

@@ -43,13 +43,6 @@ const elusiveEmperorTheme = {
     header: css` 
       color: white;
     `,
-    joinInput: css`
-      line-height: 28px;
-      border: none;
-      background: rgb(60,60,60);
-      color: white;
-      outline: none;
-    `,
     option: ({ colors, selected }) => {
       const sharedStyles = css`
         justify-content: center;
