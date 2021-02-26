@@ -1,4 +1,5 @@
 import React from 'react';
+import reduce from 'lodash/reduce';
 import SimulatedGame, { buildGame, buildPlayers } from './simulated_game';
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -11,7 +12,13 @@ const electionGame = buildGame({
   players,
   presidentNominee: povUuids.evil,
   chancellorNominee: povUuids.villain,
-  votes: {}
+  votes: reduce(players, (votes, { uuid }) => {
+    votes[uuid] = {
+      voted: false,
+      approved: false
+    };
+    return votes;
+  }, {})
 });
 
 function addVote(game, uuid) {

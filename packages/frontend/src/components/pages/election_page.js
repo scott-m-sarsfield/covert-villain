@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 import find from 'lodash/find';
+import reduce from 'lodash/reduce';
 import Option from '../shared/option';
 import { vote } from '../../store/game_slice';
 import { Message, PartyAwareName, Prompt } from '../shared/atoms';
@@ -54,7 +55,24 @@ const ElectionPage = () => {
             }} />
           </>
         ) : (
-          <Message>Waiting for other votes...</Message>
+          <Message>
+            Waiting for votes from...
+            <br />
+            {
+              reduce(game.votes, (nodes, { voted }, index) => {
+                if (!voted) {
+                  nodes.push(
+                    <React.Fragment key={index}>
+                      <br/>
+                      <PartyAwareName uuid={index}/>
+                    </React.Fragment>
+                  );
+                }
+
+                return nodes;
+              }, [])
+            }
+          </Message>
         )
       }
     </Layout>
