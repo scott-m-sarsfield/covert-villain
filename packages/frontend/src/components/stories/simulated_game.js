@@ -193,7 +193,7 @@ function getGameState(fullGameState, uuid, theme) {
   };
 }
 
-const SimulatedGame = ({ uuid, gameState, notification, overviewOpen, errorMessage }) => {
+const SimulatedGame = ({ uuid, gameState, notification, overviewOpen, settingsOpen, errorMessage }) => {
   const theme = useContext(ThemeContext);
   const store = configureStore({
     reducer: (store) => store,
@@ -206,6 +206,7 @@ const SimulatedGame = ({ uuid, gameState, notification, overviewOpen, errorMessa
         data: getGameState(gameState, uuid, theme),
         notificationCursor: notification ? get(gameState, 'notifications.length') - 1 : get(gameState, 'notifications.length'),
         overviewOpen,
+        settingsOpen,
         errorMessage
       }
     }
