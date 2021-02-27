@@ -38,6 +38,11 @@ const styles = {
     &:hover {
       background: rgba(0,0,0, 0.2);
     }
+    
+    svg {
+      display: block;
+      margin: auto;
+    }
 `
 };
 

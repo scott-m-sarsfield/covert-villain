@@ -2,6 +2,7 @@ import React from 'react';
 import types from 'prop-types';
 import { cx, css, keyframes } from '@emotion/css';
 import { useSelector } from 'react-redux';
+import Typography from '../typography';
 
 const upAndDown = keyframes`
   from {
@@ -76,15 +77,17 @@ const SubmitButton = ({ children, disabled, className, onClick }) => {
       className={cx(styles.wrapper, { [styles.processing]: loading }, className)}
       onClick={onClick}
     >
-      {
-        loading ? (
-          <React.Fragment>
-            <div className={styles.animated}>.</div>
-            <div className={cx(styles.animated, styles.dotTwo)}>.</div>
-            <div className={cx(styles.animated, styles.dotThree)}>.</div>
-          </React.Fragment>
-        ) : children
-      }
+      <Typography>
+        {
+          loading ? (
+            <React.Fragment>
+              <div className={styles.animated}>.</div>
+              <div className={cx(styles.animated, styles.dotTwo)}>.</div>
+              <div className={cx(styles.animated, styles.dotThree)}>.</div>
+            </React.Fragment>
+          ) : children
+        }
+      </Typography>
     </button>
   );
 };
