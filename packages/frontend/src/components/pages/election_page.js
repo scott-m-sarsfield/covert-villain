@@ -46,12 +46,14 @@ const ElectionPage = () => {
             <Option {...{
               label: 'Yes',
               value: true,
-              onSelect: onSubmit(true)
+              onSelect: onSubmit(true),
+              stateless: true
             }} />
             <Option {...{
               label: 'No',
               value: false,
-              onSelect: onSubmit(false)
+              onSelect: onSubmit(false),
+              stateless: true
             }} />
           </>
         ) : (
