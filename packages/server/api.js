@@ -182,7 +182,7 @@ router.post('/games/:code/change-theme', authenticateJwt, authenticateRoom, asyn
 
     const { theme } = req.body;
 
-    if (!includes(['secretHitlerA', 'secretHitlerB', 'elusiveEmperor', 'privatePony'], theme)) {
+    if (!includes(['secretHitler', 'elusiveEmperor', 'privatePony'], theme)) {
       return {
         error: 'theme is not supported'
       };
