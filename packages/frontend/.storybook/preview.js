@@ -56,6 +56,7 @@ export const parameters = {
         [
           'Joining Game',
           'Lobby',
+          'Game Settings',
           'Party Assignment Notification',
           'Overview',
           'Presidential Candidate Nominates Chancellor',

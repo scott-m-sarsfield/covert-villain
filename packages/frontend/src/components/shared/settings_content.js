@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme } from '../../store/game_slice';
 import Option from './option';
 import { Prompt } from './atoms';
-import Instructions from './instructions';
 
 const styles = {
   overviewWrapper: css`
@@ -45,9 +44,6 @@ const SettingsContent = () => {
 
   return (
     <div className={styles.overviewWrapper}>
-      <Instructions>
-        GAME SETTINGS
-      </Instructions>
       <Prompt>
         Theme
       </Prompt>
