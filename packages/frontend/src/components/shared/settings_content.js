@@ -3,6 +3,8 @@ import { css } from '@emotion/css';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme } from '../../store/game_slice';
 import Option from './option';
+import { Prompt } from './atoms';
+import Instructions from './instructions';
 
 const styles = {
   overviewWrapper: css`
@@ -43,7 +45,12 @@ const SettingsContent = () => {
 
   return (
     <div className={styles.overviewWrapper}>
-      <div className={styles.gameCode}>{game.code}</div>
+      <Instructions>
+        GAME SETTINGS
+      </Instructions>
+      <Prompt>
+        Theme
+      </Prompt>
       {
         options.map(({ label, value }) => (
           <Option key={value} {...{
