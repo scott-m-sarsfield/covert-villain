@@ -33,7 +33,8 @@ const ChancellorChoosesPolicyPage = () => {
                   label: card < 11 ? getThemeText(theme, 'evilParty') : getThemeText(theme, 'goodParty'),
                   value: card,
                   onSelect: handleSubmit(card),
-                  variant: card < 11 ? 'evilParty' : 'goodParty'
+                  variant: card < 11 ? 'evilParty' : 'goodParty',
+                  stateless: true
                 }}/>
               ))
             }
@@ -42,7 +43,8 @@ const ChancellorChoosesPolicyPage = () => {
                 <Option {...{
                   label: 'Veto',
                   value: 911,
-                  onSelect: handleSubmit(911)
+                  onSelect: handleSubmit(911),
+                  stateless: true
                 }} />
               )
             }

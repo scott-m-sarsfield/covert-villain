@@ -32,8 +32,11 @@ const styles = {
       opacity: 0.7;
     }
   `,
-  optionCheckbox: ({ colors }) => css`
-    display: block;
+  optionWrapperStateless: css`
+    justify-content: center;
+  `,
+  optionCheckbox: ({ colors, stateless }) => css`
+    display: ${stateless ? 'none' : 'block'};
     position: relative;
     border: solid 1px #979797;
     background: #ffffff;
@@ -73,18 +76,19 @@ function getOptionColors(theme, variant) {
   return optionColors[variant] || optionColors.default;
 }
 
-const Option = ({ label, selected, value, onSelect, variant, disabled }) => {
+const Option = ({ label, selected, value, onSelect, variant, disabled, stateless }) => {
   const theme = useTheme();
   const colors = getOptionColors(theme, variant);
   return (
     <button {...{
       className: cx(
         styles.optionWrapper({ colors }),
+        { [styles.optionWrapperStateless]: stateless },
         getThemeStyles(theme, 'option', { colors, selected })),
       onClick: () => onSelect(value),
       disabled
     }}>
-      <div className={cx(styles.optionCheckbox({ colors }), getThemeStyles(theme, 'optionCheckbox'))}>
+      <div className={cx(styles.optionCheckbox({ colors, stateless }), getThemeStyles(theme, 'optionCheckbox'))}>
         {selected && (<Check className={styles.check} />)}
       </div>
       <Typography>
@@ -100,7 +104,8 @@ Option.propTypes = {
   value: types.any,
   onSelect: types.func.isRequired,
   variant: types.string,
-  disabled: types.bool
+  disabled: types.bool,
+  stateless: types.bool
 };
 
 export default Option;

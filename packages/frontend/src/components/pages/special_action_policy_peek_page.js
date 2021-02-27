@@ -38,7 +38,8 @@ const SpecialActionPolicyPeekPage = () => {
                   value: card,
                   variant: card < 11 ? 'evilParty' : 'goodParty',
                   disabled: true,
-                  onSelect: noop
+                  onSelect: noop,
+                  stateless: true
                 }}/>
               ))
             }
