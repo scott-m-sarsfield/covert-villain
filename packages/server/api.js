@@ -4,6 +4,7 @@ const get = require('lodash/get');
 const includes = require('lodash/includes');
 const trim = require('lodash/trim');
 const { v1: uuidv1 } = require('uuid');
+const { sub, isBefore } = require('date-fns');
 const { Game: SequelizeGame, sequelize } = require('./models');
 const { getJwt, authenticateJwt, authenticateOptionalJwt } = require('./jwt');
 const Actions = require('./game_actions');
@@ -37,6 +38,10 @@ function authenticateRoom(req, res, next) {
   }
   req.roomCode = code.toUpperCase();
   next();
+}
+
+function hasGameExpired(game) {
+  return isBefore(game.updatedAt, sub(new Date(), { hours: 1 }));
 }
 
 const router = express.Router();
@@ -75,6 +80,10 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
     await sequelize.transaction(async (transaction) => {
       const game = await getGame(code, transaction);
 
+      if (hasGameExpired(game)) {
+        game.data = Actions.setupGame();
+      }
+
       const existingPlayer = find(game.data.players, ({ name: existingName, left }) => {
         return existingName === name && !left;
       });
@@ -96,6 +105,7 @@ router.post('/games/join', authenticateOptionalJwt, async (req, res) => {
           res.status(400).send({
             error: 'cannot join game in progress'
           });
+          return;
         }
       }
 
