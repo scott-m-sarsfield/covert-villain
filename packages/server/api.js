@@ -5,7 +5,7 @@ const includes = require('lodash/includes');
 const trim = require('lodash/trim');
 const { v1: uuidv1 } = require('uuid');
 const { sub, isBefore } = require('date-fns');
-const { Game: SequelizeGame, sequelize } = require('./models');
+const { Game: SequelizeGame, sequelize, Log } = require('./models');
 const { getJwt, authenticateJwt, authenticateOptionalJwt } = require('./jwt');
 const Actions = require('./game_actions');
 const { phases } = require('./constants');
@@ -210,7 +210,18 @@ router.post('/games/:code/start', authenticateJwt, authenticateRoom, async (req,
       };
     }
 
-    return Actions.startGame(game);
+    game = Actions.startGame(game);
+
+    if (!game.error) {
+      Log.create({
+        type: 'game_started',
+        data: {
+          code: req.roomCode
+        }
+      });
+    }
+
+    return game;
   });
 });
 
