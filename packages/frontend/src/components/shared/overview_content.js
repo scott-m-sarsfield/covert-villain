@@ -130,10 +130,6 @@ const actionIcons = {
   special_election: faVoteYea
 };
 
-function rulesURL() {
-  window.open('https://www.secrethitler.com/assets/Secret_Hitler_Rules.pdf');
-}
-
 const OverviewContent = () => {
   const dispatch = useDispatch();
   const { user, data: game } = useSelector((state) => state.game);
@@ -170,7 +166,10 @@ const OverviewContent = () => {
       <PlayerTable players={game.players} renderRightContent={({ role }) => role && (
         <PlayerRole>{`${getThemeText(theme, role)}`}</PlayerRole>
       )}/>
-      <Button onClick={rulesURL}>Rules</Button>
+
+      <a href="https://www.secrethitler.com/assets/Secret_Hitler_Rules.pdf" target="_blank" rel="noreferrer">
+        <Button>Rules</Button>
+      </a>
       {
         isHost && (
           <Button onClick={() => dispatch(abortGame())}>Abort Game</Button>
