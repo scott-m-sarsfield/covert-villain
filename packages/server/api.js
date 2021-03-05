@@ -134,12 +134,6 @@ router.get('/games/:code', authenticateJwt, async (req, res) => {
   res.send(serializeGame(game, req.user));
 });
 
-router.get('/games/:code/debug', async (req, res) => {
-  const { code, data } = await getGame(req.params.code);
-
-  res.send({ code, ...data });
-});
-
 async function withGame(req, res, fn) {
   const transaction = await sequelize.transaction();
   try {
@@ -455,6 +449,18 @@ router.post('/games/:code/choose-president', authenticateJwt, authenticateRoom, 
     }
 
     return Actions.chooseSpecialElectionPresident(game, uuid);
+  });
+});
+
+router.post('/games/:code/abort', authenticateJwt, authenticateRoom, async (req, res) => {
+  withGame(req, res, (game, user) => {
+    if (user.uuid !== game.host) {
+      return {
+        error: 'only host may abort game'
+      };
+    }
+
+    return Actions.abortGame(game);
   });
 });
 

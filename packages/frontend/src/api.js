@@ -76,6 +76,10 @@ const Api = {
     return post(`/${code}/start`);
   },
 
+  abortGame(code) {
+    return post(`/${code}/abort`);
+  },
+
   chooseChancellor(code, uuid) {
     return post(`/${code}/choose-chancellor`, { uuid });
   },

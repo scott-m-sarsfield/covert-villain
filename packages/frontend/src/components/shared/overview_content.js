@@ -6,10 +6,11 @@ import range from 'lodash/range';
 import startCase from 'lodash/startCase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faSearch, faSkullCrossbones, faVoteYea } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import Button from './button';
 import { PlayerTable, PlayerRole } from './player_table';
 import Instructions from './instructions';
-import { leaveGame } from '../../store/game_slice';
+import { abortGame, leaveGame } from '../../store/game_slice';
 import useTheme from './use_theme';
 import { getThemeColor, getThemeText } from '../../theme';
 
@@ -135,8 +136,10 @@ function rulesURL() {
 
 const OverviewContent = () => {
   const dispatch = useDispatch();
-  const game = useSelector((state) => state.game.data);
+  const { user, data: game } = useSelector((state) => state.game);
+  const isHost = user.uuid === game.host;
   const theme = useTheme();
+
   return (
     <div className={styles.overviewWrapper}>
       <div className={styles.gameCode}>{game.code}</div>
@@ -168,7 +171,19 @@ const OverviewContent = () => {
         <PlayerRole>{`${getThemeText(theme, role)}`}</PlayerRole>
       )}/>
       <Button onClick={rulesURL}>Rules</Button>
+      {
+        isHost && (
+          <Button onClick={() => dispatch(abortGame())}>Abort Game</Button>
+        )
+      }
       <Button onClick={() => dispatch(leaveGame())}>Leave Game</Button>
+      <a href="https://github.com/scott-m-sarsfield/covert-villain" target="_blank" rel="noreferrer">
+        <Button>
+          <FontAwesomeIcon icon={faGithub} />
+          &nbsp;
+          GitHub
+        </Button>
+      </a>
     </div>
   );
 };

@@ -154,6 +154,7 @@ const choosePresident = callApiWithCode((code, uuid) => Api.choosePresident(code
 const approveVeto = callApiWithCode((code, approved) => Api.approveVeto(code, approved));
 const goToLobby = callApiWithCode((code) => Api.goToLobby(code));
 const changeTheme = callApiWithCode((code, theme) => Api.changeTheme(code, theme));
+const abortGame = callApiWithCode((code) => Api.abortGame(code));
 
 export {
   joinGame,
@@ -177,7 +178,8 @@ export {
   dismissError,
   goToLobby,
   changeTheme,
-  toggleSettings
+  toggleSettings,
+  abortGame
 };
 
 export default gamesSlice.reducer;

@@ -198,6 +198,17 @@ const Actions = {
     return this.rotateToNextPresidentNominee(game);
   },
 
+  abortGame(game) {
+    return {
+      ...game,
+      phase: phases.LOBBY,
+      players: game.players.map((player) => ({
+        ...player,
+        lobby: true
+      }))
+    };
+  },
+
   chooseChancellor(game, uuid) {
     const votes = {};
 
