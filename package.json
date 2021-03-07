@@ -2,14 +2,15 @@
   "name": "covert-mussolini",
   "version": "1.0.0",
   "description": "",
-  "main": "packages/server/index.js",
+  "main": "packages/server/dist/index.js",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:frontend": "cd packages/frontend && yarn run build",
-    "build": "yarn run build:frontend",
+    "build:server": "cd packages/server && yarn run build",
+    "build": "yarn run build:frontend && yarn run build:server",
     "db:migrate": "cd packages/server && yarn run db:migrate",
-    "start": "node packages/server/index.js"
+    "start": "node packages/server/dist/index.js"
   },
   "repository": {
     "type": "git",
